@@ -33,3 +33,4 @@ app.Run();
 // FIXME: All models is not identity except transaction
 //
 // FIXME: Change legnth to String Lenght
+// TODO: Add datatype attribute and error message to models
