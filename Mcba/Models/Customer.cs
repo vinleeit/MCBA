@@ -30,5 +30,8 @@ namespace Mcba.Models
         [Length(12, 12)]
         [RegularExpression("04[0-9]{2} [0-9]{3} [0-9]{3}")]
         public string? Mobile { get; set; }
+
+        // Navigational property
+        public List<Account> Accounts { get; set; }
     }
 }

@@ -10,4 +10,5 @@ public class McbaContext : DbContext
 
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Login> Logins { get; set; }
+    public DbSet<Account> Accounts { get; set; }
 }
