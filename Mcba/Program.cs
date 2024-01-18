@@ -29,3 +29,7 @@ app.UseAuthorization();
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+// FIXME: All models is not identity except transaction
+//
+// FIXME: Change legnth to String Lenght

@@ -16,5 +16,8 @@ namespace Mcba.Models
         [Required]
         [ForeignKey(nameof(Customer))]
         public int CustomerID { get; set; }
+
+        [InverseProperty(nameof(Transaction.Account))]
+        public List<Transaction> Transactions { get; set; }
     }
 }
