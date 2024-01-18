@@ -9,4 +9,5 @@ public class McbaContext : DbContext
         : base(options) { }
 
     public DbSet<Customer> Customers { get; set; }
+    public DbSet<Login> Logins { get; set; }
 }
