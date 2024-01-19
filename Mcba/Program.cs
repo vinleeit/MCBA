@@ -22,6 +22,13 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
+// Seed database if data is empty
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetService<McbaContext>();
+    await DataLoader.SeedData(context!);
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
