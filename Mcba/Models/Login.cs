@@ -5,9 +5,10 @@ namespace Mcba.Models;
 
 public class Login
 {
+    [Key]
     [Column(TypeName = "char(8)")]
-    [Required]
-    [Length(8, 8)]
+    [RegularExpression(@"^\d{8}$")]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public required string LoginID { get; set; }
 
     // Navigational property
@@ -16,8 +17,8 @@ public class Login
     public int CustomerID { get; set; }
     public Customer Customer { get; set; }
 
-    [Column(TypeName = "char(94)")]
     [Required]
-    [Length(94, 94)]
+    [Column(TypeName = "char(94)")]
+    [StringLength(94)]
     public required string PasswordHash { get; set; }
 }
