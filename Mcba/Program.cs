@@ -33,6 +33,8 @@ builder.Services.AddSession(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<IFreeTransactionService, FreeTransactionService>();
+builder.Services.AddScoped<IBalanceService, BalanceService>();
+builder.Services.AddScoped<IWithdrawService, WithdrawService>();
 
 var app = builder.Build();
 
