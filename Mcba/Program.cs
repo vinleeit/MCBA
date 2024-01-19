@@ -1,4 +1,6 @@
 using Mcba.Data;
+using Mcba.Services;
+using Mcba.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +10,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<McbaContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("arvin-rmit"))
 );
+builder.Services.AddScoped<IDepositService, DepositService>();
 
 var app = builder.Build();
 
