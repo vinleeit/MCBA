@@ -6,10 +6,11 @@ namespace Mcba.Models
     public class Account
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int AccountNumber { get; set; }
 
         [Required]
-        [RegularExpression("^[CS]{1}$")]
+        [RegularExpression("^[CS]$")]
         public char AccountType { get; set; }
 
         // Navigational property
