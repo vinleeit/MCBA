@@ -32,6 +32,8 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+builder.Services.AddScoped<IFreeTransactionService, FreeTransactionService>();
+
 var app = builder.Build();
 
 // Seed database if data is empty
