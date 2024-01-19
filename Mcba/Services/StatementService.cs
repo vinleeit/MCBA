@@ -2,13 +2,18 @@ using System.Data.Common;
 using System.Drawing;
 using Mcba.Data;
 using Mcba.Models;
+using Mcba.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mcba.Services;
 
-public class StatementService(McbaContext context) : IStatementService
+public class StatementService(
+    McbaContext context,
+    IBalanceService balanceService
+    ) : IStatementService
 {
     private readonly McbaContext _dbContext = context;
+    private readonly IBalanceService _balanceService = balanceService;
 
     /// <summary>
     /// Get the transactions of an account with pagination.
@@ -39,5 +44,10 @@ public class StatementService(McbaContext context) : IStatementService
                     .ToListAsync());
         }
         return (1, await allTransactionsQuery.ToListAsync());
+    }
+
+    public async Task<decimal> GetAccountBalance(int accountNumber)
+    {
+        return await _balanceService.GetAccountBalance(accountNumber);
     }
 }
