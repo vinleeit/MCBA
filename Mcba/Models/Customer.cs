@@ -10,31 +10,31 @@ namespace Mcba.Models
         public int CustomerID { get; set; }
 
         [StringLength(50)]
-        [Column("nvarchar(50)")]
+        [Column(TypeName = "nvarchar(50)")]
         [Required]
         public required string Name { get; set; }
 
-        [Column("nvarchar(11)")]
+        [Column(TypeName = "nvarchar(11)")]
         [RegularExpression(@"^\d{3} \d{3} \d{3}$")]
         public string? TFN { get; set; }
 
         [StringLength(50)]
-        [Column("nvarchar(50)")]
+        [Column(TypeName = "nvarchar(50)")]
         public string? Address { get; set; }
 
         [StringLength(40)]
-        [Column("nvarchar(40)")]
+        [Column(TypeName = "nvarchar(40)")]
         public string? City { get; set; }
 
-        [Column("nvarchar(3)")]
+        [Column(TypeName = "nvarchar(3)")]
         [RegularExpression(@"^(NSW|VIC|QLD|WA|SA|TAS|ACT|NT)$")]
         public string? State { get; set; }
 
-        [Column("nvarchar(4)")]
+        [Column(TypeName = "nvarchar(4)")]
         [RegularExpression(@"^\d{4}$")]
         public string? Postcode { get; set; }
 
-        [Column("nvarchar(12)")]
+        [Column(TypeName = "nvarchar(12)")]
         [RegularExpression(@"^04\d{2} \d{3} \d{3}$")]
         public string? Mobile { get; set; }
 
