@@ -19,7 +19,19 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+builder.Services.AddScoped<IFreeTransactionService, FreeTransactionService>();
+builder.Services.AddScoped<IBalanceService, BalanceService>();
+builder.Services.AddScoped<IWithdrawService, WithdrawService>();
+builder.Services.AddScoped<ITransferService, TransferService>();
+
 var app = builder.Build();
+
+// Seed database if data is empty
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetService<McbaContext>();
+    await DataLoader.SeedData(context!);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

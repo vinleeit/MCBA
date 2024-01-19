@@ -1,0 +1,38 @@
+using Mcba.Data;
+using Mcba.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
+namespace Mcba.Services;
+
+public class BalanceService(McbaContext context) : IBalanceService
+{
+    private readonly McbaContext _dbContext = context;
+
+    public async Task<decimal> GetAccountBalance(int accountNumber)
+    {
+        decimal creditTransaction = await (
+            from t in _dbContext.Transactions
+            where
+                t.AccountNumber == accountNumber
+                && (
+                    t.TransactionType == 'D'
+                    || (t.TransactionType == 'T' && t.DestinationAccountNumber == null)
+                )
+            select t.Amount
+        ).SumAsync();
+
+        decimal debitTransaction = await (
+            from t in _dbContext.Transactions
+            where
+                t.AccountNumber == accountNumber
+                && (
+                    t.TransactionType == 'W'
+                    || (t.TransactionType == 'T' && t.DestinationAccountNumber != null)
+                    || t.TransactionType == 'S'
+                )
+            select t.Amount
+        ).SumAsync();
+
+        return creditTransaction - debitTransaction;
+    }
+}
