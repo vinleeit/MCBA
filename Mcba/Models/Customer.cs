@@ -1,37 +1,45 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Mcba.Models
 {
     public class Customer
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CustomerID { get; set; }
 
-        [MaxLength(50)]
+        [StringLength(50)]
+        [Column("nvarchar(50)")]
         [Required]
         public required string Name { get; set; }
 
-        [Length(11, 11)]
-        [RegularExpression("[0-9]{3} [0-9]{3} [0-9]{3}")]
+        [Column("nvarchar(11)")]
+        [RegularExpression(@"^\d{3} \d{3} \d{3}$")]
         public string? TFN { get; set; }
 
-        [MaxLength(50)]
+        [StringLength(50)]
+        [Column("nvarchar(50)")]
         public string? Address { get; set; }
 
-        [MaxLength(40)]
+        [StringLength(40)]
+        [Column("nvarchar(40)")]
         public string? City { get; set; }
 
-        [Length(2, 3)]
+        [Column("nvarchar(3)")]
+        [RegularExpression(@"^(NSW|VIC|QLD|WA|SA|TAS|ACT|NT)$")]
         public string? State { get; set; }
 
-        [Length(4, 4)]
+        [Column("nvarchar(4)")]
+        [RegularExpression(@"^\d{4}$")]
         public string? Postcode { get; set; }
 
-        [Length(12, 12)]
-        [RegularExpression("04[0-9]{2} [0-9]{3} [0-9]{3}")]
+        [Column("nvarchar(12)")]
+        [RegularExpression(@"^04\d{2} \d{3} \d{3}$")]
         public string? Mobile { get; set; }
 
         // Navigational property
         public List<Account> Accounts { get; set; }
+        public Login Login { get; set; }
     }
 }
