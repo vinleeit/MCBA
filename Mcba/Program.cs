@@ -24,6 +24,13 @@ builder.Services.AddScoped<IBalanceService, BalanceService>();
 builder.Services.AddScoped<IWithdrawService, WithdrawService>();
 builder.Services.AddScoped<ITransferService, TransferService>();
 builder.Services.AddScoped<IDepositService, DepositService>();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+});
+
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
