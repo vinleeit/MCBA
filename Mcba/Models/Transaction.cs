@@ -9,7 +9,7 @@ public class Transaction
     public int TransactionID { get; set; }
 
     [Required]
-    [RegularExpression("^[DWTSB]{1}$")]
+    [RegularExpression("^[DWTSB]$")]
     public char TransactionType { get; set; }
 
     [ForeignKey(nameof(Account))]
