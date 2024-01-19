@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<McbaContext>(
-    options => options.UseSqlServer(builder.Configuration.GetConnectionString("ravel-rmit"))
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("arvin-rmit"))
 );
 
 var app = builder.Build();
@@ -29,8 +29,3 @@ app.UseAuthorization();
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-
-// FIXME: All models is not identity except transaction
-//
-// FIXME: Change legnth to String Lenght
-// TODO: Add datatype attribute and error message to models

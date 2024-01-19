@@ -25,10 +25,7 @@ namespace Mcba.Migrations
             modelBuilder.Entity("Mcba.Models.Account", b =>
                 {
                     b.Property<int>("AccountNumber")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountNumber"));
 
                     b.Property<string>("AccountType")
                         .IsRequired()
@@ -47,10 +44,7 @@ namespace Mcba.Migrations
             modelBuilder.Entity("Mcba.Models.Customer", b =>
                 {
                     b.Property<int>("CustomerID")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerID"));
 
                     b.Property<string>("Address")
                         .HasMaxLength(50)
@@ -61,7 +55,7 @@ namespace Mcba.Migrations
                         .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("Mobile")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(12)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -69,13 +63,13 @@ namespace Mcba.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Postcode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4)");
 
                     b.Property<string>("State")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("TFN")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(11)");
 
                     b.HasKey("CustomerID");
 
@@ -92,11 +86,13 @@ namespace Mcba.Migrations
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
+                        .HasMaxLength(94)
                         .HasColumnType("char(94)");
 
                     b.HasKey("LoginID");
 
-                    b.HasIndex("CustomerID");
+                    b.HasIndex("CustomerID")
+                        .IsUnique();
 
                     b.ToTable("Logins");
                 });
@@ -150,8 +146,8 @@ namespace Mcba.Migrations
             modelBuilder.Entity("Mcba.Models.Login", b =>
                 {
                     b.HasOne("Mcba.Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerID")
+                        .WithOne("Login")
+                        .HasForeignKey("Mcba.Models.Login", "CustomerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -183,6 +179,9 @@ namespace Mcba.Migrations
             modelBuilder.Entity("Mcba.Models.Customer", b =>
                 {
                     b.Navigation("Accounts");
+
+                    b.Navigation("Login")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
