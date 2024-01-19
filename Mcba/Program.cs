@@ -23,6 +23,7 @@ builder.Services.AddScoped<IFreeTransactionService, FreeTransactionService>();
 builder.Services.AddScoped<IBalanceService, BalanceService>();
 builder.Services.AddScoped<IWithdrawService, WithdrawService>();
 builder.Services.AddScoped<ITransferService, TransferService>();
+builder.Services.AddScoped<IDepositService, DepositService>();
 
 var app = builder.Build();
 
