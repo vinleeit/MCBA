@@ -1,0 +1,15 @@
+using Mcba.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace Mcba.Data;
+
+public class McbaContext : DbContext
+{
+    public McbaContext(DbContextOptions options)
+        : base(options) { }
+
+    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Login> Logins { get; set; }
+    public DbSet<Account> Accounts { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
+}
