@@ -1,8 +1,7 @@
 using Mcba.Models;
 
-namespace Mcba.Services;
+namespace Mcba.Services.Interfaces;
 
-// TODO: Create GetCustomerProfile and get the profile from the login (need rebase)
 public interface IProfileService
 {
     public enum ProfileError
