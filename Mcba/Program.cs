@@ -25,6 +25,8 @@ builder.Services.AddScoped<IWithdrawService, WithdrawService>();
 builder.Services.AddScoped<ITransferService, TransferService>();
 builder.Services.AddScoped<IDepositService, DepositService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IStatementService, StatementService>();
+
 
 var app = builder.Build();
 
