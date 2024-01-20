@@ -11,6 +11,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<McbaContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("arvin-rmit"))
 );
+
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -26,7 +27,6 @@ builder.Services.AddScoped<ITransferService, TransferService>();
 builder.Services.AddScoped<IDepositService, DepositService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IStatementService, StatementService>();
-
 
 var app = builder.Build();
 
