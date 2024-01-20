@@ -27,7 +27,7 @@ public class AuthController(IAuthService authService) : Controller
             return View(loginData);
         }
         // Save auth info to session
-        HttpContext.Session.SetString("Customer", customer.ToString()!);
+        HttpContext.Session.SetInt32("Customer", customer.GetValueOrDefault());
         return RedirectToAction("Index", "Home");
     }
 

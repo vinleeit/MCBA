@@ -8,9 +8,9 @@ public class AuthorizationMiddleware(RequestDelegate next)
 
     public async Task Invoke(HttpContext context)
     {
-        string? customer = context.Session.GetString("Customer");
+        int? customer = context.Session.GetInt32("Customer");
 
-        if (string.IsNullOrEmpty(customer))
+        if (customer == null)
         {
             var authAttr = context.GetEndpoint()?.Metadata?.GetMetadata<LoggedIn>();
             if (authAttr != null)
