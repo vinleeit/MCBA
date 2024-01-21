@@ -11,6 +11,5 @@ public interface IStatementService
         int accountNumber,
         (int pageNumber, int itemCount)? pagination
     );
-    public Task<decimal> GetAccountBalance(int accountNumber);
 }
 
