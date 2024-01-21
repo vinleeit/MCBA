@@ -77,4 +77,23 @@ public class ProfileController(McbaContext context, IProfileService profileServi
         }
         return RedirectToAction(nameof(Index));
     }
+
+    [HttpGet]
+    public IActionResult ChangePassword()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ChangePassword(ChangePasswordViewModel viewModel)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View();
+        }
+
+        await _profileService.UpdateCustomerPassword(HttpContext.Session.GetInt32("Customer") ?? -1, viewModel.Password);
+        return RedirectToAction(nameof(Index));
+    }
+
 }
