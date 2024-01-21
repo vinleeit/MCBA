@@ -1,0 +1,51 @@
+<html>
+
+<head>
+    <title>Edit Profile</title>
+</head>
+
+@model Customer
+
+<body>
+    <h1>Edit Profile</h1>
+    <form asp-action="Edit" asp-controller="Profile" method="post">
+        <h2>Basic</h2>
+        <label asp-for="Name"></label>
+        <input asp-for="Name">
+        <span asp-validation-for="Name"></span>
+        <br>
+        <label asp-for="TFN"></label>
+        <input asp-for="TFN">
+        <span asp-validation-for="TFN"></span>
+        <br>
+        <h2>Contacts</h2>
+        <label asp-for="Mobile"></label>
+        <input asp-for="Mobile">
+        <span asp-validation-for="Mobile"></span>
+        <br>
+        <h2>Address</h2>
+        <label asp-for="Address"></label>
+        <input asp-for="Address">
+        <span asp-validation-for="Address"></span>
+        <br>
+        <label asp-for="City"></label>
+        <input asp-for="City">
+        <span asp-validation-for="City"></span>
+        <br>
+        <label asp-for="State"></label>
+        <input asp-for="State">
+        <span asp-validation-for="State"></span>
+        <br>
+        <label asp-for="Postcode"></label>
+        <input asp-for="Postcode">
+        <span asp-validation-for="Postcode"></span>
+        <br>
+        <br>
+        <br>
+        <input type="submit" value="Edit">
+        <input type="button" value="Cancel" onclick="History.back">
+    </form>
+
+</body>
+
+</html>

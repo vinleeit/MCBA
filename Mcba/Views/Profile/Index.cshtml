@@ -18,7 +18,7 @@
     <p><label asp-for="City"></label>: @(String.IsNullOrEmpty(Model.City) ? "<empty>" : Model.City)</p>
     <p><label asp-for="State"></label>: @(String.IsNullOrEmpty(Model.State) ? "<empty>" : Model.State)</p>
     <p><label asp-for="Postcode"></label>: @(String.IsNullOrEmpty(Model.Postcode) ? "<empty>" : Model.Postcode)</p>
-    <a asp-action="">Edit Profile</a>
+    <a asp-action="Edit">Edit Profile</a>
     <h2>Security</h2>
     <a asp-action="">Change Password</a>
 </body>
