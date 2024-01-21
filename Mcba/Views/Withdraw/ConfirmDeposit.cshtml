@@ -1,0 +1,18 @@
+@model WithdrawViewModel
+@{
+    ViewBag.Title = "Confirm Withdraw";
+}
+
+<h1>Confirm Withdraw</h1>
+<label asp-for="AccountNumber"></label>: @Html.DisplayFor(m => m.AccountNumber)
+<br>
+<label asp-for="Amount"></label>: @Html.DisplayFor(m => m.Amount)
+<br>
+<label asp-for="Comment"></label>: @Html.DisplayFor(m => m.Comment)
+
+<form asp-action="WithdrawConfirmed">
+    <input asp-for="AccountNumber" type="hidden">
+    <input asp-for="Amount" type="hidden">
+    <input asp-for="Comment" type="hidden">
+    <input type="submit" value="Withdraw">
+</form>
