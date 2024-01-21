@@ -15,31 +15,33 @@ public class ProfileController(McbaContext context, IProfileService profileServi
 
     public IActionResult Index()
     {
-        var customerID = HttpContext.Session.GetInt32("Customer");
-        var customer = _dbContext.Customers.FirstOrDefault(b => b.CustomerID == customerID);
+        var customer = _dbContext.Customers.FirstOrDefault(b => b.CustomerID == HttpContext.Session.GetInt32("Customer"));
+        if (customer == null)
+        {
+            return NotFound();
+        }
         return View(customer);
     }
 
     [HttpGet]
     public IActionResult Edit()
     {
-        var customerID = HttpContext.Session.GetInt32("Customer");
-        var customer = _dbContext.Customers.FirstOrDefault(b => b.CustomerID == customerID);
-        if (customer == null)
+        var customer = _dbContext.Customers.FirstOrDefault(b => b.CustomerID == HttpContext.Session.GetInt32("Customer"));
+        if (customer != null)
         {
-            return RedirectToAction(nameof(Index));
+            return View(new ProfileViewModel()
+            {
+                CustomerID = customer.CustomerID,
+                Name = customer.Name,
+                TFN = customer.TFN,
+                Address = customer.TFN,
+                City = customer.City,
+                State = customer.State,
+                Postcode = customer.Postcode,
+                Mobile = customer.Mobile
+            });
         }
-        return View(new ProfileViewModel()
-        {
-            CustomerID = customer.CustomerID,
-            Name = customer.Name,
-            TFN = customer.TFN,
-            Address = customer.TFN,
-            City = customer.City,
-            State = customer.State,
-            Postcode = customer.Postcode,
-            Mobile = customer.Mobile
-        });
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
@@ -49,7 +51,6 @@ public class ProfileController(McbaContext context, IProfileService profileServi
         {
             return View();
         }
-
         var error = await _profileService.UpdateCustomerProfile(new Models.Customer
         {
             CustomerID = edittedCustomer.CustomerID,
@@ -61,18 +62,9 @@ public class ProfileController(McbaContext context, IProfileService profileServi
             Postcode = edittedCustomer.Postcode,
             Mobile = edittedCustomer.Mobile
         });
-
-        if (error != null)
+        if (error != null && error == IProfileService.ProfileError.NoDataChange)
         {
-            switch (error)
-            {
-                case (IProfileService.ProfileError.CustomerNotFound):
-                    edittedCustomer.ErrorMsg = "No customer found!";
-                    break;
-                case (IProfileService.ProfileError.NoDataChange):
-                    edittedCustomer.ErrorMsg = "No data modification found!";
-                    break;
-            }
+            edittedCustomer.ErrorMsg = "No data modification found!";
             return View(edittedCustomer);
         }
         return RedirectToAction(nameof(Index));
@@ -91,7 +83,6 @@ public class ProfileController(McbaContext context, IProfileService profileServi
         {
             return View();
         }
-
         await _profileService.UpdateCustomerPassword(HttpContext.Session.GetInt32("Customer") ?? -1, viewModel.Password);
         return RedirectToAction(nameof(Index));
     }
