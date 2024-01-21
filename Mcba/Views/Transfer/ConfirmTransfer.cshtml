@@ -1,0 +1,21 @@
+@model TransferViewModel
+@{
+    ViewBag.Title = "Confirm Transfer";
+}
+
+<h1>Confirm Transfer</h1>
+<label asp-for="AccountNumber"></label>: @Html.DisplayFor(m => m.AccountNumber)
+<br>
+<label asp-for="DestinationAccountNumber"></label>: @Html.DisplayFor(m => m.DestinationAccountNumber)
+<br>
+<label asp-for="Amount"></label>: @Html.DisplayFor(m => m.Amount)
+<br>
+<label asp-for="Comment"></label>: @Html.DisplayFor(m => m.Comment)
+
+<form asp-action="TransferConfirmed">
+    <input asp-for="AccountNumber" type="hidden">
+    <input asp-for="DestinationAccountNumber" type="hidden">
+    <input asp-for="Amount" type="hidden">
+    <input asp-for="Comment" type="hidden">
+    <input type="submit" value="Transfer">
+</form>
