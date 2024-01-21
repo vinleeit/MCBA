@@ -1,0 +1,34 @@
+@model WithdrawViewModel
+@{
+  ViewData["Title"] = "Withdraw";
+}
+
+<h1>Withdraw</h1>
+
+<form asp-action="Index">
+  <label asp-for="AccountNumber"></label>
+  <select asp-for="AccountNumber">
+    <option>Select an account</option>
+    @foreach (var i in Model.Accounts!)
+    {
+      <option value="@i.AccountNumber">@i.AccountNumber</option>
+    }
+  </select>
+  <span asp-validation-for="AccountNumber"></span>
+  <br>
+
+  <label asp-for="Amount"></label>
+  <input asp-for="Amount" />
+  <br>
+  <span asp-validation-for="Amount"></span>
+  <br>
+
+  <label asp-for="Comment"></label>
+  <textarea asp-for="Comment"></textarea>
+  <br>
+  <span asp-validation-for="Comment"></span>
+  <br>
+
+  <input type="submit" value="Withdraw">
+
+</form>

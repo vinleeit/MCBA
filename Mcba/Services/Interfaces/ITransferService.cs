@@ -16,4 +16,6 @@ public interface ITransferService
         decimal amount,
         string? comment
     );
+
+    public Task<Tuple<decimal, decimal>> GetTotalAndMinimumBalance(int accountNumber, decimal amount);
 }
