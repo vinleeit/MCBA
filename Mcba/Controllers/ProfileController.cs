@@ -25,31 +25,56 @@ public class ProfileController(McbaContext context, IProfileService profileServi
     {
         var customerID = HttpContext.Session.GetInt32("Customer");
         var customer = _dbContext.Customers.FirstOrDefault(b => b.CustomerID == customerID);
-        if (customer != null)
+        if (customer == null)
         {
-            return View(new ProfileViewModel()
-            {
-                CustomerID = customer.CustomerID,
-                Name = customer.Name,
-                TFN = customer.TFN,
-                Address = customer.TFN,
-                City = customer.City,
-                State = customer.State,
-                Postcode = customer.Postcode,
-                Mobile = customer.Mobile
-            });
+            return RedirectToAction(nameof(Index));
         }
-        return RedirectToAction(nameof(Index));
+        return View(new ProfileViewModel()
+        {
+            CustomerID = customer.CustomerID,
+            Name = customer.Name,
+            TFN = customer.TFN,
+            Address = customer.TFN,
+            City = customer.City,
+            State = customer.State,
+            Postcode = customer.Postcode,
+            Mobile = customer.Mobile
+        });
     }
 
     [HttpPost]
-    public IActionResult Edit(ProfileViewModel edittedCustomer)
+    public async Task<IActionResult> Edit(ProfileViewModel edittedCustomer)
     {
         if (!ModelState.IsValid)
         {
             return View();
         }
-        // TODO: Redirectt to confirmation view
+
+        var error = await _profileService.UpdateCustomerProfile(new Models.Customer
+        {
+            CustomerID = edittedCustomer.CustomerID,
+            Name = edittedCustomer.Name,
+            TFN = edittedCustomer.TFN,
+            Address = edittedCustomer.Address,
+            City = edittedCustomer.City,
+            State = edittedCustomer.State,
+            Postcode = edittedCustomer.Postcode,
+            Mobile = edittedCustomer.Mobile
+        });
+
+        if (error != null)
+        {
+            switch (error)
+            {
+                case (IProfileService.ProfileError.CustomerNotFound):
+                    edittedCustomer.ErrorMsg = "No customer found!";
+                    break;
+                case (IProfileService.ProfileError.NoDataChange):
+                    edittedCustomer.ErrorMsg = "No data modification found!";
+                    break;
+            }
+            return View(edittedCustomer);
+        }
         return RedirectToAction(nameof(Index));
     }
 }

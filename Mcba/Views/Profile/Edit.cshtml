@@ -7,6 +7,15 @@
 @model ProfileViewModel
 
 <body>
+    @if (Model.ErrorMsg != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                alert("@Model.ErrorMsg");
+            };
+        </script>
+    }
+
     <h1>Edit Profile</h1>
     <form asp-action="Edit" asp-controller="Profile" method="post">
         <input asp-for="CustomerID" hidden>

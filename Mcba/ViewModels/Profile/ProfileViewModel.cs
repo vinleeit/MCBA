@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Mcba.Services.Interfaces;
 
 namespace Mcba.ViewModels.Profile;
 
@@ -35,4 +36,7 @@ public class ProfileViewModel
     [Column(TypeName = "nvarchar(12)")]
     [RegularExpression(@"^04\d{2} \d{3} \d{3}$")]
     public string? Mobile { get; set; }
+
+
+    public string? ErrorMsg { get; set; }
 }
