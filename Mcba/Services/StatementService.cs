@@ -46,8 +46,4 @@ public class StatementService(
         return (1, await allTransactionsQuery.ToListAsync());
     }
 
-    public async Task<decimal> GetAccountBalance(int accountNumber)
-    {
-        return await _balanceService.GetAccountBalance(accountNumber);
-    }
 }

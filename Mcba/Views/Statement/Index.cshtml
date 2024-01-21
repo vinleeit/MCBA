@@ -1,0 +1,15 @@
+@model List<Account>
+@{
+    ViewBag.Title = "Statement";
+}
+
+<h1>Please select account</h1>
+<form asp-action="Show" method="get">
+    <select name="Account">
+        @foreach (var a in Model)
+        {
+            <option value="@a.AccountNumber">@a.AccountNumber</option>
+        }
+    </select>
+    <input type="submit" value="View Statement">
+</form>
