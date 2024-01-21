@@ -50,8 +50,7 @@ public class ProfileService(McbaContext dbContext) : IProfileService
         {
             // Default compute according to specification
             login.PasswordHash = new SimpleHash().Compute(newPassword);
-            Console.WriteLine(login.PasswordHash.Length);
-            // await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             return null;
         }
         return IProfileService.ProfileError.CustomerNotFound;
