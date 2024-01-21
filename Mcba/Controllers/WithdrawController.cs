@@ -33,7 +33,8 @@ public class WithdrawController(IAccountService accountService, IBalanceService 
             List<Models.Account> accounts = await _accountService.GetAccounts(
                 customerID.GetValueOrDefault()
             );
-            return View(new WithdrawViewModel() { Accounts = accounts });
+            data.Accounts = accounts;
+            return View(data);
         }
         var balance = await _balanceService.GetAccountBalance(data.AccountNumber.GetValueOrDefault());
         var (totalAmount, minimumBalance) = await _withdrawService.GetTotalAmountAndMinimumAllowedBalance(data.AccountNumber.GetValueOrDefault(), data.Amount);
