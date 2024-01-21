@@ -1,0 +1,38 @@
+@model TransferViewModel
+@{
+    ViewBag.Title = "Transfer";
+}
+
+<h1>Transfer</h1>
+<form asp-action="Index">
+    <label asp-for="AccountNumber"></label>
+    <select asp-for="AccountNumber">
+        <option value="">Select an account</option>
+        @foreach (var a in Model.Accounts)
+        {
+            <option value="@a.AccountNumber">@a.AccountNumber</option>
+        }
+    </select>
+    <span asp-validation-for="AccountNumber"></span>
+
+    <br>
+
+    <label asp-for="DestinationAccountNumber"></label>
+    <input asp-for="DestinationAccountNumber" />
+    <span asp-validation-for="DestinationAccountNumber"></span>
+
+    <br>
+
+    <label asp-for="Amount"></label>
+    <input asp-for="Amount" />
+    <span asp-validation-for="Amount"></span>
+
+    <br>
+
+    <label asp-for="Comment"></label>
+    <textarea asp-for="Comment"></textarea>
+    <span asp-validation-for="Comment"></span>
+
+    <br>
+    <input type="submit" value="Transfer">
+</form>
