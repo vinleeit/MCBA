@@ -4,11 +4,12 @@
     <title>Edit Profile</title>
 </head>
 
-@model Customer
+@model ProfileViewModel
 
 <body>
     <h1>Edit Profile</h1>
     <form asp-action="Edit" asp-controller="Profile" method="post">
+        <input asp-for="CustomerID" hidden>
         <h2>Basic</h2>
         <label asp-for="Name"></label>
         <input asp-for="Name">
@@ -43,7 +44,7 @@
         <br>
         <br>
         <input type="submit" value="Edit">
-        <input type="button" value="Cancel" onclick="History.back">
+        <input type="button" value="Cancel" onclick="history.back()">
     </form>
 
 </body>

@@ -1,10 +1,8 @@
 using Mcba.Data;
 using Mcba.Middlewares;
-using Mcba.Models;
-using Mcba.Services;
+using Mcba.ViewModels.Profile;
 using Mcba.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Mcba.Controllers;
 
@@ -23,15 +21,32 @@ public class ProfileController(McbaContext context, IProfileService profileServi
     }
 
     [HttpGet]
-    public IActionResult Edit() {
+    public IActionResult Edit()
+    {
         var customerID = HttpContext.Session.GetInt32("Customer");
         var customer = _dbContext.Customers.FirstOrDefault(b => b.CustomerID == customerID);
-        return View(customer);
+        if (customer != null)
+        {
+            return View(new ProfileViewModel()
+            {
+                CustomerID = customer.CustomerID,
+                Name = customer.Name,
+                TFN = customer.TFN,
+                Address = customer.TFN,
+                City = customer.City,
+                State = customer.State,
+                Postcode = customer.Postcode,
+                Mobile = customer.Mobile
+            });
+        }
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
-    public IActionResult Edit(Customer customer) {
-        if (!ModelState.IsValid) {
+    public IActionResult Edit(ProfileViewModel edittedCustomer)
+    {
+        if (!ModelState.IsValid)
+        {
             return View();
         }
         // TODO: Redirectt to confirmation view
