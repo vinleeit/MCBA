@@ -1,5 +1,6 @@
 using Mcba.Data;
 using Mcba.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Mcba.Services;
 
@@ -13,6 +14,26 @@ public class WithdrawService(
     private readonly IBalanceService _balanceService = balanceService;
     private readonly IFreeTransactionService _freeTransactionService = freeTransactionService;
     private readonly decimal _withdrawFee = (decimal)0.05;
+
+    public async Task<Tuple<decimal, decimal>> GetTotalAmountAndMinimumAllowedBalance(
+        int accountNumber,
+        decimal amount
+    )
+    {
+        if (!await _freeTransactionService.GetIsTransactionFree(accountNumber))
+        {
+            amount += _withdrawFee;
+        }
+        int minimumBalance =
+            await (
+                from a in _dbContext.Accounts
+                where a.AccountNumber == accountNumber
+                select a.AccountType
+            ).FirstOrDefaultAsync() == 'S'
+                ? 0
+                : 300;
+        return Tuple.Create<decimal, decimal>(amount, minimumBalance);
+    }
 
     public async Task<IWithdrawService.WithdrawError?> Withdraw(
         int accountNumber,
@@ -29,8 +50,8 @@ public class WithdrawService(
         // Get current amount
         var balance = await _balanceService.GetAccountBalance(accountNumber);
         // Check if balance is sufficient
-        // TODO: Add minimum balance check
-        if (balance < (amount + (decimal)(isTransactionFree ? 0 : 0.05)))
+        var totalAndMinimum = await GetTotalAmountAndMinimumAllowedBalance(accountNumber, amount);
+        if (balance - totalAndMinimum.Item2 < totalAndMinimum.Item1)
         {
             return IWithdrawService.WithdrawError.NotEnoughBalance;
         }
@@ -60,7 +81,7 @@ public class WithdrawService(
             _ = _dbContext.Transactions.Add(
                 new()
                 {
-                    Amount = (decimal)0.05,
+                    Amount = _withdrawFee,
                     AccountNumber = accountNumber,
                     TransactionType = 'S',
                     TransactionTimeUtc = timeUtc,
