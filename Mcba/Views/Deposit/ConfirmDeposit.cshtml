@@ -1,0 +1,18 @@
+@model DepositViewModel
+@{
+  ViewData["Title"] = "Deposit";
+}
+<ul>
+    <label asp-for="AccountNumber"></label>: @Html.DisplayFor(m => m.AccountNumber)
+    <br>
+    <label asp-for="Amount"></label>: @Html.DisplayFor(m => m.Amount)
+    <br>
+    <label asp-for="Comment"></label>: @Html.DisplayFor(m => m.Comment)
+
+  <form asp-action="DepositConfirmed">
+    <input asp-for="AccountNumber" type="hidden">
+    <input asp-for="Amount" type="hidden">
+    <input asp-for="Comment" type="hidden">
+    <input type="submit" value="Deposit">
+  </form>
+</ul>

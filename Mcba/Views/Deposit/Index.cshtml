@@ -1,0 +1,27 @@
+@model DepositViewModel
+@{
+  ViewData["Title"] = "Deposit";
+}
+<ul>
+  <form asp-action="Index">
+    <label asp-for="AccountNumber"></label>
+    <select asp-for="AccountNumber">
+      <option value="">Select account number</option>
+      @foreach (var i in Model.Accounts){
+        <option value="@i.AccountNumber">@i.AccountNumber</option>
+      }
+    </select>
+    <span asp-validation-for="AccountNumber"></span>
+    <br>
+    <label asp-for="Amount"></label>
+    <input asp-for="Amount">
+    <span asp-validation-for="Amount"></span>
+    <br>
+    <label asp-for="Comment"></label>
+    <textarea asp-for="Comment"></textarea>
+    <span asp-validation-for="Comment"></span>
+
+    <br>
+    <input type="submit" value="Deposit">
+  </form>
+</ul>
