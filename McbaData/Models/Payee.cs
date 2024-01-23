@@ -8,22 +8,22 @@ public class Payee
     [Key]
     public int PayeeID { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Name is required")]
     [Column(TypeName = "nvarchar(50)")]
     [MaxLength(50, ErrorMessage = "Max 50 characters")]
     public string Name { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Address is required")]
     [Column(TypeName = "nvarchar(50)")]
     [MaxLength(50, ErrorMessage = "Max 50 characters")]
     public string Address { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "City is required")]
     [Column(TypeName = "nvarchar(40)")]
     [MaxLength(40, ErrorMessage = "Max 40 characters")]
     public string City { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "State is required")]
     [Column(TypeName = "nvarchar(3)")]
     [RegularExpression(
         @"^(NSW|VIC|QLD|WA|SA|TAS|ACT|NT)$",
@@ -31,12 +31,12 @@ public class Payee
     )]
     public string State { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Postcode is required")]
     [Column(TypeName = "nvarchar(4)")]
     [RegularExpression(@"^[0-9]{4}$", ErrorMessage = "Must be 4 digits")]
     public string Postcode { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Phone is required")]
     [Column(TypeName = "nvarchar(14)")]
     [RegularExpression(@"^\(0[0-9]\) [0-9]{4} [0-9]{4}$", ErrorMessage = "Invalid format")]
     public string Phone { get; set; }

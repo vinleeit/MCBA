@@ -7,13 +7,13 @@ public class Login
 {
     [Key]
     [Column(TypeName = "char(8)")]
-    [RegularExpression(@"^\d{8}$")]
+    [RegularExpression(@"^\d{8}$", ErrorMessage = "Login ID must be 8 digits")]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public required string LoginID { get; set; }
 
     // Navigational property
     [ForeignKey(nameof(Customer))]
-    [Required]
+    [Required(ErrorMessage = "Customer ID is required")]
     public int CustomerID { get; set; }
     public Customer Customer { get; set; }
 

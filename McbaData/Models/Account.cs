@@ -9,14 +9,18 @@ namespace McbaData.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int AccountNumber { get; set; }
 
-        [Required]
-        [RegularExpression("^[CS]$")]
+        [Required(ErrorMessage = "Account type is required")]
+        [RegularExpression(
+            "^[CS]$",
+            ErrorMessage = "Account type must be Checking (C) or Saving (S)"
+        )]
         public char AccountType { get; set; }
 
         // Navigational property
-        [Required]
+        [Required(ErrorMessage = "Customer ID is required")]
         [ForeignKey(nameof(Customer))]
         public int CustomerID { get; set; }
+        public Customer Customer { get; set; }
 
         [InverseProperty(nameof(Transaction.Account))]
         public List<Transaction> Transactions { get; set; }
