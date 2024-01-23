@@ -4,6 +4,10 @@
     <ProjectReference Include="..\McbaData\McbaData.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Htmx" Version="1.6.3" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>

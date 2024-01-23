@@ -22,7 +22,7 @@
     </thead>
     <tbody>
       @foreach(var c in Model){
-        <tr>
+        <tr >
           <td>@Html.DisplayFor(m => c.CustomerId)</td>
           <td>@Html.DisplayFor(m => c.Name)</td>
           <td>@Html.DisplayFor(m => c.City)</td>
@@ -30,7 +30,11 @@
           <td>@Html.DisplayFor(m => c.Postcode)</td>
           <td>@Html.DisplayFor(m => c.Mobile)</td>
           <td><a asp-action="EditCustomer" asp-route-id="@c.CustomerId">Edit</a></td>
-          <td>Lock</td>
+          @if(c.IsLocked){
+              <td id="row-@c.CustomerId"><button hx-post="/Home/UnlockCustomer/@c.CustomerId" hx-target="#row-@c.CustomerId" hx-swap="innerHTML" hx-confirm="Are you sure to unlock this user?">Unlock</button></td>
+          } else {
+              <td id="row-@c.CustomerId"><button hx-post="/Home/LockCustomer/@c.CustomerId" hx-target="#row-@c.CustomerId" hx-swap="innerHTML" hx-confirm="Are you sure to lock this user?">Lock</button></td>
+          }
         </tr>
       }
     </tbody>

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
+using Htmx;
 using McbaAdmin.Models;
 using McbaData.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -52,6 +53,36 @@ public class HomeController : Controller
             new StringContent(dataJson, Encoding.UTF8, "application/json")
         );
         _ = result.EnsureSuccessStatusCode();
+        return RedirectToAction(nameof(Customers));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> LockCustomer([FromRoute] int id)
+    {
+        await _httpClient.PutAsync($"api/Lock/lock/{id}", null);
+        if (HttpContext.Request.IsHtmx())
+        {
+            return Content(
+                $"""
+              <td id="row-{id}"><button hx-post="/Home/UnlockCustomer/{id}" hx-target="#row-{id}" hx-swap="innerHTML "hx-confirm="Are you sure to unlock this user?">Unlock</button></td>
+              """
+            );
+        }
+        return RedirectToAction(nameof(Customers));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UnlockCustomer([FromRoute] int id)
+    {
+        await _httpClient.PutAsync($"api/Lock/unlock/{id}", null);
+        if (HttpContext.Request.IsHtmx())
+        {
+            return Content(
+                $"""
+              <td id="row-{id}"><button hx-post="/Home/LockCustomer/{id}" hx-target="#row-{id}" hx-swap="innerHTML" hx-confirm="Are you sure to lock this user?">Lock</button></td>
+              """
+            );
+        }
         return RedirectToAction(nameof(Customers));
     }
 
