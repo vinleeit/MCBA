@@ -21,4 +21,6 @@ public class Login
     [Column(TypeName = "char(94)")]
     [StringLength(94)]
     public required string PasswordHash { get; set; }
+
+    public bool Locked { get; set; }
 }
