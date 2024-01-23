@@ -58,25 +58,34 @@ public class AdminRepo(McbaContext context) : IAdminRepo
                 State = customer.State,
                 City = customer.City,
                 TFN = customer.TFN,
+                IsLocked = _dbContext
+                    .Logins.Where(l => l.CustomerID == id)
+                    .Select(l => l.Locked)
+                    .First()
             };
     }
 
     public List<CustomerDto> GetCustomers()
     {
+        var queryResult =
+            from c in _dbContext.Customers
+            join l in _dbContext.Logins on c.CustomerID equals l.CustomerID
+            select new { customer = c, locked = l.Locked };
         List<CustomerDto> data = [];
-        foreach (Customer c in _dbContext.Customers)
+        foreach (var c in queryResult)
         {
             data.Add(
                 new()
                 {
-                    Name = c.Name,
-                    TFN = c.TFN,
-                    City = c.City,
-                    State = c.State,
-                    Mobile = c.Mobile,
-                    Address = c.Address,
-                    Postcode = c.Postcode,
-                    CustomerId = c.CustomerID,
+                    Name = c.customer.Name,
+                    TFN = c.customer.TFN,
+                    City = c.customer.City,
+                    State = c.customer.State,
+                    Mobile = c.customer.Mobile,
+                    Address = c.customer.Address,
+                    Postcode = c.customer.Postcode,
+                    CustomerId = c.customer.CustomerID,
+                    IsLocked = c.locked
                 }
             );
         }
