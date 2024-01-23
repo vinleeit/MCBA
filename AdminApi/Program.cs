@@ -1,3 +1,4 @@
+using AdminApi.Data;
 using McbaData;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<McbaContext>(
     option => option.UseSqlServer(builder.Configuration.GetConnectionString("arvin-rmit"))
 );
+builder.Services.AddScoped<IAdminRepo, AdminRepo>();
 
 var app = builder.Build();
 
