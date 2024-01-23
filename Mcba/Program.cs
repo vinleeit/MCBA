@@ -2,6 +2,7 @@ using Mcba.Data;
 using Mcba.Middlewares;
 using Mcba.Services;
 using Mcba.Services.Interfaces;
+using McbaData;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

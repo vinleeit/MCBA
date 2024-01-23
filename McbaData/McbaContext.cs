@@ -1,7 +1,7 @@
-using Mcba.Models;
+using McbaData.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mcba.Data;
+namespace McbaData;
 
 public class McbaContext(DbContextOptions options) : DbContext(options)
 {

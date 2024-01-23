@@ -1,4 +1,4 @@
-using Mcba.Models;
+using McbaData.Models;
 
 namespace Mcba.Services.Interfaces;
 
@@ -13,3 +13,4 @@ public interface IProfileService
     public Task<ProfileError?> UpdateCustomerProfile(Customer newCustomer);
     public Task<ProfileError?> UpdateCustomerPassword(int customerID, string newPassword);
 }
+

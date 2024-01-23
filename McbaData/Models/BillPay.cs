@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Mcba.Models;
+namespace McbaData.Models;
 
 public class BillPay
 {
@@ -33,3 +33,4 @@ public class BillPay
     [RegularExpression("^[OM]$", ErrorMessage = "Only 'O' or 'M'")]
     public char Period { get; set; }
 }
+

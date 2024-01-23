@@ -1,4 +1,4 @@
-using Mcba.Models;
+using McbaData.Models;
 
 namespace Mcba.Services.Interfaces;
 

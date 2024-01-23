@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using Mcba.Middlewares;
-using Mcba.Models;
+using Mcba.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mcba.Controllers;

@@ -1,9 +1,8 @@
 using System.Text.Json;
-using Mcba.Data;
 using Mcba.Middlewares;
-using Mcba.Models;
 using Mcba.Services.Interfaces;
 using Mcba.ViewModels.Deposit;
+using McbaData.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mcba.Controllers;

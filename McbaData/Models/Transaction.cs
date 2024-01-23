@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Mcba.Models;
+namespace McbaData.Models;
 
 public class Transaction
 {

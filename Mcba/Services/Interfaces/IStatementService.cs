@@ -1,4 +1,4 @@
-using Mcba.Models;
+using McbaData.Models;
 
 namespace Mcba.Services.Interfaces;
 
@@ -12,4 +12,3 @@ public interface IStatementService
         (int pageNumber, int itemCount)? pagination
     );
 }
-

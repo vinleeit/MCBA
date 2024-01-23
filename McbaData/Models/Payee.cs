@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Mcba.Models;
-using Microsoft.AspNetCore.Http.Timeouts;
+
+namespace McbaData.Models;
 
 public class Payee
 {
@@ -25,12 +25,14 @@ public class Payee
 
     [Required]
     [Column(TypeName = "nvarchar(3)")]
-    [RegularExpression(@"^(NSW|VIC|QLD|WA|SA|TAS|ACT|NT)$", ErrorMessage = "Not an Australian state")]
+    [RegularExpression(
+        @"^(NSW|VIC|QLD|WA|SA|TAS|ACT|NT)$",
+        ErrorMessage = "Not an Australian state"
+    )]
     public string State { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(4)")]
-
     [RegularExpression(@"^[0-9]{4}$", ErrorMessage = "Must be 4 digits")]
     public string Postcode { get; set; }
 

@@ -1,5 +1,5 @@
-using Mcba.Data;
 using Mcba.Services.Interfaces;
+using McbaData;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mcba.Services;
@@ -15,16 +15,29 @@ public class TransferService(
     private readonly IFreeTransactionService _freeTransactionService = freeTransactionService;
     private readonly decimal _transferFee = (decimal)0.1;
 
-    public async Task<Tuple<decimal, decimal>> GetTotalAndMinimumBalance(int accountNumber, decimal amount)
+    public async Task<Tuple<decimal, decimal>> GetTotalAndMinimumBalance(
+        int accountNumber,
+        decimal amount
+    )
     {
         var isFree = await _freeTransactionService.GetIsTransactionFree(accountNumber);
         if (!isFree)
         {
             amount += _transferFee;
         }
-        decimal minimum = (await (from a in _dbContext.Accounts where a.AccountNumber == accountNumber select a.AccountType).FirstOrDefaultAsync()) == 'S' ? 0 : 300;
+        decimal minimum =
+            (
+                await (
+                    from a in _dbContext.Accounts
+                    where a.AccountNumber == accountNumber
+                    select a.AccountType
+                ).FirstOrDefaultAsync()
+            ) == 'S'
+                ? 0
+                : 300;
         return Tuple.Create(amount, minimum);
     }
+
     public async Task<ITransferService.TransferError?> Transfer(
         int accountNumber,
         int destinationAccountNumber,
@@ -42,10 +55,7 @@ public class TransferService(
         //0.10
         // Check if balance is enough
         var (total, minimum) = await GetTotalAndMinimumBalance(accountNumber, amount);
-        if (
-            (await _balanceService.GetAccountBalance(accountNumber)) - minimum
-            < total
-        )
+        if ((await _balanceService.GetAccountBalance(accountNumber)) - minimum < total)
         {
             return ITransferService.TransferError.NotEnoughBalance;
         }
