@@ -36,4 +36,6 @@ public class CustomerDto
         ErrorMessage = "Mobile must follow the following format (04xx xxx xxx)"
     )]
     public string? Mobile { get; set; }
+
+    public bool IsLocked { get; set; }
 }
