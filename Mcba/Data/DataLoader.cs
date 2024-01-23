@@ -148,6 +148,40 @@ namespace Mcba.Data
                     return false;
                 }
             }
+
+            // Hardcoded Payee to database
+            await context.Payees.AddRangeAsync([
+                new Payee() {
+                    Name = "Telstra",
+                    Address = "Bourke St",
+                    City = "Melbourne",
+                    State = "VIC",
+                    Postcode = "0001",
+                    Phone = "(04) 0072 6917",
+                },
+                new Payee() {
+                    Name = "Greater Water Australia",
+                    Address = "1 McNab Ave",
+                    City = "Footscray",
+                    State = "VIC",
+                    Postcode = "0002",
+                    Phone = "(04) 0013 4499",
+                },
+                new Payee() {
+                    Name = "Red Energy",
+                    Address = "570 Church St",
+                    City = "Cremorne",
+                    State = "VIC",
+                    Postcode = "0003",
+                    Phone = "(04) 0013 1806",
+                },
+            ]);
+            if (await context.SaveChangesAsync() < 0)
+            {
+                await dbTransaction.RollbackAsync();
+                return false;
+            }
+
             await dbTransaction.CommitAsync();
             return true;
         }
