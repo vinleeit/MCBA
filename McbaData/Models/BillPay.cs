@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Mcba.Models;
+namespace McbaData.Models;
 
 public class BillPay
 {
@@ -9,27 +9,27 @@ public class BillPay
     public int BillPayID { get; set; }
 
     // Navigational property
-    [Required]
+    [Required(ErrorMessage = "Account Number is required")]
     [ForeignKey(nameof(Account))]
     public int AccountNumber { get; set; }
     public Account Account { get; set; }
 
     // Navigational property
-    [Required]
+    [Required(ErrorMessage = "Payee is required")]
     [ForeignKey(nameof(Payee))]
     public int PayeeID { get; set; }
     public Payee Payee { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Amount is required")]
     [Column(TypeName = "money")]
     [Range(0.01, double.PositiveInfinity, ErrorMessage = "At least 0.01")]
     public decimal Amount { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Schedule time is required")]
     [Column(TypeName = "datetime2")]
     public DateTime ScheduleTimeUtc { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Period is required")]
     [RegularExpression("^[OM]$", ErrorMessage = "Only 'O' or 'M'")]
     public char Period { get; set; }
 }

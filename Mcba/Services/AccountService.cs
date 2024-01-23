@@ -1,6 +1,6 @@
-using Mcba.Data;
-using Mcba.Models;
 using Mcba.Services.Interfaces;
+using McbaData;
+using McbaData.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mcba.Services;

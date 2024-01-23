@@ -1,6 +1,5 @@
-using Mcba.Data;
-using Mcba.Models;
 using Mcba.Services.Interfaces;
+using McbaData;
 using Microsoft.EntityFrameworkCore;
 using SimpleHashing.Net;
 

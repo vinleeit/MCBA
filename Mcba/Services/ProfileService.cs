@@ -1,6 +1,6 @@
-using Mcba.Data;
-using Mcba.Models;
 using Mcba.Services.Interfaces;
+using McbaData;
+using McbaData.Models;
 using Microsoft.EntityFrameworkCore;
 using SimpleHashing.Net;
 
@@ -17,7 +17,10 @@ public class ProfileService(McbaContext dbContext) : IProfileService
     /// <returns>any error associated to the method</returns>
     public async Task<IProfileService.ProfileError?> UpdateCustomerProfile(Customer newCustomer)
     {
-        var customer = await _dbContext.Customers.FirstOrDefaultAsync(b => b.CustomerID == newCustomer.CustomerID); ;
+        var customer = await _dbContext.Customers.FirstOrDefaultAsync(
+            b => b.CustomerID == newCustomer.CustomerID
+        );
+        ;
         if (customer != null)
         {
             customer.Name = newCustomer.Name;
@@ -43,7 +46,10 @@ public class ProfileService(McbaContext dbContext) : IProfileService
     /// <param name="customerID">the ID of target customer</param>
     /// <param name="newPassword">the new raw password string</param>
     /// <returns></returns>
-    public async Task<IProfileService.ProfileError?> UpdateCustomerPassword(int customerID, string newPassword)
+    public async Task<IProfileService.ProfileError?> UpdateCustomerPassword(
+        int customerID,
+        string newPassword
+    )
     {
         var login = await _dbContext.Logins.FirstOrDefaultAsync(b => b.CustomerID == customerID);
         if (login != null)
@@ -56,3 +62,4 @@ public class ProfileService(McbaContext dbContext) : IProfileService
         return IProfileService.ProfileError.CustomerNotFound;
     }
 }
+

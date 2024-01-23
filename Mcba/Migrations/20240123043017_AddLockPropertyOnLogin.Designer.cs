@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mcba.Migrations
 {
     [DbContext(typeof(McbaContext))]
-    [Migration("20240119040244_AddPart1Models")]
-    partial class AddPart1Models
+    [Migration("20240123043017_AddLockPropertyOnLogin")]
+    partial class AddLockPropertyOnLogin
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace Mcba.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Mcba.Models.Account", b =>
+            modelBuilder.Entity("McbaData.Models.Account", b =>
                 {
                     b.Property<int>("AccountNumber")
                         .HasColumnType("int");
@@ -44,7 +44,40 @@ namespace Mcba.Migrations
                     b.ToTable("Accounts");
                 });
 
-            modelBuilder.Entity("Mcba.Models.Customer", b =>
+            modelBuilder.Entity("McbaData.Models.BillPay", b =>
+                {
+                    b.Property<int>("BillPayID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BillPayID"));
+
+                    b.Property<int>("AccountNumber")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("money");
+
+                    b.Property<int>("PayeeID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Period")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1)");
+
+                    b.Property<DateTime>("ScheduleTimeUtc")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("BillPayID");
+
+                    b.HasIndex("AccountNumber");
+
+                    b.HasIndex("PayeeID");
+
+                    b.ToTable("BillPays");
+                });
+
+            modelBuilder.Entity("McbaData.Models.Customer", b =>
                 {
                     b.Property<int>("CustomerID")
                         .HasColumnType("int");
@@ -79,13 +112,16 @@ namespace Mcba.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("Mcba.Models.Login", b =>
+            modelBuilder.Entity("McbaData.Models.Login", b =>
                 {
                     b.Property<string>("LoginID")
                         .HasColumnType("char(8)");
 
                     b.Property<int>("CustomerID")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Locked")
+                        .HasColumnType("bit");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -100,7 +136,47 @@ namespace Mcba.Migrations
                     b.ToTable("Logins");
                 });
 
-            modelBuilder.Entity("Mcba.Models.Transaction", b =>
+            modelBuilder.Entity("McbaData.Models.Payee", b =>
+                {
+                    b.Property<int>("PayeeID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PayeeID"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(14)");
+
+                    b.Property<string>("Postcode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(4)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(3)");
+
+                    b.HasKey("PayeeID");
+
+                    b.ToTable("Payees");
+                });
+
+            modelBuilder.Entity("McbaData.Models.Transaction", b =>
                 {
                     b.Property<int>("TransactionID")
                         .ValueGeneratedOnAdd()
@@ -137,35 +213,56 @@ namespace Mcba.Migrations
                     b.ToTable("Transactions");
                 });
 
-            modelBuilder.Entity("Mcba.Models.Account", b =>
+            modelBuilder.Entity("McbaData.Models.Account", b =>
                 {
-                    b.HasOne("Mcba.Models.Customer", null)
+                    b.HasOne("McbaData.Models.Customer", "Customer")
                         .WithMany("Accounts")
                         .HasForeignKey("CustomerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Mcba.Models.Login", b =>
-                {
-                    b.HasOne("Mcba.Models.Customer", "Customer")
-                        .WithOne("Login")
-                        .HasForeignKey("Mcba.Models.Login", "CustomerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("Mcba.Models.Transaction", b =>
+            modelBuilder.Entity("McbaData.Models.BillPay", b =>
                 {
-                    b.HasOne("Mcba.Models.Account", "Account")
+                    b.HasOne("McbaData.Models.Account", "Account")
+                        .WithMany("BillPays")
+                        .HasForeignKey("AccountNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("McbaData.Models.Payee", "Payee")
+                        .WithMany("BillPays")
+                        .HasForeignKey("PayeeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Payee");
+                });
+
+            modelBuilder.Entity("McbaData.Models.Login", b =>
+                {
+                    b.HasOne("McbaData.Models.Customer", "Customer")
+                        .WithOne("Login")
+                        .HasForeignKey("McbaData.Models.Login", "CustomerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("McbaData.Models.Transaction", b =>
+                {
+                    b.HasOne("McbaData.Models.Account", "Account")
                         .WithMany("Transactions")
                         .HasForeignKey("AccountNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Mcba.Models.Account", "DestinationAccount")
+                    b.HasOne("McbaData.Models.Account", "DestinationAccount")
                         .WithMany()
                         .HasForeignKey("DestinationAccountNumber");
 
@@ -174,17 +271,24 @@ namespace Mcba.Migrations
                     b.Navigation("DestinationAccount");
                 });
 
-            modelBuilder.Entity("Mcba.Models.Account", b =>
+            modelBuilder.Entity("McbaData.Models.Account", b =>
                 {
+                    b.Navigation("BillPays");
+
                     b.Navigation("Transactions");
                 });
 
-            modelBuilder.Entity("Mcba.Models.Customer", b =>
+            modelBuilder.Entity("McbaData.Models.Customer", b =>
                 {
                     b.Navigation("Accounts");
 
                     b.Navigation("Login")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("McbaData.Models.Payee", b =>
+                {
+                    b.Navigation("BillPays");
                 });
 #pragma warning restore 612, 618
         }

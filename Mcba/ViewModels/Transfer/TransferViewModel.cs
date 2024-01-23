@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Mcba.Models;
+using McbaData.Models;
 
 namespace Mcba.ViewModels.Transfer;
 
@@ -25,3 +25,4 @@ public class TransferViewModel
     // Output
     public List<Account>? Accounts { get; set; }
 }
+

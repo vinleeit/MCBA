@@ -1,5 +1,3 @@
-using Mcba.Models;
-
 namespace Mcba.Services.Interfaces;
 
 public interface IDepositService

@@ -1,13 +1,12 @@
 using Mcba.Middlewares;
-using Mcba.Services;
 using Mcba.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mcba.Controllers;
 
-public class StatementController(IAccountService accountService, IStatementService statementService) : Controller
+public class StatementController(IAccountService accountService, IStatementService statementService)
+    : Controller
 {
-
     private readonly IAccountService _accountService = accountService;
     private readonly IStatementService _statementService = statementService;
 
@@ -22,7 +21,10 @@ public class StatementController(IAccountService accountService, IStatementServi
     [LoggedIn]
     public async Task<IActionResult> Show([FromQuery] int Account, [FromQuery] int Page = 1)
     {
-        var (totalPage, data) = await _statementService.GetPaginatedAccountTransactions(Account, (Page, 4));
+        var (totalPage, data) = await _statementService.GetPaginatedAccountTransactions(
+            Account,
+            (Page, 4)
+        );
         if (Page > totalPage)
         {
             return NotFound();
@@ -33,3 +35,4 @@ public class StatementController(IAccountService accountService, IStatementServi
         return View(data);
     }
 }
+
