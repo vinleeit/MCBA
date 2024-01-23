@@ -20,5 +20,8 @@ namespace Mcba.Models
 
         [InverseProperty(nameof(Transaction.Account))]
         public List<Transaction> Transactions { get; set; }
+
+        // Navigational property
+        public List<BillPay> BillPays { get; set; }
     }
 }
