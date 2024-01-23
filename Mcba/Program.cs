@@ -30,11 +30,18 @@ builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IDepositService, DepositService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IStatementService, StatementService>();
-builder.Services.AddHangfire(conf => conf.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+builder.Services.AddHangfire((prov, conf) =>
+{
+    var retryAttr = new AutomaticRetryAttribute();
+    retryAttr.Attempts = 0;
+    conf.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
         .UseSimpleAssemblyNameTypeSerializer()
         .UseRecommendedSerializerSettings()
-        .UseSqlServerStorage(builder.Configuration.GetConnectionString("arvin-rmit")));
+        .UseFilter(retryAttr)
+        .UseSqlServerStorage(builder.Configuration.GetConnectionString("arvin-rmit"));
+});
 builder.Services.AddHangfireServer();
+builder.Services.AddScoped<IBillPayService, BillPayService>();
 
 var app = builder.Build();
 
