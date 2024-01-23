@@ -4,7 +4,9 @@ MCBA (Most Common Bank of Australia) internet banking web application.
 
 ## Links
 
-- [Repository](https://github.com/rmit-wdt-summer-2024/s3937118-s3937114-a2)
+- Repository [\[main\]](https://github.com/rmit-wdt-summer-2024/s3937118-s3937114-a2)
+- Project Root Folder [\[main\]](https://github.com/rmit-wdt-summer-2024/s3937118-s3937114-a2/tree/main/Mcba)
+- Trello [\[main\]](https://github.com/rmit-wdt-summer-2024/s3937118-s3937114-a2/tree/main/Trello) [\[trello\]](https://github.com/rmit-wdt-summer-2024/s3937118-s3937114-a2/tree/trello/Trello)
 
 ## Members
 
