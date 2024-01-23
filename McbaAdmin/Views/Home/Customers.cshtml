@@ -1,0 +1,38 @@
+﻿@model List<CustomerDto>
+@{
+    ViewData["Title"] = "Customers";
+}
+
+<h1>Customers</h1>
+@if(Model.Count() < 1){
+  <h2>No customer found</h2>
+} else {
+  <table>
+    <thead>
+    <tr>
+      <td>@Html.DisplayNameFor(m => m.First().CustomerId)</td>
+      <td>@Html.DisplayNameFor(m => m.First().Name)</td>
+      <td>@Html.DisplayNameFor(m => m.First().City)</td>
+      <td>@Html.DisplayNameFor(m => m.First().State)</td>
+      <td>@Html.DisplayNameFor(m => m.First().Postcode)</td>
+      <td>@Html.DisplayNameFor(m => m.First().Mobile)</td>
+      <td>Edit</td>
+      <td>Lock</td>
+    </tr>
+    </thead>
+    <tbody>
+      @foreach(var c in Model){
+        <tr>
+          <td>@Html.DisplayFor(m => c.CustomerId)</td>
+          <td>@Html.DisplayFor(m => c.Name)</td>
+          <td>@Html.DisplayFor(m => c.City)</td>
+          <td>@Html.DisplayFor(m => c.State)</td>
+          <td>@Html.DisplayFor(m => c.Postcode)</td>
+          <td>@Html.DisplayFor(m => c.Mobile)</td>
+          <td><a asp-action="EditCustomer" asp-route-id="@c.CustomerId">Edit</a></td>
+          <td>Lock</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

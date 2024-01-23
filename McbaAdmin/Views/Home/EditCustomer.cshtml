@@ -1,0 +1,42 @@
+@model CustomerDto
+
+@{
+  ViewBag.Title = "Edit Customer";
+}
+
+<h1>Edit Customer</h1>
+<form asp-action="EditCustomer" asp-route-id="@Model.CustomerId">
+  <input asp-for="CustomerId" type="hidden">
+  <label asp-for="Name"></label>
+  <input asp-for="Name">
+  <span asp-validation-for="Name"></span>
+  <br>
+  <label asp-for="TFN"></label>
+  <input asp-for="TFN">
+  <span asp-validation-for="TFN"></span>
+  <br> 
+  <label asp-for="Address"></label>
+  <input asp-for="Address">
+  <span asp-validation-for="Address"></span>
+  <br> 
+  <label asp-for="City"></label>
+  <input asp-for="City">
+  <span asp-validation-for="City"></span>
+  <br> 
+  <label asp-for="State"></label>
+  <input asp-for="State">
+  <span asp-validation-for="State"></span>
+  <br> 
+  <label asp-for="Postcode"></label>
+  <input asp-for="Postcode">
+  <span asp-validation-for="Postcode"></span>
+  <br> 
+  <label asp-for="Mobile"></label>
+  <input asp-for="Mobile">
+  <span asp-validation-for="Mobile"></span>
+  <br> 
+
+  <input type="submit" value="Edit">
+
+</form>
+<a asp-action="Customers">Go back</a>
