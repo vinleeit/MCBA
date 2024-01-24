@@ -23,6 +23,7 @@
             var localDT = DateTime.Now;
             localDT = new DateTime(localDT.Year, localDT.Month, localDT.Day, localDT.Hour, localDT.Minute, 0);
             var isOverdue = billPayViewModel.ScheduleTimeLocal < localDT;
+            var scheduleTimeLocalStr = billPayViewModel.ScheduleTimeLocal.ToString("dd/MM/yyyy hh:mm tt").ToUpper();
             <tr>
                 <td>@billPayViewModel.AccountNumber</td>
                 <td>@billPayViewModel.PayeeName</td>
@@ -30,11 +31,11 @@
                 @{
                     if (isOverdue)
                     {
-                        <td>@billPayViewModel.ScheduleTimeLocal (Overdue)</td>
+                        <td>@scheduleTimeLocalStr (Overdue)</td>
                     }
                     else
                     {
-                        <td>@billPayViewModel.ScheduleTimeLocal</td>
+                        <td>@scheduleTimeLocalStr</td>
                     }
                 }
                 <td>@billPayViewModel.Period</td>
