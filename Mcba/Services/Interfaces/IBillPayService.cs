@@ -1,4 +1,4 @@
-using Mcba.Models;
+using Mcba.ViewModels.BillPay;
 
 namespace Mcba.Services.Interfaces;
 
