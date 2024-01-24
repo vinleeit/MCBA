@@ -29,6 +29,7 @@ public class BalanceService(McbaContext context) : IBalanceService
                     t.TransactionType == 'W'
                     || (t.TransactionType == 'T' && t.DestinationAccountNumber != null)
                     || t.TransactionType == 'S'
+                    || t.TransactionType == 'B'
                 )
             select t.Amount
         ).SumAsync();
