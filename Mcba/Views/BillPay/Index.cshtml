@@ -1,0 +1,36 @@
+<html>
+
+<head>
+    <title>BillPay</title>
+</head>
+
+@model List<BillPayViewModel>
+
+<body>
+    <h1>BillPay</h1>
+    <table>
+        <a asp-action="Add">Add</a>
+        <tr>
+            <th>Account Number</th>
+            <th>Payee</th>
+            <th>Amount</th>
+            <th>Next Payment Schedule</th>
+            <th>Period</th>
+            <th>Action</th>
+        </tr>
+        @foreach (var billPayViewModel in Model)
+        {
+            <tr>
+                <td>@billPayViewModel.AccountNumber</td>
+                <td>@billPayViewModel.PayeeName</td>
+                <td>@billPayViewModel.Amount</td>
+                <td>@billPayViewModel.ScheduleTimeUtc</td>
+                <td>@billPayViewModel.Period</td>
+                <td><a asp-action="Cancel" asp-route-id="@billPayViewModel.BillPayID">Cancel</a></td>
+            </tr>
+        }
+        <tr></tr>
+    </table>
+</body>
+
+</html>
