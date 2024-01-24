@@ -32,6 +32,7 @@ public class BillPayService(McbaContext dbContext, IBalanceService balanceServic
     public async Task AddBillPay(BillPayViewModel newBillPayViewModel)
     {
         var localDT = DateTime.Now;
+        localDT = new DateTime(localDT.Year, localDT.Month, localDT.Day, localDT.Hour, localDT.Minute, 0);
         var durationUntilNextPay = (newBillPayViewModel.ScheduleTimeLocal - localDT).Minutes;
         if (localDT.CompareTo(newBillPayViewModel.ScheduleTimeLocal) > 0)
         {
@@ -51,7 +52,7 @@ public class BillPayService(McbaContext dbContext, IBalanceService balanceServic
         {
             BackgroundJob.Schedule(
                 () => PayBillPay(newBillPay.BillPayID),
-                TimeSpan.FromSeconds(durationUntilNextPay));
+                TimeSpan.FromMinutes(durationUntilNextPay));
         }
     }
 
@@ -76,12 +77,35 @@ public class BillPayService(McbaContext dbContext, IBalanceService balanceServic
         {
             if (billPay.Period == 'M')
             {
-                billPay.ScheduleTimeUtc = billPay.ScheduleTimeUtc.AddMonths(1);
+                var newBillPay = new BillPay()
+                {
+                    AccountNumber = billPay.AccountNumber,
+                    PayeeID = billPay.PayeeID,
+                    Amount = billPay.Amount,
+                    ScheduleTimeUtc = billPay.ScheduleTimeUtc.AddMonths(1),
+                    Period = billPay.Period,
+                };
+                if (await _dbContext.SaveChangesAsync() <= 0)
+                {
+                    return;
+                }
+
+                var utcDT = DateTime.UtcNow;
+                utcDT = new DateTime(utcDT.Year, utcDT.Month, utcDT.Day, utcDT.Hour, utcDT.Minute, 0);
+                BackgroundJob.Schedule(
+                    () => PayBillPay(newBillPay.BillPayID),
+                    TimeSpan.FromMinutes((newBillPay.ScheduleTimeUtc - utcDT).TotalMinutes));
             }
             return;
         }
         else
         {
+            _dbContext.BillPays.Remove(billPay);
+            if (await _dbContext.SaveChangesAsync() <= 0)
+            {
+                return;
+            }
+
             await _dbContext.Transactions.AddAsync(new()
             {
                 Amount = billPay.Amount,
@@ -94,16 +118,28 @@ public class BillPayService(McbaContext dbContext, IBalanceService balanceServic
                 return;
             }
 
-
             if (billPay.Period == 'M')
             {
-                billPay.ScheduleTimeUtc = billPay.ScheduleTimeUtc.AddMonths(1);
+                var newBillPay = new BillPay()
+                {
+                    AccountNumber = billPay.AccountNumber,
+                    PayeeID = billPay.PayeeID,
+                    Amount = billPay.Amount,
+                    ScheduleTimeUtc = billPay.ScheduleTimeUtc.AddMonths(1),
+                    Period = billPay.Period,
+                };
+                await _dbContext.AddAsync(newBillPay);
+                if (await _dbContext.SaveChangesAsync() <= 0)
+                {
+                    return;
+                }
+
+                var utcDT = DateTime.UtcNow;
+                utcDT = new DateTime(utcDT.Year, utcDT.Month, utcDT.Day, utcDT.Hour, utcDT.Minute, 0);
+                BackgroundJob.Schedule(
+                    () => PayBillPay(newBillPay.BillPayID),
+                    TimeSpan.FromMinutes((newBillPay.ScheduleTimeUtc - utcDT).TotalMinutes));
             }
-            else
-            {
-                _dbContext.BillPays.Remove(billPay);
-            }
-            await _dbContext.SaveChangesAsync();
         }
     }
 
