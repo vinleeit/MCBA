@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-
 namespace Mcba.Middlewares;
 
 public class AuthorizationMiddleware(RequestDelegate next)

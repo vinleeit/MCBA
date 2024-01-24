@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Mcba.Models;
+using McbaData.Models;
 
 namespace Mcba.ViewModels.BillPay;
 

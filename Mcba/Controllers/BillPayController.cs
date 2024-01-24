@@ -1,9 +1,9 @@
 using System.Text.Json;
-using Mcba.Data;
 using Mcba.Middlewares;
-using Mcba.Models;
 using Mcba.Services.Interfaces;
 using Mcba.ViewModels.BillPay;
+using McbaData;
+using McbaData.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

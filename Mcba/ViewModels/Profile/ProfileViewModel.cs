@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Mcba.Services.Interfaces;
 
 namespace Mcba.ViewModels.Profile;
 
