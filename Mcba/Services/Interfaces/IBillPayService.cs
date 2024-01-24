@@ -6,6 +6,6 @@ public interface IBillPayService
 {
     public Task<List<BillPayViewModel>> GetBillPays();
     public Task AddBillPay(BillPayViewModel newBillPay);
-    public Task PayBillPay(int billPayID);
+    public Task PayBillPay(int billPayID, bool isPayOverdue = false);
     public Task DeleteBillPay(int billPayID);
 }

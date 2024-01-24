@@ -51,12 +51,12 @@ public class BillPayService(McbaContext dbContext, IBalanceService balanceServic
         if (await _dbContext.SaveChangesAsync() > 0)
         {
             BackgroundJob.Schedule(
-                () => PayBillPay(newBillPay.BillPayID),
+                () => PayBillPay(newBillPay.BillPayID, false),
                 TimeSpan.FromMinutes(durationUntilNextPay));
         }
     }
 
-    public async Task PayBillPay(int billPayID)
+    public async Task PayBillPay(int billPayID, bool isPayOverdue = false)
     {
         // Check if BillPay exists
         var billPay = await _dbContext.BillPays.FirstOrDefaultAsync(b => b.BillPayID == billPayID);
@@ -75,7 +75,7 @@ public class BillPayService(McbaContext dbContext, IBalanceService balanceServic
                 : 300;
         if ((totalBalance - billPay.Amount) < minimumBalance)
         {
-            if (billPay.Period == 'M')
+            if (!isPayOverdue && billPay.Period == 'M')
             {
                 var newBillPay = new BillPay()
                 {
@@ -93,7 +93,7 @@ public class BillPayService(McbaContext dbContext, IBalanceService balanceServic
                 var utcDT = DateTime.UtcNow;
                 utcDT = new DateTime(utcDT.Year, utcDT.Month, utcDT.Day, utcDT.Hour, utcDT.Minute, 0);
                 BackgroundJob.Schedule(
-                    () => PayBillPay(newBillPay.BillPayID),
+                    () => PayBillPay(newBillPay.BillPayID, false),
                     TimeSpan.FromMinutes((newBillPay.ScheduleTimeUtc - utcDT).TotalMinutes));
             }
             return;
@@ -118,7 +118,7 @@ public class BillPayService(McbaContext dbContext, IBalanceService balanceServic
                 return;
             }
 
-            if (billPay.Period == 'M')
+            if (!isPayOverdue && billPay.Period == 'M')
             {
                 var newBillPay = new BillPay()
                 {
@@ -137,7 +137,7 @@ public class BillPayService(McbaContext dbContext, IBalanceService balanceServic
                 var utcDT = DateTime.UtcNow;
                 utcDT = new DateTime(utcDT.Year, utcDT.Month, utcDT.Day, utcDT.Hour, utcDT.Minute, 0);
                 BackgroundJob.Schedule(
-                    () => PayBillPay(newBillPay.BillPayID),
+                    () => PayBillPay(newBillPay.BillPayID, false),
                     TimeSpan.FromMinutes((newBillPay.ScheduleTimeUtc - utcDT).TotalMinutes));
             }
         }

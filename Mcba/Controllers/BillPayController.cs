@@ -66,7 +66,20 @@ public class BillPayController(McbaContext dbContext, IAccountService accountSer
 
     public async Task<IActionResult> Cancel(int id)
     {
-        await _billPayService.DeleteBillPay(id);
+        var billPay = await _dbContext.BillPays.FirstOrDefaultAsync(b => b.BillPayID == id);
+        if (billPay != null)
+        {
+            var localDT = DateTime.Now;
+            localDT = new DateTime(localDT.Year, localDT.Month, localDT.Day, localDT.Hour, localDT.Minute, 0);
+            if (billPay.ScheduleTimeUtc < localDT)
+            {
+                await _billPayService.PayBillPay(id, true);
+            }
+            else
+            {
+                await _billPayService.DeleteBillPay(id);
+            }
+        }
         return RedirectToAction(nameof(Index));
     }
 }
