@@ -55,4 +55,8 @@ public class DepositController(IAccountService accountService, IDepositService d
 
         return View("Result");
     }
+
+    public IActionResult DepositCanceled() {
+        return RedirectToAction(nameof(Index));
+    }
 }
