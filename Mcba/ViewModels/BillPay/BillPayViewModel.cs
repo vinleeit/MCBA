@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Mcba.Models;
 
 namespace Mcba.ViewModels.BillPay;
 
@@ -8,7 +9,7 @@ public class BillPayViewModel
     public int BillPayID { get; set; }
 
     [Required]
-    public int AccountNumber { get; set; }
+    public int? AccountNumber { get; set; }
 
     [Required]
     public int PayeeID { get; set; }
@@ -19,11 +20,12 @@ public class BillPayViewModel
     public decimal Amount { get; set; }
 
     [Required]
-    public DateTime ScheduleTimeUtc { get; set; }
+    public DateTime ScheduleTimeLocal { get; set; }
 
     [Required]
     [RegularExpression("^[OM]$", ErrorMessage = "Only 'O' or 'M'")]
-    public char Period { get; set; }
+    public char? Period { get; set; }
 
     public string? PayeeName { get; set; }
+    public List<Account>? Accounts { get; set; }
 }

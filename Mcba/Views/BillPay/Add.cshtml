@@ -1,0 +1,46 @@
+<html>
+
+<head>
+    <title>Add BillPay</title>
+</head>
+
+@model BillPayViewModel
+
+<body>
+    <h1>Add BillPay</h1>
+    <form asp-controller="BillPay" asp-action="Add" method="post">
+        <label asp-for="AccountNumber"></label>
+        <select asp-for="AccountNumber">
+            <option value="">Select</option>
+            @foreach (var account in Model.Accounts ?? [])
+            {
+                <option value="@account.AccountNumber">@account.AccountNumber</option>
+            }
+        </select>
+        <span asp-validation-for="AccountNumber"></span>
+        <br>
+        <label asp-for="PayeeID"></label>
+        <input asp-for="PayeeID">
+        <span asp-validation-for="PayeeID"></span>
+        <br>
+        <label asp-for="Amount"></label>
+        <input asp-for="Amount">
+        <span asp-validation-for="Amount"></span>
+        <br>
+        <label asp-for="ScheduleTimeLocal"></label>
+        <input asp-for="ScheduleTimeLocal" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format="">
+        <span asp-validation-for="ScheduleTimeLocal"></span>
+        <br>
+        <label asp-for="Period"></label>
+        <select asp-for="Period" asp-items="@(new SelectList(new List<string> {"O", "M"}))">
+            <option value="">Select</option>
+        </select>
+        <span asp-validation-for="Period"></span>
+        <br>
+        <br>
+        <br>
+        <input type="submit" value="Add">
+    </form>
+</body>
+
+</html>

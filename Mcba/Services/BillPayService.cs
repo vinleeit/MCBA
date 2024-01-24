@@ -24,26 +24,27 @@ public class BillPayService(McbaContext dbContext, IBalanceService balanceServic
                                   PayeeID = bp.PayeeID,
                                   PayeeName = p.Name,
                                   Period = bp.Period,
-                                  ScheduleTimeUtc = bp.ScheduleTimeUtc
+                                  ScheduleTimeLocal = bp.ScheduleTimeUtc.ToLocalTime()
                               }).ToListAsync();
         return billPays ?? [];
     }
 
     public async Task AddBillPay(BillPayViewModel newBillPayViewModel)
     {
-        var durationUntilNextPay = (newBillPayViewModel.ScheduleTimeUtc - DateTime.UtcNow).TotalMinutes;
-        if (durationUntilNextPay < 1)
+        var localDT = DateTime.Now;
+        var durationUntilNextPay = (newBillPayViewModel.ScheduleTimeLocal - localDT).Minutes;
+        if (localDT.CompareTo(newBillPayViewModel.ScheduleTimeLocal) > 0)
         {
-            return;
+            durationUntilNextPay = 0;
         }
 
         var newBillPay = new BillPay()
         {
-            AccountNumber = newBillPayViewModel.AccountNumber,
+            AccountNumber = newBillPayViewModel.AccountNumber!.Value,
             PayeeID = newBillPayViewModel.PayeeID,
             Amount = newBillPayViewModel.Amount,
-            ScheduleTimeUtc = newBillPayViewModel.ScheduleTimeUtc,
-            Period = newBillPayViewModel.Period,
+            ScheduleTimeUtc = newBillPayViewModel.ScheduleTimeLocal.ToUniversalTime(),
+            Period = newBillPayViewModel.Period!.Value,
         };
         await _dbContext.BillPays.AddAsync(newBillPay);
         if (await _dbContext.SaveChangesAsync() > 0)
