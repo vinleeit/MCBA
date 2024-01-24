@@ -4,47 +4,34 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - McbaAdmin</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/McbaAdmin.styles.css" asp-append-version="true" />
+    <link href="~/css/output.css" rel="stylesheet"/>
 </head>
-<body hx-boost="true">
+<body hx-boost="true" class="flex min-h-screen w-screen flex-col grow bg-slate-100">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">McbaAdmin</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        <nav class="bg-blue-700 text-white w-full border-b border-gray-200">
+          <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+          <a asp-controller="Home" asp-action="Customers" class="flex items-center space-x-3 rtl:space-x-reverse">
+              <span class="self-center text-2xl font-semibold whitespace-nowrap">Mcba<sup class="px-2 py-0.5 rounded-2xl bg-blue-200 text-sm text-black ml-1">Admin<sup></span>
+          </a>
+          <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+              <button type="button" class="text-black bg-red-200 hover:bg-red-300 focus:ring-4 focus:outline-none focus:ring-red-900 font-medium rounded-lg text-sm px-4 py-2 text-center">Logout</button>
+          </div>
+          </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div class="bg-blue-50 grow">
+        <main role="main" class="px-4 my-6 max-w-screen-xl mx-auto">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - McbaAdmin - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="py-2 bg-blue-200">
+        <div class="container text-center mx-auto">
+            &copy; 2024 - McbaAdmin
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- add htmx -->
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

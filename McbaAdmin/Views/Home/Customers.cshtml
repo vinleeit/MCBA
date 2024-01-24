@@ -3,40 +3,47 @@
     ViewData["Title"] = "Customers";
 }
 
-<h1>Customers</h1>
+<h1 class="text-3xl tracking-wider mb-5">Manage Customers</h1>
 @if(Model.Count() < 1){
-  <h2>No customer found</h2>
+  <div class="h-64 flex items-center justify-center rounded-lg outline-dashed outline-2 outline-black">
+    <div class="text-center">
+      <h2 class="text-lg">Not Found</h2>
+      <p class="text-sm">Cannot found any customer in the system</p>
+    </div>
+  </div>
 } else {
-  <table>
-    <thead>
-    <tr>
-      <td>@Html.DisplayNameFor(m => m.First().CustomerId)</td>
-      <td>@Html.DisplayNameFor(m => m.First().Name)</td>
-      <td>@Html.DisplayNameFor(m => m.First().City)</td>
-      <td>@Html.DisplayNameFor(m => m.First().State)</td>
-      <td>@Html.DisplayNameFor(m => m.First().Postcode)</td>
-      <td>@Html.DisplayNameFor(m => m.First().Mobile)</td>
-      <td>Edit</td>
-      <td>Lock</td>
-    </tr>
-    </thead>
-    <tbody>
-      @foreach(var c in Model){
-        <tr >
-          <td>@Html.DisplayFor(m => c.CustomerId)</td>
-          <td>@Html.DisplayFor(m => c.Name)</td>
-          <td>@Html.DisplayFor(m => c.City)</td>
-          <td>@Html.DisplayFor(m => c.State)</td>
-          <td>@Html.DisplayFor(m => c.Postcode)</td>
-          <td>@Html.DisplayFor(m => c.Mobile)</td>
-          <td><a asp-action="EditCustomer" asp-route-id="@c.CustomerId">Edit</a></td>
-          @if(c.IsLocked){
-              <td id="row-@c.CustomerId"><button hx-post="/Home/UnlockCustomer/@c.CustomerId" hx-target="#row-@c.CustomerId" hx-swap="innerHTML" hx-confirm="Are you sure to unlock this user?">Unlock</button></td>
-          } else {
-              <td id="row-@c.CustomerId"><button hx-post="/Home/LockCustomer/@c.CustomerId" hx-target="#row-@c.CustomerId" hx-swap="innerHTML" hx-confirm="Are you sure to lock this user?">Lock</button></td>
-          }
-        </tr>
-      }
-    </tbody>
-  </table>
+<div class="relative overflow-x-auto shadow-md">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 rounded-2xl">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
+            <tr>
+              <td scope="col" class="px-6 py-3">@Html.DisplayNameFor(m => m.First().CustomerId)</td>
+              <td scope="col" class="px-6 py-3">@Html.DisplayNameFor(m => m.First().Name)</td>
+              <td scope="col" class="px-6 py-3">@Html.DisplayNameFor(m => m.First().City)</td>
+              <td scope="col" class="px-6 py-3">@Html.DisplayNameFor(m => m.First().State)</td>
+              <td scope="col" class="px-6 py-3">@Html.DisplayNameFor(m => m.First().Postcode)</td>
+              <td scope="col" class="px-6 py-3">@Html.DisplayNameFor(m => m.First().Mobile)</td>
+              <td scope="col" class="px-6 py-3">Edit</td>
+              <td scope="col" class="px-6 py-3">Lock User</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var c in Model){
+              <tr class="odd:bg-gray-100 even:bg-gray-200 border-b border-grey-400">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    @Html.DisplayFor(m => c.CustomerId)
+                </th>
+                <td class="px-6 py-4">@Html.DisplayFor(m => c.Name)</td>
+                <td class="px-6 py-4">@Html.DisplayFor(m => c.City)</td>
+                <td class="px-6 py-4">@Html.DisplayFor(m => c.State)</td>
+                <td class="px-6 py-4">@Html.DisplayFor(m => c.Postcode)</td>
+                <td class="px-6 py-4">@Html.DisplayFor(m => c.Mobile)</td>
+                <td class="px-4"><a asp-action="EditCustomer" asp-route-id="@c.CustomerId" class="font-medium text-white hover:underline bg-blue-500 rounded-xl py-1 px-3 hover:bg-blue-700">Edit</a></td>
+
+        <!-- Lock or unlock -->
+        @await Html.PartialAsync("./CustomerRowPartial.cshtml", c)
+              </tr>
+            }
+        </tbody>
+    </table>
+</div>
 }

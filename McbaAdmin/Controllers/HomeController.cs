@@ -45,6 +45,7 @@ public class HomeController : Controller
     {
         if (!ModelState.IsValid)
         {
+            data.CustomerId = id;
             return View(data);
         }
         string dataJson = JsonSerializer.Serialize(data);
@@ -62,11 +63,10 @@ public class HomeController : Controller
         await _httpClient.PutAsync($"api/Lock/lock/{id}", null);
         if (HttpContext.Request.IsHtmx())
         {
-            return Content(
-                $"""
-              <td id="row-{id}"><button hx-post="/Home/UnlockCustomer/{id}" hx-target="#row-{id}" hx-swap="innerHTML "hx-confirm="Are you sure to unlock this user?">Unlock</button></td>
-              """
-            );
+            var result = await _httpClient.GetAsync($"api/Customer/{id}");
+            _ = result.EnsureSuccessStatusCode();
+            CustomerDto? c = await result.Content.ReadFromJsonAsync<CustomerDto>();
+            return View("CustomerRowPartial", c!);
         }
         return RedirectToAction(nameof(Customers));
     }
@@ -74,14 +74,13 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> UnlockCustomer([FromRoute] int id)
     {
-        await _httpClient.PutAsync($"api/Lock/unlock/{id}", null);
+        _ = await _httpClient.PutAsync($"api/Lock/unlock/{id}", null);
         if (HttpContext.Request.IsHtmx())
         {
-            return Content(
-                $"""
-              <td id="row-{id}"><button hx-post="/Home/LockCustomer/{id}" hx-target="#row-{id}" hx-swap="innerHTML" hx-confirm="Are you sure to lock this user?">Lock</button></td>
-              """
-            );
+            var result = await _httpClient.GetAsync($"api/Customer/{id}");
+            _ = result.EnsureSuccessStatusCode();
+            CustomerDto? c = await result.Content.ReadFromJsonAsync<CustomerDto>();
+            return View("CustomerRowPartial", c!);
         }
         return RedirectToAction(nameof(Customers));
     }
