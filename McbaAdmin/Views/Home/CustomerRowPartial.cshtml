@@ -1,0 +1,9 @@
+@model CustomerDto
+@{
+Layout = null;
+}
+@if(Model.IsLocked){
+    <td class="px-6 py-4" id="row-@Model.CustomerId"><button><a hx-post="/Home/UnlockCustomer/@Model.CustomerId" hx-target="#row-@Model.CustomerId" hx-swap="outerHTML" hx-confirm="Are you sure to unlock this user?" class="font-medium text-white hover:underline bg-red-500 rounded-xl py-1 px-3 hover:bg-red-700">Unlock</a></button></td>
+} else {
+    <td class="px-6 py-4" id="row-@Model.CustomerId"><button><a hx-post="/Home/LockCustomer/@Model.CustomerId" hx-target="#row-@Model.CustomerId" hx-swap="outerHTML" hx-confirm="Are you sure to lock this user?" class="font-medium text-white hover:underline bg-red-500 rounded-xl py-1 px-3 hover:bg-red-700">Lock</a></button></td>
+}

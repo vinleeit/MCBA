@@ -1,4 +1,5 @@
 using Microsoft.Net.Http.Headers;
+using Tailwind;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,4 +33,9 @@ app.UseAuthorization();
 
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 
+if (app.Environment.IsDevelopment())
+{
+    // Do not await, it will prevent the app from running
+    app.RunTailwind("tailwind", "./");
+}
 app.Run();
