@@ -81,4 +81,9 @@ public class WithdrawController(
         }
         return View("Result");
     }
+
+    [LoggedIn]
+    public IActionResult WithdrawCanceled() {
+        return RedirectToAction(nameof(Index));
+    }
 }
