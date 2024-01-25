@@ -1,14 +1,16 @@
 using Mcba.Middlewares;
 using Mcba.Services.Interfaces;
+using Mcba.ViewModels.Statement;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mcba.Controllers;
 
-public class StatementController(IAccountService accountService, IStatementService statementService)
+public class StatementController(IAccountService accountService, IBalanceService balanceService, IStatementService statementService)
     : Controller
 {
     private readonly IAccountService _accountService = accountService;
     private readonly IStatementService _statementService = statementService;
+    private readonly IBalanceService _balanceService = balanceService;
 
     [LoggedIn]
     public async Task<IActionResult> Index()
@@ -29,10 +31,14 @@ public class StatementController(IAccountService accountService, IStatementServi
         {
             return NotFound();
         }
-        ViewBag.TotalPage = totalPage;
-        ViewBag.Page = Page;
-        ViewBag.Account = Account;
-        return View(data);
+        return View(new StatementViewModel()
+        {
+            AccountNumber = Account,
+            TotalBalance = await _balanceService.GetAccountBalance(Account),
+            Page = Page,
+            TotalPage = totalPage,
+            Transactions = data.ToList(),
+        });
     }
 }
 

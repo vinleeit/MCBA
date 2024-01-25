@@ -1,34 +1,65 @@
-@model List<Transaction>
+@model StatementViewModel
 
 @{
     ViewBag.Title = "Transaction Detail";
 }
 
-<h1>Transaction Details</h1>
-<h2>Page @(ViewBag.Page)/@(ViewBag.TotalPage)</h2>
-@if (Model.Count() != 0)
-{
+@{
+    List<int> pageNumbers;
+    if (Model.TotalPage <= 9)
+    {
+        // Show all page numbers
+        pageNumbers = Enumerable.Range(1, Model.TotalPage).ToList();
+    }
+    else
+    {
+        if (Model.Page <= 4)
+        {
+            pageNumbers = Enumerable.Range(1, 7).ToList();
+            pageNumbers.Add(-1); // Placeholder for '...'
+            pageNumbers.Add(Model.TotalPage);
+        }
+        else if (Model.Page >= Model.TotalPage - 4)
+        {
+            pageNumbers = [1, -1];
+            pageNumbers.AddRange(Enumerable.Range(Model.TotalPage - 7, 7));
+        }
+        else
+        {
+            pageNumbers = [1, -1];
+            pageNumbers.AddRange(Enumerable.Range(Model.Page - 2, 3));
+            pageNumbers.AddRange(Enumerable.Range(Model.TotalPage - 4, 2));
+            pageNumbers.AddRange([-1, 10]); // Placeholder for '...'
+        }
+    }
+}
 
+<h1>Transaction Details</h1>
+<div>
+    <p><label asp-for="AccountNumber"></label>: @Html.DisplayFor(m => m.AccountNumber)</p>
+    <p><label asp-for="TotalBalance"></label>: @Html.DisplayFor(m => m.TotalBalance)</p>
+</div>
+<h2>Page @(Model.Page)/@(Model.TotalPage)</h2>
+@if (Model.Transactions.Count() != 0)
+{
     <table>
     <thead>
         <tr>
-            <td><label asp-for="@Model.First().TransactionID"></label></td>
-            <td><label asp-for="@Model.First().TransactionType"></label></td>
-            <td><label asp-for="@Model.First().AccountNumber"></label></td>
-            <td><label asp-for="@Model.First().DestinationAccountNumber"></label></td>
-            <td><label asp-for="@Model.First().Amount"></label></td>
-            <td><label asp-for="@Model.First().Comment"></label></td>
-            <td><label asp-for="@Model.First().TransactionTimeUtc"></label></td>
+            <td><label asp-for="@Model.Transactions.First().TransactionID"></label></td>
+            <td><label asp-for="@Model.Transactions.First().TransactionType"></label></td>
+            <td><label asp-for="@Model.Transactions.First().DestinationAccountNumber"></label></td>
+            <td><label asp-for="@Model.Transactions.First().Amount"></label></td>
+            <td><label asp-for="@Model.Transactions.First().Comment"></label></td>
+            <td><label asp-for="@Model.Transactions.First().TransactionTimeUtc"></label></td>
         </tr>
     </thead>
     <tbody>
-        @foreach (var t in Model)
+        @foreach (var t in Model.Transactions)
             {
 
                 <tr>
                     <td>@Html.DisplayFor(m => t.TransactionID)</td>
                     <td>@Html.DisplayFor(m => t.TransactionType)</td>
-                    <td>@Html.DisplayFor(m => t.AccountNumber)</td>
                     <td>@Html.DisplayFor(m => t.DestinationAccountNumber)</td>
                     <td>@Html.DisplayFor(m => t.Amount)</td>
                     <td>@Html.DisplayFor(m => t.Comment)</td>
@@ -38,17 +69,31 @@
         </tbody>
     </table>
 }
-@for (int i = 1; i <= ViewBag.TotalPage; i++)
-{
-    @if (i == ViewBag.Page)
+<div>
+    @if (Model.Page > 1)
     {
-        <strong>@i</strong>
+        <a asp-action="Show" asp-route-page="@(Model.Page - 1)" asp-route-account="@Model.AccountNumber">&lt;</a>
     }
-    else
+    @foreach (var i in pageNumbers)
     {
-        <a asp-action="Show" asp-route-page="@i" asp-route-account="@ViewBag.Account">@i</a>
+        if (i == -1)
+        {
+            <span>...</span>
+        }
+        else if (i == Model.Page)
+        {
+            <strong>@i</strong>
+        }
+        else
+        {
+            <a asp-action="Show" asp-route-page="@i" asp-route-account="@Model.AccountNumber">@i</a>
+        }
     }
-}
+    @if (Model.Page < Model.TotalPage)
+    {
+        <a asp-action="Show" asp-route-page="@(Model.Page + 1)" asp-route-account="@Model.AccountNumber">&gt;</a>
+    }
+</div>
 
 <hr>
 <a href="/">Go Home</a>
