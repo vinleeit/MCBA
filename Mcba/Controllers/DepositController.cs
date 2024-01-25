@@ -40,6 +40,7 @@ public class DepositController(IAccountService accountService, IDepositService d
     }
 
     [HttpPost]
+    [LoggedIn]
     public async Task<IActionResult> DepositConfirmed([FromForm] DepositViewModel data)
     {
         IDepositService.DepositError? result = await _depositService.Deposit(
@@ -54,5 +55,10 @@ public class DepositController(IAccountService accountService, IDepositService d
         }
 
         return View("Result");
+    }
+
+    [LoggedIn]
+    public IActionResult DepositCanceled() {
+        return RedirectToAction(nameof(Index));
     }
 }
