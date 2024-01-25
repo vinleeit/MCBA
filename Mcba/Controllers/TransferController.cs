@@ -123,5 +123,10 @@ public class TransferController(
         }
         return View("Result");
     }
+
+    [LoggedIn]
+    public IActionResult TransferCanceled() {
+        return RedirectToAction(nameof(Index));
+    }
 }
 
