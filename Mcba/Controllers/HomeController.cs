@@ -16,12 +16,10 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View();
-    }
-
-    [LoggedIn]
-    public IActionResult Privacy()
-    {
+        if (!HttpContext.Session.GetInt32("Customer").HasValue)
+        {
+            return RedirectToAction("Login", "Auth");
+        }
         return View();
     }
 

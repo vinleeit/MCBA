@@ -16,28 +16,6 @@
       <div class="flex-1">
         <a class="btn btn-ghost text-xl" asp-controller="Home" asp-action="Index">MCBA</a>
       </div>
-      <div class="flex-none">
-        <ul class="menu menu-horizontal px-1">
-          <li>
-            <details>
-              <summary>
-                Menu
-              </summary>
-              <ul class="p-2 bg-base-100 rounded-t-none">
-                <li><a asp-controller="Deposit" asp-action="Index">Deposit</a></li>
-                <li><a asp-controller="Withdraw" asp-action="Index">Withdraw</a></li>
-                <li><a asp-controller="Transfer" asp-action="Index">Transfer</a></li>
-                <li><a asp-controller="Statement" asp-action="Index">Statement</a></li>
-              </ul>
-            </details>
-          </li>
-          <li>
-            <form asp-action="Logout" asp-controller="Auth">
-              <input type="submit" value="Logout">
-            </form>
-          </li>
-        </ul>
-      </div>
     </div>
   </header>
   <main role="main" class="px-3 py-5 flex flex-col container grow mx-auto">
