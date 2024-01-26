@@ -4,51 +4,59 @@
     ViewBag.Title = "Transaction Detail";
 }
 
-<h1>Transaction Details</h1>
-<h2>Page @(ViewBag.Page)/@(ViewBag.TotalPage)</h2>
-@if (Model.Count() != 0)
-{
+<div class="grow flex items-center justify-center">
+    <div class="border-2 border-dashed border-black rounded-lg px-24 py-16">
+        <h1 class="text-4xl tracking-wider mb-2">Transaction Details</h1>
+        <h2 class="text-lg text-gray-600 mb-2">Page @(ViewBag.Page)/@(ViewBag.TotalPage)</h2>
+        @if (Model.Count() != 0)
+        {
+            <div class="overflow-x-auto">
+                <table class="table table-zebra">
+                    <thead>
+                        <tr>
+                            <td><label asp-for="@Model.First().TransactionID"></label></td>
+                            <td><label asp-for="@Model.First().TransactionType"></label></td>
+                            <td><label asp-for="@Model.First().AccountNumber"></label></td>
+                            <td><label asp-for="@Model.First().DestinationAccountNumber"></label></td>
+                            <td><label asp-for="@Model.First().Amount"></label></td>
+                            <td><label asp-for="@Model.First().Comment"></label></td>
+                            <td><label asp-for="@Model.First().TransactionTimeUtc"></label></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var t in Model)
+                        {
 
-    <table>
-    <thead>
-        <tr>
-            <td><label asp-for="@Model.First().TransactionID"></label></td>
-            <td><label asp-for="@Model.First().TransactionType"></label></td>
-            <td><label asp-for="@Model.First().AccountNumber"></label></td>
-            <td><label asp-for="@Model.First().DestinationAccountNumber"></label></td>
-            <td><label asp-for="@Model.First().Amount"></label></td>
-            <td><label asp-for="@Model.First().Comment"></label></td>
-            <td><label asp-for="@Model.First().TransactionTimeUtc"></label></td>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var t in Model)
-            {
-
-                <tr>
-                    <td>@Html.DisplayFor(m => t.TransactionID)</td>
-                    <td>@Html.DisplayFor(m => t.TransactionType)</td>
-                    <td>@Html.DisplayFor(m => t.AccountNumber)</td>
-                    <td>@Html.DisplayFor(m => t.DestinationAccountNumber)</td>
-                    <td>@Html.DisplayFor(m => t.Amount)</td>
-                    <td>@Html.DisplayFor(m => t.Comment)</td>
-                    <td>@Html.DisplayFor(m => t.TransactionTimeUtc)</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-@for (int i = 1; i <= ViewBag.TotalPage; i++)
-{
-    @if (i == ViewBag.Page)
-    {
-        <strong>@i</strong>
-    }
-    else
-    {
-        <a asp-action="Show" asp-route-page="@i" asp-route-account="@ViewBag.Account">@i</a>
-    }
-}
-
-<hr>
-<a href="/">Go Home</a>
+                            <tr>
+                                <td>@Html.DisplayFor(m => t.TransactionID)</td>
+                                <td>@Html.DisplayFor(m => t.TransactionType)</td>
+                                <td>@Html.DisplayFor(m => t.AccountNumber)</td>
+                                <td>@Html.DisplayFor(m => t.DestinationAccountNumber)</td>
+                                <td>@Html.DisplayFor(m => t.Amount)</td>
+                                <td>@Html.DisplayFor(m => t.Comment)</td>
+                                <td>@Html.DisplayFor(m => t.TransactionTimeUtc)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        <hr class="my-4">
+        <div class="flex items-center justify-between">
+            <div class="join">
+                @for (int i = 1; i <= ViewBag.TotalPage; i++)
+                {
+                    @if (i == ViewBag.Page)
+                    {
+                        <button class="join-item btn btn-accent">@i</button>
+                    }
+                    else
+                    {
+                        <a asp-action="Show" asp-route-page="@i" asp-route-account="@ViewBag.Account"
+                            class="join-item btn">@i</a>
+                    }
+                }
+            </div>
+            <a href="/" class="btn btn-neutral">Go Home</a>
+        </div>
+    </div>
