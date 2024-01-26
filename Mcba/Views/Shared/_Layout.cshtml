@@ -17,7 +17,7 @@
         <a class="btn btn-ghost text-xl" asp-controller="Home" asp-action="Index">MCBA</a>
       </div>
       <div class="flex-none">
-        <ul class="menu menu-horizontal px-1">
+        <div class="menu menu-horizontal px-1 flex items-center">
           <li>
             <details>
               <summary>
@@ -33,12 +33,10 @@
               </ul>
             </details>
           </li>
-          <li class="text-error">
-            <form asp-action="Logout" asp-controller="Auth">
-              <input type="submit" value="Logout">
-            </form>
-          </li>
-        </ul>
+          <form asp-action="Logout" asp-controller="Auth" class="pl-2">
+            <input type="submit" value="Logout" class="btn btn-sm btn-warning">
+          </form>
+        </div>
       </div>
     </div>
   </header>
