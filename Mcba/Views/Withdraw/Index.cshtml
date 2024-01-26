@@ -8,7 +8,7 @@
     <h1 class="text-4xl mb-2">Withdraw</h1>
     <form asp-action="Index">
       <label asp-for="AccountNumber" class="block mb-1"></label>
-      <select asp-for="AccountNumber" class="select select-bordered w-full max-w-sm">
+      <select asp-for="AccountNumber" class="select select-bordered w-full">
         <option>Select an account</option>
         @foreach (var i in Model.Accounts!)
         {
@@ -17,10 +17,10 @@
       </select>
       <span asp-validation-for="AccountNumber" class="text-error mt-1"></span>
       <label asp-for="Amount" class="block mt-2 mb-1"></label>
-      <input asp-for="Amount" class="input input-bordered w-full max-w-sm" placeholder="Withdraw amount" />
+      <input asp-for="Amount" class="input input-bordered w-full " placeholder="Withdraw amount" />
       <span asp-validation-for="Amount" class="text-error mt-1"></span>
       <label asp-for="Comment" class="block mb-1 mt-2"></label>
-      <textarea asp-for="Comment" class="textarea textarea-bordered w-full max-w-sm" placeholder="Comment"></textarea>
+      <textarea asp-for="Comment" class="textarea textarea-bordered w-full " placeholder="Comment"></textarea>
       <span asp-validation-for="Comment" class="text-error mt-1"></span>
       <input type="submit" value="Withdraw" class="btn btn-neutral btn-block mt-3">
     </form>
