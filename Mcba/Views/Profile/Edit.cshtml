@@ -1,61 +1,50 @@
-<html>
-
-<head>
-    <title>Edit Profile</title>
-</head>
-
 @model ProfileViewModel
-
-<body>
-    @if (Model.ErrorMsg != null)
-    {
-        <script type="text/javascript">
-            window.onload = function () {
-                alert("@Model.ErrorMsg");
-            };
-        </script>
-    }
-
-    <h1>Edit Profile</h1>
-    <form asp-action="Edit" asp-controller="Profile" method="post">
-        <input asp-for="CustomerID" hidden>
-        <h2>Basic</h2>
-        <label asp-for="Name"></label>
-        <input asp-for="Name">
-        <span asp-validation-for="Name"></span>
-        <br>
-        <label asp-for="TFN"></label>
-        <input asp-for="TFN">
-        <span asp-validation-for="TFN"></span>
-        <br>
-        <h2>Contacts</h2>
-        <label asp-for="Mobile"></label>
-        <input asp-for="Mobile">
-        <span asp-validation-for="Mobile"></span>
-        <br>
-        <h2>Address</h2>
-        <label asp-for="Address"></label>
-        <input asp-for="Address">
-        <span asp-validation-for="Address"></span>
-        <br>
-        <label asp-for="City"></label>
-        <input asp-for="City">
-        <span asp-validation-for="City"></span>
-        <br>
-        <label asp-for="State"></label>
-        <input asp-for="State">
-        <span asp-validation-for="State"></span>
-        <br>
-        <label asp-for="Postcode"></label>
-        <input asp-for="Postcode">
-        <span asp-validation-for="Postcode"></span>
-        <br>
-        <br>
-        <br>
-        <input type="submit" value="Edit">
-        <input type="button" value="Cancel" onclick="history.back()">
-    </form>
-
-</body>
-
-</html>
+@{
+    ViewBag.Title = "Edit Profile";
+}
+@if (Model.ErrorMsg != null)
+{
+    <div role="alert" class="alert alert-warning">
+    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+    </svg>
+    <span>Warning: @Model.ErrorMsg</span>
+</div>
+}
+<div class="grow flex items-center justify-center">
+    <div class="border-2 border-dashed border-black rounded-lg px-24 py-16 w-1/2">
+        <h1 class="text-4xl tracking-wider mb-3">Edit Profile</h1>
+        <form asp-action="Edit" asp-controller="Profile" method="post">
+            <input asp-for="CustomerID" hidden>
+            <label asp-for="Name" class="block mb-1 mt-1"></label>
+            <input asp-for="Name" class="input input-bordered max-w-sm w-full">
+            <span asp-validation-for="Name" class="text-error mt-1 mb-2"></span>
+            <label asp-for="TFN" class="block mb-1 mt-1"></label>
+            <input asp-for="TFN" class="input input-bordered max-w-sm w-full">
+            <span asp-validation-for="TFN" class="text-error mt-1 mb-2"></span>
+            <label asp-for="Mobile" class="block mt-1 mb-1"></label>
+            <input asp-for="Mobile" class="input input-bordered max-w-sm w-full">
+            <span asp-validation-for="Mobile" class="text-error mt-1 mb-2"></span>
+            <label asp-for="Address" class="block mt-1 mb-1"></label>
+            <input asp-for="Address" class="input input-bordered max-w-sm w-full">
+            <span asp-validation-for="Address" class="text-error mt-1 mb-2"></span>
+            <br>
+            <label asp-for="City" class="block mt-1 mb-1"></label>
+            <input asp-for="City" class="input input-bordered max-w-sm w-full">
+            <span asp-validation-for="City" class="text-error mt-1 mb-2"></span>
+            <br>
+            <label asp-for="State" class="block mt-1 mb-1"></label>
+            <input asp-for="State" class="input input-bordered max-w-sm w-full">
+            <span asp-validation-for="State" class="text-error mt-1 mb-2"></span>
+            <br>
+            <label asp-for="Postcode" class="block mt-1 mb-1"></label>
+            <input asp-for="Postcode" class="input input-bordered max-w-sm w-full">
+            <span asp-validation-for="Postcode" class="text-error mt-1 mb-2"></span>
+            <div class="flex justify-end mt-2">
+                <input type="submit" value="Edit" class="btn btn-neutral mr-2">
+                <input type="button" value="Cancel" onclick="history.back()" class="btn btn-warning">
+            </div>
+        </form>
+    </div>
+</div>
