@@ -1,6 +1,7 @@
 using Mcba.Services.Interfaces;
 using Mcba.ViewModels.Auth;
 using Microsoft.AspNetCore.Mvc;
+using static Mcba.Services.Interfaces.IAuthService;
 
 namespace Mcba.Controllers;
 
@@ -20,14 +21,24 @@ public class AuthController(IAuthService authService) : Controller
         {
             return View(loginData);
         }
-        var customer = await _authService.Login(loginData.LoginId, loginData.Password);
-        if (customer == null)
+        var result = await _authService.Login(loginData.LoginId, loginData.Password);
+        if (result.Error.HasValue)
         {
-            ModelState.AddModelError("LoginId", "Incorrect Login ID or Password");
+            var errMsg = "";
+            switch (result.Error)
+            {
+                case (AuthError.Locked):
+                    errMsg = "Login is locked";
+                    break;
+                case (AuthError.InvalidCredential):
+                    errMsg = "Incorrect Login ID or Password";
+                    break;
+            }
+            ModelState.AddModelError("LoginId", errMsg);
             return View(loginData);
         }
         // Save auth info to session
-        HttpContext.Session.SetInt32("Customer", customer.GetValueOrDefault());
+        HttpContext.Session.SetInt32("Customer", result.Customer.GetValueOrDefault());
         return RedirectToAction("Index", "Home");
     }
 
