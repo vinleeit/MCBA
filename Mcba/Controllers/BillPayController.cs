@@ -29,8 +29,11 @@ public class BillPayController(McbaContext dbContext, IAccountService accountSer
         var accounts = await _accountService.GetAccounts(customerID.GetValueOrDefault());
         var serialized = JsonSerializer.SerializeToUtf8Bytes(accounts);
         HttpContext.Session.Set("accounts", serialized);
+
+        var dt = DateTime.Now;
         return View(new BillPayViewModel()
         {
+            ScheduleTimeLocal = new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, 0),
             Accounts = accounts,
         });
     }
@@ -41,15 +44,21 @@ public class BillPayController(McbaContext dbContext, IAccountService accountSer
         var payee = await _dbContext.Payees.FirstOrDefaultAsync(b => b.PayeeID == newBillPayViewModel.PayeeID);
         if (payee == null)
         {
-            ModelState.AddModelError("PayeeID", "Payee does not exist");
+            ModelState.AddModelError("PayeeID", "Payee ID is not registered");
         }
 
         var localDT = DateTime.Now;
         localDT = new DateTime(localDT.Year, localDT.Month, localDT.Day, localDT.Hour, localDT.Minute, 0);
-        newBillPayViewModel.ScheduleTimeLocal = new DateTime(newBillPayViewModel.ScheduleTimeLocal.Year, newBillPayViewModel.ScheduleTimeLocal.Month, newBillPayViewModel.ScheduleTimeLocal.Day, newBillPayViewModel.ScheduleTimeLocal.Hour, newBillPayViewModel.ScheduleTimeLocal.Minute, 0);
+        newBillPayViewModel.ScheduleTimeLocal = new DateTime(
+            newBillPayViewModel.ScheduleTimeLocal.Year,
+            newBillPayViewModel.ScheduleTimeLocal.Month,
+            newBillPayViewModel.ScheduleTimeLocal.Day,
+            newBillPayViewModel.ScheduleTimeLocal.Hour,
+            newBillPayViewModel.ScheduleTimeLocal.Minute,
+            0);
         if (localDT.CompareTo(newBillPayViewModel.ScheduleTimeLocal) > 0)
         {
-            ModelState.AddModelError("ScheduleTimeLocal", "Date has overdue");
+            ModelState.AddModelError("ScheduleTimeLocal", "Date/Time has passed");
         }
 
         if (!ModelState.IsValid)

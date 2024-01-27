@@ -42,8 +42,8 @@ public class BillPayService(McbaContext dbContext, IBalanceService balanceServic
         var newBillPay = new BillPay()
         {
             AccountNumber = newBillPayViewModel.AccountNumber!.Value,
-            PayeeID = newBillPayViewModel.PayeeID,
-            Amount = newBillPayViewModel.Amount,
+            PayeeID = newBillPayViewModel.PayeeID.GetValueOrDefault(),
+            Amount = newBillPayViewModel.Amount.GetValueOrDefault(),
             ScheduleTimeUtc = newBillPayViewModel.ScheduleTimeLocal.ToUniversalTime(),
             Period = newBillPayViewModel.Period!.Value,
         };

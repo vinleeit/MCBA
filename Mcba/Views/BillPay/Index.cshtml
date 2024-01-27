@@ -11,11 +11,11 @@
         </div>
         <table class="table table-zebra">
             <tr>
-                <th>Account Number</th>
-                <th>Payee</th>
-                <th>Amount</th>
-                <th>Next Payment Schedule</th>
-                <th>Period</th>
+                <th><label asp-for="@Model.First().AccountNumber"></label></th>
+                <th><label asp-for="@Model.First().PayeeName"></label></th>
+                <th><label asp-for="@Model.First().Amount"></label></th>
+                <th><label asp-for="@Model.First().ScheduleTimeLocal "></label></th>
+                <th><label asp-for="@Model.First().Period "></label></th>
                 <th>Action</th>
             </tr>
             @foreach (var billPayViewModel in Model)
@@ -23,34 +23,15 @@
                 var localDT = DateTime.Now;
                 localDT = new DateTime(localDT.Year, localDT.Month, localDT.Day, localDT.Hour, localDT.Minute, 0);
                 var isOverdue = billPayViewModel.ScheduleTimeLocal < localDT;
-                var scheduleTimeLocalStr = billPayViewModel.ScheduleTimeLocal.ToString("dd/MM/yyyy hh:mm tt").ToUpper();
                 <tr>
-                    <td>@billPayViewModel.AccountNumber</td>
-                    <td>@billPayViewModel.PayeeName</td>
-                    <td>@billPayViewModel.Amount</td>
-                    @{
-                        if (isOverdue)
-                        {
-                            <td>@scheduleTimeLocalStr (Overdue)</td>
-                        }
-                        else
-                        {
-                            <td>@scheduleTimeLocalStr</td>
-                        }
-                    }
-                    <td>@billPayViewModel.Period</td>
+                    <td>@Html.DisplayFor(m => billPayViewModel.AccountNumber)</td>
+                    <td>@Html.DisplayFor(m => billPayViewModel.PayeeName)</td>
+                    <td>@Html.DisplayFor(m => billPayViewModel.Amount)</td>
+                    <td>@Html.DisplayFor(m => billPayViewModel.ScheduleTimeLocal) @((isOverdue) ? "(Overdue)" : "")</td>
+                    <td>@((billPayViewModel.Period == '0') ? "One-time" : "Monthly")</td>
                     <td>
                         <a asp-action="Cancel" asp-route-id="@billPayViewModel.BillPayID" class="btn btn-outline btn-xs">
-                            @{
-                                if (isOverdue)
-                                {
-                                    <span>Pay</span>
-                                }
-                                else
-                                {
-                                    <span>Cancel</span>
-                                }
-                            }
+                            <span>@((isOverdue) ? "Retry" : "Cancel")</span>
                         </a>
                     </td>
                 </tr>
