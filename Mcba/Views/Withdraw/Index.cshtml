@@ -8,7 +8,7 @@
 <form asp-action="Index">
   <label asp-for="AccountNumber"></label>
   <select asp-for="AccountNumber">
-    <option>Select an account</option>
+    <option value="">Select an account</option>
     @foreach (var i in Model.Accounts!)
     {
       <option value="@i.AccountNumber">@i.AccountNumber</option>
