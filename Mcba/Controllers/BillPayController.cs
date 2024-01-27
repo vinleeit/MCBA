@@ -6,6 +6,7 @@ using McbaData;
 using McbaData.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static Mcba.Services.Interfaces.IBillPayService;
 
 namespace Mcba.Controllers;
 
@@ -73,7 +74,7 @@ public class BillPayController(McbaContext dbContext, IAccountService accountSer
         return RedirectToAction(nameof(Index));
     }
 
-    public async Task<IActionResult> Cancel(int id)
+    public async Task<IActionResult> Action(int id)
     {
         var billPay = await _dbContext.BillPays.FirstOrDefaultAsync(b => b.BillPayID == id);
         if (billPay != null)
@@ -82,12 +83,26 @@ public class BillPayController(McbaContext dbContext, IAccountService accountSer
             localDT = new DateTime(localDT.Year, localDT.Month, localDT.Day, localDT.Hour, localDT.Minute, 0);
             if (billPay.ScheduleTimeUtc < localDT)
             {
-                await _billPayService.PayBillPay(id, true);
+                var err = await _billPayService.PayBillPay(id, true);
+                switch (err)
+                {
+                    case (BillPayError.InsuffientBalance):
+                        TempData["ActionError"] = "Insufficient balance to perform retry";
+                        break;
+                    case (BillPayError.NotExist):
+                        TempData["ActionError"] = "Operation failed, BillPay does not exist";
+                        break;
+                }
             }
             else
             {
                 await _billPayService.DeleteBillPay(id);
             }
+        }
+        else
+        {
+            // Canceling / Paying but the BillPay is no longer exist, then show error
+            TempData["ActionError"] = "Operation failed, BillPay does not exist";
         }
         return RedirectToAction(nameof(Index));
     }

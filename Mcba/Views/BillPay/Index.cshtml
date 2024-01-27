@@ -9,6 +9,10 @@
             <h1 class="text-4xl tracking-wider mb-3">BillPay</h1>
             <a asp-action="Add" class="btn btn-neutral">Add</a>
         </div>
+        @if (TempData.ContainsKey("ActionError"))
+        {
+            <span class="text-error mt-1 mb-2">@TempData["ActionError"]</span>
+        }
         <table class="table table-zebra">
             <tr>
                 <th><label asp-for="@Model.First().AccountNumber"></label></th>
@@ -30,7 +34,7 @@
                     <td>@Html.DisplayFor(m => billPayViewModel.ScheduleTimeLocal) @((isOverdue) ? "(Overdue)" : "")</td>
                     <td>@((billPayViewModel.Period == '0') ? "One-time" : "Monthly")</td>
                     <td>
-                        <a asp-action="Cancel" asp-route-id="@billPayViewModel.BillPayID" class="btn btn-outline btn-xs">
+                        <a asp-action="Action" asp-route-id="@billPayViewModel.BillPayID" class="btn btn-outline btn-xs">
                             <span>@((isOverdue) ? "Retry" : "Cancel")</span>
                         </a>
                     </td>

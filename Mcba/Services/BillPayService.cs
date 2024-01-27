@@ -4,6 +4,7 @@ using Mcba.ViewModels.BillPay;
 using McbaData;
 using McbaData.Models;
 using Microsoft.EntityFrameworkCore;
+using static Mcba.Services.Interfaces.IBillPayService;
 
 namespace Mcba.Services;
 
@@ -56,13 +57,13 @@ public class BillPayService(McbaContext dbContext, IBalanceService balanceServic
         }
     }
 
-    public async Task PayBillPay(int billPayID, bool isPayOverdue = false)
+    public async Task<BillPayError?> PayBillPay(int billPayID, bool isPayOverdue = false)
     {
         // Check if BillPay exists
         var billPay = await _dbContext.BillPays.FirstOrDefaultAsync(b => b.BillPayID == billPayID);
         if (billPay == null)
         {
-            return;
+            return BillPayError.NotExist;
         }
 
         var totalBalance = await _balanceService.GetAccountBalance(billPay.AccountNumber);
@@ -87,7 +88,7 @@ public class BillPayService(McbaContext dbContext, IBalanceService balanceServic
                 };
                 if (await _dbContext.SaveChangesAsync() <= 0)
                 {
-                    return;
+                    return null;
                 }
 
                 var utcDT = DateTime.UtcNow;
@@ -96,14 +97,14 @@ public class BillPayService(McbaContext dbContext, IBalanceService balanceServic
                     () => PayBillPay(newBillPay.BillPayID, false),
                     TimeSpan.FromMinutes((newBillPay.ScheduleTimeUtc - utcDT).TotalMinutes));
             }
-            return;
+            return BillPayError.InsuffientBalance;
         }
         else
         {
             _dbContext.BillPays.Remove(billPay);
             if (await _dbContext.SaveChangesAsync() <= 0)
             {
-                return;
+                return null;
             }
 
             await _dbContext.Transactions.AddAsync(new()
@@ -115,7 +116,7 @@ public class BillPayService(McbaContext dbContext, IBalanceService balanceServic
             });
             if (await _dbContext.SaveChangesAsync() <= 0)
             {
-                return;
+                return null;
             }
 
             if (!isPayOverdue && billPay.Period == 'M')
@@ -131,7 +132,7 @@ public class BillPayService(McbaContext dbContext, IBalanceService balanceServic
                 await _dbContext.AddAsync(newBillPay);
                 if (await _dbContext.SaveChangesAsync() <= 0)
                 {
-                    return;
+                    return null;
                 }
 
                 var utcDT = DateTime.UtcNow;
@@ -141,6 +142,7 @@ public class BillPayService(McbaContext dbContext, IBalanceService balanceServic
                     TimeSpan.FromMinutes((newBillPay.ScheduleTimeUtc - utcDT).TotalMinutes));
             }
         }
+        return null;
     }
 
     public async Task DeleteBillPay(int billPayID)
