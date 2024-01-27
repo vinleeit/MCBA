@@ -12,8 +12,8 @@ public class Transaction
     [RegularExpression("^[DWTSB]$", ErrorMessage = "Transaction type should be in [D, W, T, S, B]")]
     public char TransactionType { get; set; }
 
+    [Required]
     [ForeignKey(nameof(Account))]
-    [Required(ErrorMessage = "Account number is required")]
     public int AccountNumber { get; set; }
     public Account Account { get; set; }
 
@@ -21,17 +21,17 @@ public class Transaction
     public int? DestinationAccountNumber { get; set; }
     public Account DestinationAccount { get; set; }
 
-    [Required(ErrorMessage = "Amount is required")]
+    [Required]
     // Money must be at least 0.01
-    [Range(0.01, double.PositiveInfinity, ErrorMessage = "Amount must be at least $0.01")]
+    [Range(0.01, double.PositiveInfinity)]
     [Column(TypeName = "money")]
     public decimal Amount { get; set; }
 
-    [MaxLength(30, ErrorMessage = "Comment must be in 30 characters")]
+    [MaxLength(30)]
     [Column(TypeName = "nvarchar(30)")]
     public string? Comment { get; set; }
 
-    [Required(ErrorMessage = "DateTime is required")]
+    [Required]
     [Column(TypeName = "datetime2")]
     public DateTime TransactionTimeUtc { get; set; }
 }
