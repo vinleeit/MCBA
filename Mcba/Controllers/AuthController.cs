@@ -42,6 +42,7 @@ public class AuthController(IAuthService authService) : Controller
         return RedirectToAction("Index", "Home");
     }
 
+    [HttpPost]
     public IActionResult Logout()
     {
         HttpContext.Session.Clear();
