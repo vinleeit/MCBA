@@ -50,7 +50,7 @@
             <td><label asp-for="@Model.Transactions.First().DestinationAccountNumber"></label></td>
             <td><label asp-for="@Model.Transactions.First().Amount"></label></td>
             <td><label asp-for="@Model.Transactions.First().Comment"></label></td>
-            <td><label asp-for="@Model.Transactions.First().TransactionTimeUtc"></label></td>
+            <td><label asp-for="@Model.Transactions.First().TransactionTimeLocal"></label></td>
         </tr>
     </thead>
     <tbody>
@@ -63,7 +63,7 @@
                     <td>@Html.DisplayFor(m => t.DestinationAccountNumber)</td>
                     <td>@Html.DisplayFor(m => t.Amount)</td>
                     <td>@Html.DisplayFor(m => t.Comment)</td>
-                    <td>@Html.DisplayFor(m => t.TransactionTimeUtc)</td>
+                    <td>@Html.DisplayFor(m => t.TransactionTimeLocal)</td>
                 </tr>
             }
         </tbody>
