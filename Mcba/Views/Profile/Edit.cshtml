@@ -1,17 +1,19 @@
 @model ProfileViewModel
+
 @{
     ViewBag.Title = "Edit Profile";
 }
-@if (Model.ErrorMsg != null)
+
+@if (TempData["Error"] != null)
 {
     <div role="alert" class="alert alert-warning">
-    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-    </svg>
-    <span>Warning: @Model.ErrorMsg</span>
-</div>
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <span>Warning: @TempData["Error"]</span>
+    </div>
 }
+
 <div class="grow flex items-center justify-center">
     <div class="border-2 border-solid border-black rounded-lg px-24 py-16 w-1/2">
         <h1 class="text-4xl tracking-wider mb-3">Edit Profile</h1>
@@ -43,7 +45,7 @@
             <span asp-validation-for="Postcode" class="text-error mt-1 mb-2"></span>
             <div class="flex justify-end mt-2">
                 <input type="submit" value="Edit" class="btn btn-neutral mr-2">
-                <input type="button" value="Cancel" onclick="history.back()" class="btn btn-warning">
+                <button asp-action="Index" class="btn btn-warning">Cancel</button>
             </div>
         </form>
     </div>
