@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using Htmx;
@@ -21,7 +22,26 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        return RedirectToAction(nameof(Login));
+    }
+
+    public IActionResult Login()
+    {
+        return View(new LoginViewModel()
+        {
+            Password = "ravel",
+            Username = ""
+        });
+    }
+
+    [HttpPost]
+    public IActionResult Login([FromForm] LoginViewModel data)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(data);
+        }
+        return View(data);
     }
 
     public async Task<IActionResult> Customers()
