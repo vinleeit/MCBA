@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,7 +8,10 @@ public class Login
 {
     [Key]
     [Column(TypeName = "char(8)")]
-    [RegularExpression(@"^\d{8}$", ErrorMessage = "Login ID must be 8 digits")]
+    [RegularExpression(
+        @"^\d{8}$",
+        ErrorMessage = "Login ID must be 8 digits"
+    )]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public required string LoginID { get; set; }
 
@@ -17,10 +21,12 @@ public class Login
     public int CustomerID { get; set; }
     public Customer Customer { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Password is required")]
     [Column(TypeName = "char(94)")]
-    [StringLength(94)]
+    [StringLength(94, ErrorMessage = "Wrong password length")]
     public required string PasswordHash { get; set; }
 
+    [Required]
+    [DefaultValue(false)]
     public bool Locked { get; set; }
 }

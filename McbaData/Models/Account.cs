@@ -7,6 +7,7 @@ namespace McbaData.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Range(1000, 9999, ErrorMessage = "Account number must be 4 digits")]
         public int AccountNumber { get; set; }
 
         [Required(ErrorMessage = "Account type is required")]
@@ -22,6 +23,7 @@ namespace McbaData.Models
         public int CustomerID { get; set; }
         public Customer Customer { get; set; }
 
+        // Navigational property
         [InverseProperty(nameof(Transaction.Account))]
         public List<Transaction> Transactions { get; set; }
 
