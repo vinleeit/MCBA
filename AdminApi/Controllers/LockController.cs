@@ -1,4 +1,5 @@
 using AdminApi.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminApi.Controllers;
@@ -9,6 +10,7 @@ public class LockController(IAdminRepo adminRepo) : ControllerBase
 {
     private readonly IAdminRepo _adminRepo = adminRepo;
 
+    [Authorize]
     [HttpPut("lock/{customerID}")]
     public IActionResult Lock(int customerID)
     {
@@ -19,6 +21,7 @@ public class LockController(IAdminRepo adminRepo) : ControllerBase
                 : (IActionResult)Ok();
     }
 
+    [Authorize]
     [HttpPut("unlock/{customerID}")]
     public IActionResult UnLock(int customerID)
     {

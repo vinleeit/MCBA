@@ -3,32 +3,26 @@
   ViewData["Title"] = "Withdraw";
 }
 
-<h1>Withdraw</h1>
-
-<form asp-action="Index">
-  <label asp-for="AccountNumber"></label>
-  <select asp-for="AccountNumber">
-    <option>Select an account</option>
-    @foreach (var i in Model.Accounts!)
-    {
-      <option value="@i.AccountNumber">@i.AccountNumber</option>
-    }
-  </select>
-  <span asp-validation-for="AccountNumber"></span>
-  <br>
-
-  <label asp-for="Amount"></label>
-  <input asp-for="Amount" />
-  <br>
-  <span asp-validation-for="Amount"></span>
-  <br>
-
-  <label asp-for="Comment"></label>
-  <textarea asp-for="Comment"></textarea>
-  <br>
-  <span asp-validation-for="Comment"></span>
-  <br>
-
-  <input type="submit" value="Withdraw">
-
-</form>
+<div class="grow flex items-center justify-center">
+  <div class="border-2 border-solid border-black rounded-lg px-24 py-24 w-1/2">
+    <h1 class="text-4xl mb-2">Withdraw</h1>
+    <form asp-action="Index">
+      <label asp-for="AccountNumber" class="block mb-1"></label>
+      <select asp-for="AccountNumber" class="select select-bordered w-full">
+        <option>Select an account</option>
+        @foreach (var i in Model.Accounts!)
+        {
+          <option value="@i.AccountNumber">@i.AccountNumber</option>
+        }
+      </select>
+      <span asp-validation-for="AccountNumber" class="text-error mt-1"></span>
+      <label asp-for="Amount" class="block mt-2 mb-1"></label>
+      <input asp-for="Amount" class="input input-bordered w-full " placeholder="Withdraw amount" />
+      <span asp-validation-for="Amount" class="text-error mt-1"></span>
+      <label asp-for="Comment" class="block mb-1 mt-2"></label>
+      <textarea asp-for="Comment" class="textarea textarea-bordered w-full " placeholder="Comment"></textarea>
+      <span asp-validation-for="Comment" class="text-error mt-1"></span>
+      <input type="submit" value="Withdraw" class="btn btn-neutral btn-block mt-3">
+    </form>
+  </div>
+</div>

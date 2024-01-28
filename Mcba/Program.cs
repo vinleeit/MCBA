@@ -1,10 +1,11 @@
+using Hangfire;
 using Mcba.Data;
 using Mcba.Middlewares;
 using Mcba.Services;
 using Mcba.Services.Interfaces;
 using McbaData;
 using Microsoft.EntityFrameworkCore;
-using Hangfire;
+using Tailwind;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,21 +36,22 @@ builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IDepositService, DepositService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IStatementService, StatementService>();
-builder.Services.AddHangfire((prov, conf) =>
-{
-    var retryAttr = new AutomaticRetryAttribute();
-    retryAttr.Attempts = 0;
-    conf.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
-        .UseSimpleAssemblyNameTypeSerializer()
-        .UseRecommendedSerializerSettings()
-        .UseFilter(retryAttr)
-        .UseSqlServerStorage(builder.Configuration.GetConnectionString("arvin-rmit"));
-});
+builder.Services.AddHangfire(
+    (prov, conf) =>
+    {
+        var retryAttr = new AutomaticRetryAttribute();
+        retryAttr.Attempts = 0;
+        conf.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+            .UseSimpleAssemblyNameTypeSerializer()
+            .UseRecommendedSerializerSettings()
+            .UseFilter(retryAttr)
+            .UseSqlServerStorage(builder.Configuration.GetConnectionString("arvin-rmit"));
+    }
+);
 builder.Services.AddHangfireServer();
 builder.Services.AddScoped<IBillPayService, BillPayService>();
 
 var app = builder.Build();
-
 
 // Seed database if data is empty
 using (var scope = app.Services.CreateScope())
@@ -83,5 +85,10 @@ app.UseMiddleware<AuthorizationMiddleware>();
 /* app.UseAuthorization(); */
 
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
+
+if (app.Environment.IsDevelopment())
+{
+    app.RunTailwind("tailwind", "./");
+}
 
 app.Run();

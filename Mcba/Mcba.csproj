@@ -17,6 +17,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.1" />
     <PackageReference Include="SimpleHashing.Net" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Tailwind.Extensions.AspNetCore" Version="1.0.0-beta2" />
   </ItemGroup>
 
 

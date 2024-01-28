@@ -1,14 +1,9 @@
 @{
     ViewBag.Title = "Withdraw Result";
 }
-
-@if (ViewBag.Error)
-{
-    <h1>Error</h1>
-}
-else
-{
-    <h1>Success</h1>
-}
-
-<a href="/">Go Home</a>
+<div class="grow flex items-center justify-center">
+    <div class="border-2 border-solid border-black rounded-lg px-24 py-24 w-1/2">
+        <h1 class="text-6xl tracking-widest">@(ViewBag.Error ? "Unknown Error" : "Withdraw Success")</h1>
+        <a href="/" class="btn btn-neutral btn-block mt-8">Go Home</a>
+    </div>
+</div>

@@ -6,6 +6,7 @@ public class StatementViewModel
 {
     [Display(Name = "Account Number")]
     public required int AccountNumber { get; set; }
+
     [Display(Name = "Total Balance")]
     public decimal TotalBalance { get; set; }
     public int Page { get; set; }
