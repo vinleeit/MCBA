@@ -1,0 +1,51 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCBA Admin</title>
+    <link href="~/css/output.css" rel="stylesheet" />
+</head>
+
+<body hx-boost="true" class="flex min-h-screen w-screen flex-col grow bg-slate-100">
+    <div class="grow flex justify-center items-center">
+        <div class="bg-white card w-96 text-primary-content border-2 border-neutral rounded-xl">
+            <div class="card-body">
+                <h2 class="card-title">MCBA Restricted Area</h2>
+                <p>Please login to access administrative features</p>
+                <form asp-action="Login" method="post">
+                    <label class="form-control w-full">
+                        <div class="label">
+                            <span class="label-text">Username</span>
+                        </div>
+                        <input asp-for="Username" class="input input-bordered w-full" placeholder="Username">
+                        <div class="label">
+                            <span class="label-text-alt text-error" asp-validation-for="Username"></span>
+                        </div>
+                    </label>
+                    <label class="form-control w-full">
+                        <div class="label">
+                            <span class="label-text">Password</span>
+                        </div>
+                        <input asp-for="Password" class="input input-bordered w-full" placeholder="Password">
+                        <div class="label">
+                            <span class="label-text-alt text-error" asp-validation-for="Password"></span>
+                        </div>
+                    </label>
+                    <div class="card-actions justify-end mt-3">
+                        <input class="btn btn-neutral" type="submit" value="Login">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
