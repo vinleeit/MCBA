@@ -7,6 +7,7 @@ namespace McbaData.Models;
 public class Login
 {
     [Key]
+    [Required(ErrorMessage = "Login ID is required")]
     [Column(TypeName = "char(8)")]
     [RegularExpression(
         @"^\d{8}$",
@@ -18,6 +19,7 @@ public class Login
     // Navigational property
     [ForeignKey(nameof(Customer))]
     [Required(ErrorMessage = "Customer ID is required")]
+    [Range(1000, 9999, ErrorMessage = "Account number must be 4 digits")]
     public int CustomerID { get; set; }
     public Customer Customer { get; set; }
 

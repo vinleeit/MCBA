@@ -9,14 +9,16 @@ public class BillPay
     public int BillPayID { get; set; }
 
     // Navigational property
-    [Required(ErrorMessage = "Account number is required")]
     [ForeignKey(nameof(Account))]
+    [Required(ErrorMessage = "Account number is required")]
+    [Range(1000, 9999, ErrorMessage = "Account number must be 4 digits")]
     public int AccountNumber { get; set; }
     public Account Account { get; set; }
 
     // Navigational property
-    [Required(ErrorMessage = "Payee is required")]
     [ForeignKey(nameof(Payee))]
+    [Required(ErrorMessage = "Payee is required")]
+    [Range(0, double.PositiveInfinity, ErrorMessage = "Payee ID must be positive")]
     public int PayeeID { get; set; }
     public Payee Payee { get; set; }
 

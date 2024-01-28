@@ -18,11 +18,13 @@ public class Transaction
     // Navigational property
     [ForeignKey(nameof(Account))]
     [Required(ErrorMessage = "Account number is required")]
+    [Range(1000, 9999, ErrorMessage = "Account number must be 4 digits")]
     public int AccountNumber { get; set; }
     public Account Account { get; set; }
 
     // Navigational property
     [ForeignKey(nameof(DestinationAccount))]
+    [Range(1000, 9999, ErrorMessage = "Destination account number must be 4 digits")]
     public int? DestinationAccountNumber { get; set; }
     public Account DestinationAccount { get; set; }
 
