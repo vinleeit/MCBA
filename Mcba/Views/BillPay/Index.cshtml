@@ -3,6 +3,17 @@
     ViewBag.Title = "BillPay";
 }
 
+@if (TempData.ContainsKey("ActionError"))
+{
+    <div role="alert" class="alert alert-warning">
+    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+    </svg>
+    <span>Warning: @TempData["ActionError"]</span>
+</div>
+}
+
 <div class="grow flex items-center justify-center">
     <div class="border-2 border-solid border-black rounded-lg px-24 py-16">
         <div class="flex justify-between mt-3">
@@ -11,11 +22,11 @@
         </div>
         <table class="table table-zebra">
             <tr>
-                <th>Account Number</th>
-                <th>Payee</th>
-                <th>Amount</th>
-                <th>Next Payment Schedule</th>
-                <th>Period</th>
+                <th><label asp-for="@Model.First().AccountNumber"></label></th>
+                <th><label asp-for="@Model.First().PayeeName"></label></th>
+                <th><label asp-for="@Model.First().Amount"></label></th>
+                <th><label asp-for="@Model.First().ScheduleTimeLocal "></label></th>
+                <th><label asp-for="@Model.First().Period "></label></th>
                 <th>Action</th>
             </tr>
             @foreach (var billPayViewModel in Model)
@@ -23,34 +34,15 @@
                 var localDT = DateTime.Now;
                 localDT = new DateTime(localDT.Year, localDT.Month, localDT.Day, localDT.Hour, localDT.Minute, 0);
                 var isOverdue = billPayViewModel.ScheduleTimeLocal < localDT;
-                var scheduleTimeLocalStr = billPayViewModel.ScheduleTimeLocal.ToString("dd/MM/yyyy hh:mm tt").ToUpper();
                 <tr>
-                    <td>@billPayViewModel.AccountNumber</td>
-                    <td>@billPayViewModel.PayeeName</td>
-                    <td>@billPayViewModel.Amount</td>
-                    @{
-                        if (isOverdue)
-                        {
-                            <td>@scheduleTimeLocalStr (Overdue)</td>
-                        }
-                        else
-                        {
-                            <td>@scheduleTimeLocalStr</td>
-                        }
-                    }
-                    <td>@billPayViewModel.Period</td>
+                    <td>@Html.DisplayFor(m => billPayViewModel.AccountNumber)</td>
+                    <td>@Html.DisplayFor(m => billPayViewModel.PayeeName)</td>
+                    <td>@Html.DisplayFor(m => billPayViewModel.Amount)</td>
+                    <td>@Html.DisplayFor(m => billPayViewModel.ScheduleTimeLocal) @((isOverdue) ? "(Overdue)" : "")</td>
+                    <td>@((billPayViewModel.Period == '0') ? "One-time" : "Monthly")</td>
                     <td>
-                        <a asp-action="Cancel" asp-route-id="@billPayViewModel.BillPayID" class="btn btn-outline btn-xs">
-                            @{
-                                if (isOverdue)
-                                {
-                                    <span>Pay</span>
-                                }
-                                else
-                                {
-                                    <span>Cancel</span>
-                                }
-                            }
+                        <a asp-action="Action" asp-route-id="@billPayViewModel.BillPayID" class="btn btn-outline btn-xs">
+                            <span>@((isOverdue) ? "Retry" : "Cancel")</span>
                         </a>
                     </td>
                 </tr>

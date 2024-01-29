@@ -9,7 +9,7 @@
         <form asp-controller="BillPay" asp-action="Add" method="post">
             <label asp-for="AccountNumber" class="block mb-1"></label>
             <select asp-for="AccountNumber" class="select select-bordered w-full ">
-                <option value="">Select</option>
+                <option value="">Select account number</option>
                 @foreach (var account in Model.Accounts ?? [])
                 {
                     <option value="@account.AccountNumber">@account.AccountNumber</option>
@@ -23,13 +23,14 @@
             <input asp-for="Amount" class="input input-bordered w-full ">
             <span asp-validation-for="Amount" class="text-error mt-1 mb-2"></span>
             <label asp-for="ScheduleTimeLocal" class="block mt-1 mb-1"></label>
-            <input asp-for="ScheduleTimeLocal" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-format=""
+            <input asp-for="ScheduleTimeLocal" min="@Model.ScheduleTimeLocal.ToString("yyyy-MM-dd HH:mm")"
                 class="input input-bordered w-full ">
             <span asp-validation-for="ScheduleTimeLocal" class="text-error mt-1 mb-2"></span>
             <label asp-for="Period" class="block mt-1 mb-1"></label>
-            <select asp-for="Period" class="select select-bordered w-full "
-                asp-items="@(new SelectList(new List<string> {"O", "M"}))">
-                <option value="">Select</option>
+            <select asp-for="Period" class="select select-bordered w-full">
+                <option value="">Select period</option>
+                <option value="O">One-time</option>
+                <option value="M">Monthly</option>
             </select>
             <span asp-validation-for="Period" class="text-error mt-1 mb-2"></span>
             <input type="submit" value="Add" class="btn btn-block btn-neutral mt-3">
