@@ -91,21 +91,27 @@ public class TransferService(
         if (resultCount < 1)
         {
             await dbTransaction.RollbackAsync();
+            return ITransferService.TransferError.Unknown;
         }
         // Add service charge
-        _dbContext.Transactions.Add(
-            new()
-            {
-                AccountNumber = accountNumber,
-                Amount = (decimal)0.1,
-                TransactionType = 'S',
-                TransactionTimeUtc = timeUtc,
-            }
-        );
-        resultCount = await _dbContext.SaveChangesAsync();
-        if (resultCount < 1)
+        if (!isTransactionFree)
         {
-            await dbTransaction.RollbackAsync();
+            _dbContext.Transactions.Add(
+                       new()
+                       {
+                           AccountNumber = accountNumber,
+                           Amount = (decimal)0.1,
+                           TransactionType = 'S',
+                           TransactionTimeUtc = timeUtc,
+                       }
+                   );
+            resultCount = await _dbContext.SaveChangesAsync();
+            if (resultCount < 1)
+            {
+                await dbTransaction.RollbackAsync();
+
+                return ITransferService.TransferError.Unknown;
+            }
         }
 
         // Add transaction for destination account
@@ -124,8 +130,9 @@ public class TransferService(
         {
             await dbTransaction.RollbackAsync();
         }
-
         await dbTransaction.CommitAsync();
+
+
 
         return null;
     }
