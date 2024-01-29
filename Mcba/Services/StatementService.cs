@@ -5,11 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Mcba.Services;
 
-public class StatementService(McbaContext context, IBalanceService balanceService)
-    : IStatementService
+public class StatementService(McbaContext context) : IStatementService
 {
     private readonly McbaContext _dbContext = context;
-    private readonly IBalanceService _balanceService = balanceService;
 
     /// <summary>
     /// Get the transactions of an account with pagination.
@@ -26,7 +24,7 @@ public class StatementService(McbaContext context, IBalanceService balanceServic
         (int pageNumber, int itemCount)? pagination = null
     )
     {
-        var allTransactionsQuery = _dbContext
+        IOrderedQueryable<Transaction> allTransactionsQuery = _dbContext
             .Transactions.Where(b => b.AccountNumber == accountNumber)
             .OrderByDescending(b => b.TransactionTimeUtc)
             .ThenByDescending(b => b.TransactionID);
@@ -37,7 +35,7 @@ public class StatementService(McbaContext context, IBalanceService balanceServic
                 (pagination.Value.pageNumber < 1) ? 1 : pagination.Value.pageNumber,
                 (pagination.Value.itemCount < 1) ? 1 : pagination.Value.itemCount
             );
-            var totalPageCount = (int)
+            int totalPageCount = (int)
                 Math.Ceiling(
                     (await allTransactionsQuery.CountAsync()) / (decimal)pagination.Value.itemCount
                 );
@@ -52,4 +50,3 @@ public class StatementService(McbaContext context, IBalanceService balanceServic
         return (1, await allTransactionsQuery.ToListAsync());
     }
 }
-

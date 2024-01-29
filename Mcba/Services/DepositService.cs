@@ -14,6 +14,7 @@ public class DepositService(McbaContext context) : IDepositService
         string? comment
     )
     {
+        // Deposit should be at least $0.01
         if (amount < (decimal)0.01)
         {
             return IDepositService.DepositError.InvalidAmount;
@@ -30,8 +31,8 @@ public class DepositService(McbaContext context) : IDepositService
 
         try
         {
-            await _dbContext.Transactions.AddAsync(t);
-            var resultCount = await _dbContext.SaveChangesAsync();
+            _ = await _dbContext.Transactions.AddAsync(t);
+            int resultCount = await _dbContext.SaveChangesAsync();
             if (resultCount < 1)
             {
                 return IDepositService.DepositError.Unknown;

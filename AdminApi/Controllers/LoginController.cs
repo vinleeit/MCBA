@@ -16,21 +16,22 @@ public class LoginController : ControllerBase
     {
         if (loginData.Username == "admin" && loginData.Password == "admin")
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenDescriptor = new SecurityTokenDescriptor
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
-            {
-            new Claim(ClaimTypes.Name, "admin")
-            }),
+                Subject = new ClaimsIdentity(new Claim[] { new(ClaimTypes.Name, "admin") }),
                 Expires = DateTime.UtcNow.AddHours(24),
                 SigningCredentials = new SigningCredentials(
-
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes("THISISASECRETSTRINGTHISISASECRETSTRINGTHISISASECRETSTRING")),
-
-            SecurityAlgorithms.HmacSha256Signature)
+                    new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(
+                            "THISISASECRETSTRINGTHISISASECRETSTRINGTHISISASECRETSTRING"
+                        )
+                    ),
+                    SecurityAlgorithms.HmacSha256Signature
+                )
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
+            // Generate token to string
             var tokenString = tokenHandler.WriteToken(token);
             // Return the token to the client
             return Ok(new { Token = tokenString });
@@ -38,3 +39,4 @@ public class LoginController : ControllerBase
         return Unauthorized();
     }
 }
+

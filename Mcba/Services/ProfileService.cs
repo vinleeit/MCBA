@@ -62,4 +62,3 @@ public class ProfileService(McbaContext dbContext) : IProfileService
         return IProfileService.ProfileError.CustomerNotFound;
     }
 }
-

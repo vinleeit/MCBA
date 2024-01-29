@@ -33,10 +33,7 @@ public class Payee
 
     [Required(ErrorMessage = "Postcode is required")]
     [Column(TypeName = "nvarchar(4)")]
-    [RegularExpression(
-        @"^[0-9]{4}$",
-        ErrorMessage = "Postcode must be 4 digits"
-    )]
+    [RegularExpression(@"^[0-9]{4}$", ErrorMessage = "Postcode must be 4 digits")]
     public string Postcode { get; set; }
 
     [Required(ErrorMessage = "Phone is required")]

@@ -7,10 +7,12 @@ using McbaData;
 using Microsoft.EntityFrameworkCore;
 using Tailwind;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Add database context configuration
 builder.Services.AddDbContext<McbaContext>(
     options =>
         options.UseSqlServer(
@@ -36,12 +38,13 @@ builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IDepositService, DepositService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IStatementService, StatementService>();
+
+// Add hangfire background service
 builder.Services.AddHangfire(
     (prov, conf) =>
     {
-        var retryAttr = new AutomaticRetryAttribute();
-        retryAttr.Attempts = 0;
-        conf.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+        AutomaticRetryAttribute retryAttr = new() { Attempts = 0 };
+        _ = conf.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
             .UseSimpleAssemblyNameTypeSerializer()
             .UseRecommendedSerializerSettings()
             .UseFilter(retryAttr)
@@ -54,10 +57,10 @@ builder.Services.AddScoped<IBillPayService, BillPayService>();
 var app = builder.Build();
 
 // Seed database if data is empty
-using (var scope = app.Services.CreateScope())
+using (IServiceScope scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetService<McbaContext>();
-    await DataLoader.SeedData(context!);
+    McbaContext? context = scope.ServiceProvider.GetService<McbaContext>();
+    _ = await DataLoader.SeedData(context!);
 }
 
 // Configure the HTTP request pipeline.
@@ -80,6 +83,7 @@ app.UseRouting();
 
 app.UseSession();
 
+// Add middleware that prevent access to protected routes
 app.UseMiddleware<AuthorizationMiddleware>();
 
 /* app.UseAuthorization(); */
@@ -88,6 +92,7 @@ app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Inde
 
 if (app.Environment.IsDevelopment())
 {
+    // Run tailwind css builder to perform asynchronous JIT build and minification of CSS
     app.RunTailwind("tailwind", "./");
 }
 

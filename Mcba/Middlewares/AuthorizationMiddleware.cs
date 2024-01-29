@@ -10,7 +10,8 @@ public class AuthorizationMiddleware(RequestDelegate next)
 
         if (customer == null)
         {
-            var authAttr = context.GetEndpoint()?.Metadata?.GetMetadata<LoggedIn>();
+            // Get if certain route is protected
+            LoggedIn? authAttr = context.GetEndpoint()?.Metadata?.GetMetadata<LoggedIn>();
             if (authAttr != null)
             {
                 // Redirect to login page

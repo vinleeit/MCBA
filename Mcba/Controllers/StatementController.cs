@@ -19,71 +19,65 @@ public class StatementController(
     public async Task<IActionResult> Index()
     {
         int customerID = HttpContext.Session.GetInt32("Customer")!.Value;
-        var accounts = await _accountService.GetAccounts(customerID);
+        List<McbaData.Models.Account> accounts = await _accountService.GetAccounts(customerID);
         return View(accounts);
     }
 
     public async Task<IActionResult> Show([FromQuery] int Account, [FromQuery] int Page = 1)
     {
-        var (totalPage, data) = await _statementService.GetPaginatedAccountTransactions(
-            Account,
-            (Page, 4)
-        );
-        if (Page > totalPage)
-        {
-            return NotFound();
-        }
-        return View(
-            new StatementViewModel()
-            {
-                AccountNumber = Account,
-                TotalBalance = await _balanceService.GetAccountBalance(Account),
-                Page = Page,
-                TotalPage = totalPage,
-                Transactions = data.Select(e =>
-                    {
-                        var transactionTypeStr = "";
-                        switch (e.TransactionType)
+
+        (int totalPage, IEnumerable<McbaData.Models.Transaction> data) =
+            await _statementService.GetPaginatedAccountTransactions(Account, (Page, 4));
+        // Return 404 if page is bigger than totalPage
+        return Page > totalPage
+            ? NotFound()
+            : View(
+                new StatementViewModel()
+                {
+                    AccountNumber = Account,
+                    TotalBalance = await _balanceService.GetAccountBalance(Account),
+                    Page = Page,
+                    TotalPage = totalPage,
+                    Transactions = data.Select(e =>
                         {
-                            case ('D'):
-                                transactionTypeStr = "Deposit";
-                                break;
-                            case ('W'):
-                                transactionTypeStr = "Withdraw";
-                                break;
-                            case ('S'):
-                                transactionTypeStr = "Service Charge";
-                                break;
-                            case ('T'):
-                                if (e.AccountNumber == Account)
-                                {
-                                    transactionTypeStr = "Transfer (Debit)";
-                                }
-                                else
-                                {
-                                    transactionTypeStr = "Transfer (Credit)";
-                                }
-                                break;
-                            case ('B'):
-                                transactionTypeStr = "Bill Pay";
-                                break;
-                            default:
-                                transactionTypeStr = "Undefined";
-                                break;
-                        }
-                        return new TransactionViewModel()
-                        {
-                            TransactionID = e.TransactionID,
-                            TransactionType = transactionTypeStr,
-                            AccountNumber = e.AccountNumber,
-                            DestinationAccountNumber = e.DestinationAccountNumber,
-                            Amount = e.Amount,
-                            Comment = e.Comment,
-                            TransactionTimeLocal = e.TransactionTimeUtc.ToLocalTime(),
-                        };
-                    })
-                    .ToList(),
-            }
-        );
+                            string transactionTypeStr = "";
+                            switch (e.TransactionType)
+                            {
+                                case 'D':
+                                    transactionTypeStr = "Deposit";
+                                    break;
+                                case 'W':
+                                    transactionTypeStr = "Withdraw";
+                                    break;
+                                case 'S':
+                                    transactionTypeStr = "Service Charge";
+                                    break;
+                                case 'T':
+                                    transactionTypeStr =
+                                        e.AccountNumber == Account
+                                            ? "Transfer (Debit)"
+                                            : "Transfer (Credit)";
+                                    break;
+                                case 'B':
+                                    transactionTypeStr = "Bill Pay";
+                                    break;
+                                default:
+                                    transactionTypeStr = "Undefined";
+                                    break;
+                            }
+                            return new TransactionViewModel()
+                            {
+                                TransactionID = e.TransactionID,
+                                TransactionType = transactionTypeStr,
+                                AccountNumber = e.AccountNumber,
+                                DestinationAccountNumber = e.DestinationAccountNumber,
+                                Amount = e.Amount,
+                                Comment = e.Comment,
+                                TransactionTimeLocal = e.TransactionTimeUtc.ToLocalTime(),
+                            };
+                        })
+                        .ToList(),
+                }
+            );
     }
 }

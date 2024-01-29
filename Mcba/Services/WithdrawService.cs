@@ -13,6 +13,8 @@ public class WithdrawService(
     private readonly McbaContext _dbContext = context;
     private readonly IBalanceService _balanceService = balanceService;
     private readonly IFreeTransactionService _freeTransactionService = freeTransactionService;
+
+    // Fee that incurs on withdrawal outside of free transaction
     private readonly decimal _withdrawFee = (decimal)0.05;
 
     public async Task<Tuple<decimal, decimal>> GetTotalAmountAndMinimumAllowedBalance(
@@ -20,10 +22,12 @@ public class WithdrawService(
         decimal amount
     )
     {
+        // Add service charge to calculation if the transaction is not free
         if (!await _freeTransactionService.GetIsTransactionFree(accountNumber))
         {
             amount += _withdrawFee;
         }
+        // Get minimum balance based on the type of account
         int minimumBalance =
             await (
                 from a in _dbContext.Accounts
@@ -46,11 +50,14 @@ public class WithdrawService(
             return IWithdrawService.WithdrawError.InvalidAmount;
         }
         // Checks if transaction is free
-        var isTransactionFree = await _freeTransactionService.GetIsTransactionFree(accountNumber);
+        bool isTransactionFree = await _freeTransactionService.GetIsTransactionFree(accountNumber);
         // Get current amount
-        var balance = await _balanceService.GetAccountBalance(accountNumber);
+        decimal balance = await _balanceService.GetAccountBalance(accountNumber);
         // Check if balance is sufficient
-        var totalAndMinimum = await GetTotalAmountAndMinimumAllowedBalance(accountNumber, amount);
+        Tuple<decimal, decimal> totalAndMinimum = await GetTotalAmountAndMinimumAllowedBalance(
+            accountNumber,
+            amount
+        );
         if (balance - totalAndMinimum.Item2 < totalAndMinimum.Item1)
         {
             return IWithdrawService.WithdrawError.NotEnoughBalance;

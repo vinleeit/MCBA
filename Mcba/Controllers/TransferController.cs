@@ -41,7 +41,7 @@ public class TransferController(
             );
             return View(data);
         }
-        var destNumber = Int32.Parse(data.DestinationAccountNumber!);
+        int destNumber = Int32.Parse(data.DestinationAccountNumber!);
         if (destNumber == data.AccountNumber)
         {
             data.Accounts = JsonSerializer.Deserialize<List<Account>>(
@@ -55,11 +55,11 @@ public class TransferController(
         }
         // Check if destination is valid
         if (
-            await (
+            !await (
                 from a in _dbContext.Accounts
                 where a.AccountNumber == destNumber
                 select a
-            ).CountAsync() < 1
+            ).AnyAsync()
         )
         {
             data.Accounts = JsonSerializer.Deserialize<List<Account>>(
@@ -72,10 +72,10 @@ public class TransferController(
             return View(data);
         }
         // Check if balance is enough
-        var balance = await _balanceService.GetAccountBalance(
+        decimal balance = await _balanceService.GetAccountBalance(
             data.AccountNumber.GetValueOrDefault()
         );
-        var (total, minimum) = await _transferService.GetTotalAndMinimumBalance(
+        (decimal total, decimal minimum) = await _transferService.GetTotalAndMinimumBalance(
             data.AccountNumber.GetValueOrDefault(),
             data.Amount.GetValueOrDefault()
         );
@@ -98,7 +98,7 @@ public class TransferController(
     public async Task<IActionResult> TransferConfirmed([FromForm] TransferViewModel data)
     {
         int destNum = Int32.Parse(data.DestinationAccountNumber!);
-        var result = await _transferService.Transfer(
+        ITransferService.TransferError? result = await _transferService.Transfer(
             data.AccountNumber.GetValueOrDefault(),
             destNum,
             data.Amount.GetValueOrDefault(),

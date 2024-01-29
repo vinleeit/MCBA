@@ -10,6 +10,7 @@ public class BalanceService(McbaContext context) : IBalanceService
 
     public async Task<decimal> GetAccountBalance(int accountNumber)
     {
+        // Get Money in amount
         decimal creditTransaction = await (
             from t in _dbContext.Transactions
             where
@@ -21,6 +22,7 @@ public class BalanceService(McbaContext context) : IBalanceService
             select t.Amount
         ).SumAsync();
 
+        // Get money out amount
         decimal debitTransaction = await (
             from t in _dbContext.Transactions
             where
