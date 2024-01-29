@@ -7,11 +7,12 @@ namespace McbaData.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Range(1000, 9999, ErrorMessage = "Customer ID must be 4 digits")]
         public int CustomerID { get; set; }
 
-        [StringLength(50, ErrorMessage = "Name must be within 50 characters")]
-        [Column(TypeName = "nvarchar(50)")]
         [Required(ErrorMessage = "Name is required")]
+        [Column(TypeName = "nvarchar(50)")]
+        [MaxLength(50, ErrorMessage = "Name must be within 50 characters")]
         public required string Name { get; set; }
 
         [Column(TypeName = "nvarchar(11)")]
@@ -21,12 +22,12 @@ namespace McbaData.Models
         )]
         public string? TFN { get; set; }
 
-        [StringLength(50, ErrorMessage = "Address must be within 50 characters")]
         [Column(TypeName = "nvarchar(50)")]
+        [MaxLength(50, ErrorMessage = "Address must be within 50 characters")]
         public string? Address { get; set; }
 
-        [StringLength(40, ErrorMessage = "City must be within 50 characters")]
         [Column(TypeName = "nvarchar(40)")]
+        [MaxLength(40, ErrorMessage = "City must be within 50 characters")]
         public string? City { get; set; }
 
         [Column(TypeName = "nvarchar(3)")]
@@ -37,7 +38,10 @@ namespace McbaData.Models
         public string? State { get; set; }
 
         [Column(TypeName = "nvarchar(4)")]
-        [RegularExpression(@"^\d{4}$", ErrorMessage = "Postcode must be 4 digits")]
+        [RegularExpression(
+            @"^\d{4}$",
+            ErrorMessage = "Postcode must be 4 digits"
+        )]
         public string? Postcode { get; set; }
 
         [Column(TypeName = "nvarchar(12)")]
