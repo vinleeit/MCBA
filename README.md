@@ -74,6 +74,7 @@ dotnet test
 The Application (Solution) is structured in the following way:
 - AdminApi (Project to store the WebApi project used in the admin application)
 - Mcba (The main application, or the client facing application)
+- Mcba.Tests (Testing for Mcba)
 - McbaAdmin (The website interface that acts as GUI for the AdminApi)
 - McbaData (Class library storing the shared data)
 - McbaData.Tests (Testing for McbaData)
@@ -113,6 +114,9 @@ The application has mainly the following function:
 
 
 All of the functionality that is perfomed above is perfomed in a service that is injected through DI.
+
+### Mcba.Tests
+Tests that is performed against Mcba project.
 
 
 ### McbaAdmin (Port 5226)
