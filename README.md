@@ -5,10 +5,9 @@ MCBA (Most Common Bank of Australia) internet banking web application.
 > The application is built using Neovim using Omnisharp-Roslyn LSP (which might differ a bit from VS LSP).
 
 ## Links
-
 - Repository [[main]](https://github.com/rmit-wdt-summer-2024/s3937118-s3937114-a2)
 - Project Root Folder [[main]](https://github.com/rmit-wdt-summer-2024/s3937118-s3937114-a2/tree/main/Mcba)
-- Trello [[main]](https://github.com/rmit-wdt-summer-2024/s3937118-s3937114-a2/tree/main/Trello) [[trello]](https://github.com/rmit-wdt-summer-2024/s3937118-s3937114-a2/tree/trello/Trello)
+- Trello [[main]](https://github.com/rmit-wdt-summer-2024/s3937118-s3937114-a2/tree/main/Trello)
 
 ## Members
 
