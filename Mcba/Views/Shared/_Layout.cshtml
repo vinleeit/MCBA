@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="corporate">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>@ViewData["Title"] - MCBA</title>
+  <!-- <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> -->
+  <!-- <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> -->
+  <link rel="stylesheet" href="~/css/output.css" asp-append-version="true" />
+</head>
+
+<body class="flex flex-col min-h-screen" hx-boost="true">
+  <header class="hidden lg:block">
+    <div class="navbar bg-base-100 border-b border-black">
+      <div class="flex-1">
+        <a class="btn btn-ghost text-xl" asp-controller="Home" asp-action="Index">MCBA</a>
+      </div>
+      <div class="flex-none">
+        <div class="menu menu-horizontal px-1 flex items-center">
+          <li>
+            <details>
+              <summary>
+                Menu
+              </summary>
+              <ul class="p-2 bg-base-100 rounded-t-none">
+                <li><a asp-controller="Deposit" asp-action="Index">Deposit</a></li>
+                <li><a asp-controller="Withdraw" asp-action="Index">Withdraw</a></li>
+                <li><a asp-controller="Transfer" asp-action="Index">Transfer</a></li>
+                <li><a asp-controller="BillPay" asp-action="Index">BillPay</a></li>
+                <li><a asp-controller="Statement" asp-action="Index">My Statement</a></li>
+                <li><a asp-controller="Profile" asp-action="Index">Profile</a></li>
+              </ul>
+            </details>
+          </li>
+          <form asp-action="Logout" asp-controller="Auth" class="pl-2">
+            <input type="submit" value="Logout" class="btn btn-sm btn-warning">
+          </form>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main role="main" class="px-3 py-5 lg:flex flex-col container grow mx-auto hidden">
+    @RenderBody()
+  </main>
+  <div class="lg:hidden flex grow items-center justify-center text-center">
+    <div>
+      <h1 class="text-4xl font-black mb-3">
+        You're on mobile view
+      </h1>
+      <p>
+        Please visit us on desktop to access MCBA experience
+        <br>
+        For more information please visit our nearest branch
+      </p>
+    </div>
+  </div>
+  <footer class="footer footer-center p-5 bg-base-200 text-base-content rounded">
+    <aside>
+      <p>Copyright © 2024 - MBCA Australia</p>
+    </aside>
+  </footer>
+  <!-- <script src="~/lib/jquery/dist/jquery.min.js"></script> -->
+  <!-- <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> -->
+  <script src="~/js/site.js" asp-append-version="true"></script>
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  <!-- @await RenderSectionAsync("Scripts", required: false) -->
+</body>
+
+</html>

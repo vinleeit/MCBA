@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\McbaData\McbaData.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Htmx" Version="1.6.3" />
+    <PackageReference Include="Tailwind.Extensions.AspNetCore" Version="1.0.0-beta2" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>

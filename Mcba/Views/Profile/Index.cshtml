@@ -1,0 +1,41 @@
+@model Customer
+@{
+    ViewBag.Title = "Profile";
+}
+
+<div class="grow flex items-center justify-center">
+    <div class="border-2 border-solid border-black rounded-lg px-24 py-16">
+        <h1 class="text-4xl tracking-wider mb-3">Profile</h1>
+        <div class="flex space-x-6">
+            <div class="w-64">
+                <h2 class="text-xl tracking-widest">Basic</h2>
+                <hr class="mb-2 mt-1">
+                <label asp-for="Name" class="block mt-1 text-gray-600"></label>
+                <span class="text-lg">@Model.Name</span>
+                <label asp-for="TFN" class="block mt-1 text-gray-600"></label>
+                <span class="text-lg">@(String.IsNullOrEmpty(Model.TFN) ? "Not set" : Model.TFN)</span>
+                <h2 class="text-xl tracking-widest mt-3">Contacts</h2>
+                <hr class="mb-2 mt-1">
+                <label asp-for="Mobile" class="block mt-1 text-gray-600"></label>
+                <span class="text-lg">@(String.IsNullOrEmpty(Model.Mobile) ? "Not Set" : Model.Mobile)</span>
+            </div>
+            <div class="w-64">
+                <h2 class="text-xl tracking-widest">Address</h2>
+                <hr class="mb-2 mt-1">
+                <label asp-for="Address" class="block mt-1 text-gray-600"></label>
+                <span class="text-lg">@(String.IsNullOrEmpty(Model.Address) ? "<empty>" : Model.Address)</span>
+                <label asp-for="City" class="block mt-1 text-gray-600"></label>
+                <span class="text-lg">@(String.IsNullOrEmpty(Model.City) ? "<empty>" : Model.City)</span>
+                <label asp-for="State" class="block mt-1 text-gray-600"></label>
+                <span class="text-lg">@(String.IsNullOrEmpty(Model.State) ? "<empty>" : Model.State)</span>
+                <label asp-for="Postcode" class="block mt-1 text-gray-600"></label>
+                <span class="text-lg">@(String.IsNullOrEmpty(Model.Postcode) ? "<empty>" : Model.Postcode)</span>
+            </div>
+        </div>
+        <hr class="my-3">
+        <div class="flex justify-end">
+            <a asp-action="Edit" class="btn btn-neutral mr-2">Edit Profile</a>
+            <a asp-action="ChangePassword" class="btn btn-warning">Change Password</a>
+        </div>
+    </div>
+</div>

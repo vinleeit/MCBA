@@ -1,0 +1,39 @@
+@model BillPayViewModel
+@{
+    ViewBag.Title = "Add BillPay";
+}
+
+<div class="grow flex items-center justify-center">
+    <div class="border-2 border-solid border-black rounded-lg px-24 py-16 w-1/2">
+        <h1 class="text-4xl tracking-wider mb-3">Add BillPay</h1>
+        <form asp-controller="BillPay" asp-action="Add" method="post">
+            <label asp-for="AccountNumber" class="block mb-1"></label>
+            <select asp-for="AccountNumber" class="select select-bordered w-full ">
+                <option value="">Select account number</option>
+                @foreach (var account in Model.Accounts ?? [])
+                {
+                    <option value="@account.AccountNumber">@account.AccountNumber</option>
+                }
+            </select>
+            <span asp-validation-for="AccountNumber" class="text-error mt-1 mb-2"></span>
+            <label asp-for="PayeeID" class="block mb-1"></label>
+            <input asp-for="PayeeID" class="input input-bordered w-full ">
+            <span asp-validation-for="PayeeID" class="text-error mt-1 mb-2"></span>
+            <label asp-for="Amount" class="block mb-1"></label>
+            <input asp-for="Amount" class="input input-bordered w-full ">
+            <span asp-validation-for="Amount" class="text-error mt-1 mb-2"></span>
+            <label asp-for="ScheduleTimeLocal" class="block mt-1 mb-1"></label>
+            <input asp-for="ScheduleTimeLocal" min="@Model.ScheduleTimeLocal.ToString("yyyy-MM-dd HH:mm")"
+                class="input input-bordered w-full ">
+            <span asp-validation-for="ScheduleTimeLocal" class="text-error mt-1 mb-2"></span>
+            <label asp-for="Period" class="block mt-1 mb-1"></label>
+            <select asp-for="Period" class="select select-bordered w-full">
+                <option value="">Select period</option>
+                <option value="O">One-time</option>
+                <option value="M">Monthly</option>
+            </select>
+            <span asp-validation-for="Period" class="text-error mt-1 mb-2"></span>
+            <input type="submit" value="Add" class="btn btn-block btn-neutral mt-3">
+        </form>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+@model List<Account>
+@{
+    ViewBag.Title = "Statement";
+}
+
+<div class="grow flex items-center justify-center">
+    <div class="border-2 border-solid border-black rounded-lg px-24 py-24 w-1/2">
+        <h1 class="text-4xl tracking-wider">My Statements</h1>
+        <form asp-action="Show" method="get" class="mt-3">
+            <label for="Account" class="block mb-1">Select Account</label>
+            <select name="Account" class="select select-bordered w-full">
+                @foreach (var a in Model)
+                {
+                    <option value="@a.AccountNumber">@a.AccountNumber</option>
+                }
+            </select>
+            <input type="submit" value="View Statement" class="btn btn-neutral btn-block mt-3">
+        </form>
+    </div>
+</div>

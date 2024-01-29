@@ -1,0 +1,53 @@
+@model List<BillPayViewModel>
+@{
+    ViewBag.Title = "BillPay";
+}
+
+@if (TempData.ContainsKey("ActionError"))
+{
+    <div role="alert" class="alert alert-warning">
+    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+    </svg>
+    <span>Warning: @TempData["ActionError"]</span>
+</div>
+}
+
+<div class="grow flex items-center justify-center">
+    <div class="border-2 border-solid border-black rounded-lg px-24 py-16">
+        <div class="flex justify-between mt-3">
+            <h1 class="text-4xl tracking-wider mb-3">BillPay</h1>
+            <a asp-action="Add" class="btn btn-neutral">Add</a>
+        </div>
+        <table class="table table-zebra">
+            <tr>
+                <th><label asp-for="@Model.First().AccountNumber"></label></th>
+                <th><label asp-for="@Model.First().PayeeName"></label></th>
+                <th><label asp-for="@Model.First().Amount"></label></th>
+                <th><label asp-for="@Model.First().ScheduleTimeLocal "></label></th>
+                <th><label asp-for="@Model.First().Period "></label></th>
+                <th>Action</th>
+            </tr>
+            @foreach (var billPayViewModel in Model)
+            {
+                var localDT = DateTime.Now;
+                localDT = new DateTime(localDT.Year, localDT.Month, localDT.Day, localDT.Hour, localDT.Minute, 0);
+                var isOverdue = billPayViewModel.ScheduleTimeLocal < localDT;
+                <tr>
+                    <td>@Html.DisplayFor(m => billPayViewModel.AccountNumber)</td>
+                    <td>@Html.DisplayFor(m => billPayViewModel.PayeeName)</td>
+                    <td>@Html.DisplayFor(m => billPayViewModel.Amount)</td>
+                    <td>@Html.DisplayFor(m => billPayViewModel.ScheduleTimeLocal) @((isOverdue) ? "(Overdue)" : "")</td>
+                    <td>@((billPayViewModel.Period == '0') ? "One-time" : "Monthly")</td>
+                    <td>
+                        <a asp-action="Action" asp-route-id="@billPayViewModel.BillPayID" class="btn btn-outline btn-xs">
+                            <span>@((isOverdue) ? "Retry" : "Cancel")</span>
+                        </a>
+                    </td>
+                </tr>
+            }
+            <tr></tr>
+        </table>
+    </div>
+</div>

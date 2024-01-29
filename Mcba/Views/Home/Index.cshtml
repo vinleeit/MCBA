@@ -1,0 +1,63 @@
+﻿@model DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="flex items-center justify-center space-y-3 flex-col grow">
+    <div class="text-center mb-5">
+        @foreach (var b in Model.Balances)
+        {
+            <div class="stats border-2 border-black">
+                <div class="stat">
+                    <div class="stat-title">Account @b.Item1</div>
+                    <div class="stat-value">$@(b.Item2.ToString("#.##"))</div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="flex space-x-3">
+        <div class="px-6 py-6 border-neutral border-2 h-64 w-64 flex items-start justify-center flex-col">
+            <h2 class="tracking-widest text-3xl">Deposit</h2>
+            <p class="text-sm text-gray-500 mt-2">Store your money with ease! No more problem storing money</p>
+            <div class="flex-1"></div>
+            <a asp-action="Index" asp-controller="Deposit" class="btn btn-neutral w-full mt-6">Start</a>
+        </div>
+        <div class="px-6 py-6 border-neutral border-2 h-64 w-64 flex items-start justify-center flex-col">
+            <h2 class="tracking-widest text-3xl">Withdraw</h2>
+            <p class="text-sm text-gray-500 mt-2">Need to withdraw cash? We can get it done below 10 seconds</p>
+            <div class="flex-1"></div>
+            <a asp-action="Index" asp-controller="Withdraw" class="btn btn-neutral w-full mt-6">Start</a>
+        </div>
+        <div class="px-6 py-6 border-neutral border-2 h-64 w-64 flex items-start justify-center flex-col">
+            <h2 class="tracking-widest text-3xl">BillPay</h2>
+            <p class="text-sm text-gray-500 mt-2">Check all you bills and set up automatic payment here</p>
+            <div class="flex-1"></div>
+            <a asp-action="Index" asp-controller="BillPay" class="btn btn-neutral w-full mt-6">Start</a>
+        </div>
+    </div>
+
+    <div class="flex space-x-3">
+        <div class="px-6 py-6 border-neutral border-2 h-64 w-64 flex items-start justify-center flex-col">
+            <h2 class="tracking-widest text-3xl">Transfer</h2>
+            <p class="text-sm text-gray-500 mt-2">Sending money does not need to be complecated, we help you get it done
+                in
+                minutes</p>
+            <div class="flex-1"></div>
+            <a asp-action="Index" asp-controller="Transfer" class="btn btn-neutral w-full mt-6">Start</a>
+        </div>
+        <div class="px-6 py-6 border-neutral border-2 h-64 w-64 flex items-start justify-center flex-col">
+            <h2 class="tracking-widest text-3xl">Statement</h2>
+            <p class="text-sm text-gray-500 mt-2">No more headache for checking your reciept one by one, get all details
+                from single page</p>
+            <div class="flex-1"></div>
+            <a asp-action="Index" asp-controller="Statement" class="btn btn-accent w-full mt-6">Check</a>
+        </div>
+        <div class="px-6 py-6 border-neutral border-2 h-64 w-64 flex items-start justify-center flex-col">
+            <h2 class="tracking-widest text-3xl">Profile</h2>
+            <p class="text-sm text-gray-500 mt-2">No more headache for checking your reciept one by one, get all details
+                from single page</p>
+            <div class="flex-1"></div>
+            <a asp-action="Index" asp-controller="Profile" class="btn btn-neutral w-full mt-6">View</a>
+        </div>
+    </div>
+</div>

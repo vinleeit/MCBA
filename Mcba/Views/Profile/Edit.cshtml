@@ -1,0 +1,52 @@
+@model ProfileViewModel
+
+@{
+    ViewBag.Title = "Edit Profile";
+}
+
+@if (TempData["Error"] != null)
+{
+    <div role="alert" class="alert alert-warning">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <span>Warning: @TempData["Error"]</span>
+    </div>
+}
+
+<div class="grow flex items-center justify-center">
+    <div class="border-2 border-solid border-black rounded-lg px-24 py-16 w-1/2">
+        <h1 class="text-4xl tracking-wider mb-3">Edit Profile</h1>
+        <form asp-action="Edit" asp-controller="Profile" method="post">
+            <input asp-for="CustomerID" hidden>
+            <label asp-for="Name" class="block mb-1 mt-1"></label>
+            <input asp-for="Name" class="input input-bordered  w-full">
+            <span asp-validation-for="Name" class="text-error mt-1 mb-2"></span>
+            <label asp-for="TFN" class="block mb-1 mt-1"></label>
+            <input asp-for="TFN" class="input input-bordered  w-full">
+            <span asp-validation-for="TFN" class="text-error mt-1 mb-2"></span>
+            <label asp-for="Mobile" class="block mt-1 mb-1"></label>
+            <input asp-for="Mobile" class="input input-bordered  w-full">
+            <span asp-validation-for="Mobile" class="text-error mt-1 mb-2"></span>
+            <label asp-for="Address" class="block mt-1 mb-1"></label>
+            <input asp-for="Address" class="input input-bordered  w-full">
+            <span asp-validation-for="Address" class="text-error mt-1 mb-2"></span>
+            <br>
+            <label asp-for="City" class="block mt-1 mb-1"></label>
+            <input asp-for="City" class="input input-bordered  w-full">
+            <span asp-validation-for="City" class="text-error mt-1 mb-2"></span>
+            <br>
+            <label asp-for="State" class="block mt-1 mb-1"></label>
+            <input asp-for="State" class="input input-bordered  w-full">
+            <span asp-validation-for="State" class="text-error mt-1 mb-2"></span>
+            <br>
+            <label asp-for="Postcode" class="block mt-1 mb-1"></label>
+            <input asp-for="Postcode" class="input input-bordered  w-full">
+            <span asp-validation-for="Postcode" class="text-error mt-1 mb-2"></span>
+            <div class="flex justify-end mt-2">
+                <input type="submit" value="Edit" class="btn btn-neutral mr-2">
+                <button asp-action="Index" class="btn btn-warning">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

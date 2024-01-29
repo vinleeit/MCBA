@@ -1,0 +1,108 @@
+@model StatementViewModel
+@{
+    ViewBag.Title = "Transaction Detail";
+    List<int> pageNumbers;
+    if (Model.TotalPage <= 9)
+    {
+        // Show all page numbers
+        pageNumbers = Enumerable.Range(1, Model.TotalPage).ToList();
+    }
+    else
+    {
+        if (Model.Page <= 4)
+        {
+            pageNumbers = Enumerable.Range(1, 7).ToList();
+            pageNumbers.Add(-1); // Placeholder for '...'
+            pageNumbers.Add(Model.TotalPage);
+        }
+        else if (Model.Page >= Model.TotalPage - 4)
+        {
+            pageNumbers = [1, -1];
+            pageNumbers.AddRange(Enumerable.Range(Model.TotalPage - 6, 7));
+        }
+        else
+        {
+            pageNumbers = [1, -1];
+            pageNumbers.AddRange(Enumerable.Range(Model.Page - 2, 3));
+            pageNumbers.AddRange(Enumerable.Range(Model.Page + 1, 2));
+            pageNumbers.AddRange([-1, Model.TotalPage]); // Placeholder for '...'
+        }
+    }
+}
+<div class="grow flex items-center justify-center">
+    <div class="border-2 border-solid border-black rounded-lg px-24 py-16">
+        <h1 class="text-4xl tracking-wider mb-2">Transaction Details</h1>
+        <h2 class="text-lg text-gray-600 mb-2">Page @(Model.Page)/@(Model.TotalPage)</h2>
+        <div>
+            <label asp-for="AccountNumber" class="block text-sm text-gray-600"></label>
+            <span class="text-lg">@Html.DisplayFor(m => m.AccountNumber)</span>
+            <label asp-for="TotalBalance" class="block text-sm text-gray-600"></label>
+            <span class="text-lg">$@Html.DisplayFor(m => m.TotalBalance)</span>
+        </div>
+        @if (Model.Transactions.Count() != 0)
+        {
+            <table class="table table-zebra table-xs">
+                <thead>
+                    <tr>
+                        <td><label asp-for="@Model.Transactions.First().TransactionID"></label></td>
+                        <td><label asp-for="@Model.Transactions.First().TransactionType"></label></td>
+                        <td><label asp-for="@Model.Transactions.First().AccountNumber"></label></td>
+                        <td><label asp-for="@Model.Transactions.First().DestinationAccountNumber"></label></td>
+                        <td><label asp-for="@Model.Transactions.First().Amount"></label></td>
+                        <td><label asp-for="@Model.Transactions.First().Comment"></label></td>
+                        <td><label asp-for="@Model.Transactions.First().TransactionTimeLocal"></label></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var t in Model.Transactions)
+                    {
+
+                        <tr>
+                            <td>@Html.DisplayFor(m => t.TransactionID)</td>
+                            <td>@Html.DisplayFor(m => t.TransactionType)</td>
+                            <td>@Html.DisplayFor(m => t.AccountNumber)</td>
+                            <td>@Html.DisplayFor(m => t.DestinationAccountNumber)</td>
+                            <td>@Html.DisplayFor(m => t.Amount)</td>
+                            <td>@Html.DisplayFor(m => t.Comment)</td>
+                            <td class="uppercase">@Html.DisplayFor(m => t.TransactionTimeLocal)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        <hr class="my-2">
+
+        <div class="flex justify-between items-center">
+            <div class="join">
+                @if (Model.Page > 1)
+                {
+                    <a asp-action="Show" asp-route-page="@(Model.Page - 1)" asp-route-account="@Model.AccountNumber"
+                        class="btn join-item">«</a>
+                }
+                @foreach (var i in pageNumbers)
+                {
+                    if (i == -1)
+                    {
+                        <span class="btn join-item btn-disabled">...</span>
+                    }
+                    else if (i == Model.Page)
+                    {
+                        <span class="btn join-item  btn-warning">@i</span>
+                    }
+                    else
+                    {
+                        <a asp-action="Show" asp-route-page="@i" asp-route-account="@Model.AccountNumber"
+                            class="btn join-item">@i</a>
+                    }
+                }
+                @if (Model.Page < Model.TotalPage)
+                {
+                    <a asp-action="Show" asp-route-page="@(Model.Page + 1)" asp-route-account="@Model.AccountNumber"
+                        class="join-item btn">»</a>
+                }
+
+                <hr>
+            </div>
+            <a href="/" class="btn">Go Home</a>
+        </div>
+    </div>
