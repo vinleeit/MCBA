@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Mcba.Controllers;
 
+[LoggedIn]
 public class WithdrawController(
     IAccountService accountService,
     IBalanceService balanceService,
@@ -15,7 +16,6 @@ public class WithdrawController(
     private readonly IBalanceService _balanceService = balanceService;
     private readonly IWithdrawService _withdrawService = withdrawService;
 
-    [LoggedIn]
     public async Task<IActionResult> Index()
     {
         int? customerID = HttpContext.Session.GetInt32("Customer");
@@ -27,7 +27,6 @@ public class WithdrawController(
     }
 
     [HttpPost]
-    [LoggedIn]
     public async Task<IActionResult> Index([FromForm] WithdrawViewModel data)
     {
         if (!ModelState.IsValid)
@@ -45,13 +44,13 @@ public class WithdrawController(
         var (totalAmount, minimumBalance) =
             await _withdrawService.GetTotalAmountAndMinimumAllowedBalance(
                 data.AccountNumber.GetValueOrDefault(),
-                data.Amount
+                data.Amount.GetValueOrDefault()
             );
         if (totalAmount > balance - minimumBalance)
         {
             ModelState.AddModelError(
                 "Amount",
-                $"Balance for account {data.AccountNumber}(${balance:f2}) is not enough to draw ${totalAmount:f2}. minimum balance is ${minimumBalance:f2}"
+                $"Account {data.AccountNumber} has insufficient balance (${balance:f2}) to draw ${totalAmount} (with service charge); the minimum balance is ${minimumBalance:f2}"
             );
             int? customerID = HttpContext.Session.GetInt32("Customer");
             List<McbaData.Models.Account> accounts = await _accountService.GetAccounts(
@@ -64,12 +63,11 @@ public class WithdrawController(
     }
 
     [HttpPost]
-    [LoggedIn]
     public async Task<IActionResult> WithdrawConfirmed([FromForm] WithdrawViewModel data)
     {
         var result = await _withdrawService.Withdraw(
             data.AccountNumber.GetValueOrDefault(),
-            data.Amount,
+            data.Amount.GetValueOrDefault(),
             data.Comment
         );
 
@@ -82,8 +80,8 @@ public class WithdrawController(
         return View("Result");
     }
 
-    [LoggedIn]
-    public IActionResult WithdrawCanceled() {
+    public IActionResult WithdrawCanceled()
+    {
         return RedirectToAction(nameof(Index));
     }
 }

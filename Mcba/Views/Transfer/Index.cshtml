@@ -10,7 +10,7 @@
             <label asp-for="AccountNumber" class="block mb-1"></label>
             <select asp-for="AccountNumber" class="select select-bordered w-full ">
                 <option value="">Select an account</option>
-                @foreach (var a in Model.Accounts)
+                @foreach (var a in Model.Accounts!)
                 {
                     <option value="@a.AccountNumber">@a.AccountNumber</option>
                 }

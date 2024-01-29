@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Mcba.Controllers;
 
+[LoggedIn]
 public class TransferController(
     IAccountService accountService,
     ITransferService transferService,
@@ -19,7 +20,6 @@ public class TransferController(
     private readonly IBalanceService _balanceService = balanceService;
     private readonly McbaContext _dbContext = context;
 
-    [LoggedIn]
     public async Task<IActionResult> Index()
     {
         int customerID = HttpContext.Session.GetInt32("Customer")!.Value;
@@ -28,7 +28,6 @@ public class TransferController(
     }
 
     [HttpPost]
-    [LoggedIn]
     public async Task<IActionResult> Index([FromForm] TransferViewModel data)
     {
         if (!ModelState.IsValid)
@@ -38,19 +37,7 @@ public class TransferController(
             data.Accounts = accounts;
             return View(data);
         }
-        // Convert destination account number to int
-        if (!Int32.TryParse(data.DestinationAccountNumber, out int destNumber))
-        {
-            // Cannot convert to int
-            int customerID = HttpContext.Session.GetInt32("Customer")!.Value;
-            var accounts = await _accountService.GetAccounts(customerID);
-            data.Accounts = accounts;
-            ModelState.AddModelError(
-                "DestinationAccountNumber",
-                "Destination account number is not a valid digit"
-            );
-            return View(data);
-        }
+        var destNumber = Int32.Parse(data.DestinationAccountNumber!);
         if (destNumber == data.AccountNumber)
         {
             int customerID = HttpContext.Session.GetInt32("Customer")!.Value;
@@ -58,7 +45,7 @@ public class TransferController(
             data.Accounts = accounts;
             ModelState.AddModelError(
                 "DestinationAccountNumber",
-                "Destination account number cannot be the same as source"
+                "Destination account number must not be the same as account number"
             );
             return View(data);
         }
@@ -76,7 +63,7 @@ public class TransferController(
             data.Accounts = accounts;
             ModelState.AddModelError(
                 "DestinationAccountNumber",
-                "Destination account number is not found"
+                "Destination account number is not registered"
             );
             return View(data);
         }
@@ -86,7 +73,7 @@ public class TransferController(
         );
         var (total, minimum) = await _transferService.GetTotalAndMinimumBalance(
             data.AccountNumber.GetValueOrDefault(),
-            data.Amount
+            data.Amount.GetValueOrDefault()
         );
         if (balance - minimum < total)
         {
@@ -95,7 +82,7 @@ public class TransferController(
             data.Accounts = accounts;
             ModelState.AddModelError(
                 "Amount",
-                $"Balance for account {data.AccountNumber}(${balance:f2}) is not enough to transfer ${total:f2}. minimum balance is ${minimum:f2}"
+                $"Account {data.AccountNumber} has insufficient balance (${balance:f2}) to transfer ${total} (with service charge); the minimum balance is ${minimum:f2}"
             );
             return View(data);
         }
@@ -104,14 +91,13 @@ public class TransferController(
     }
 
     [HttpPost]
-    [LoggedIn]
     public async Task<IActionResult> TransferConfirmed([FromForm] TransferViewModel data)
     {
         int destNum = Int32.Parse(data.DestinationAccountNumber!);
         var result = await _transferService.Transfer(
             data.AccountNumber.GetValueOrDefault(),
             destNum,
-            data.Amount,
+            data.Amount.GetValueOrDefault(),
             data.Comment
         );
 
@@ -124,8 +110,8 @@ public class TransferController(
         return View("Result");
     }
 
-    [LoggedIn]
-    public IActionResult TransferCanceled() {
+    public IActionResult TransferCanceled()
+    {
         return RedirectToAction(nameof(Index));
     }
 }

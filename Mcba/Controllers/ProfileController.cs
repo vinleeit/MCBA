@@ -60,7 +60,7 @@ public class ProfileController(McbaContext context, IProfileService profileServi
             new McbaData.Models.Customer
             {
                 CustomerID = edittedCustomer.CustomerID,
-                Name = edittedCustomer.Name,
+                Name = edittedCustomer.Name!,
                 TFN = edittedCustomer.TFN,
                 Address = edittedCustomer.Address,
                 City = edittedCustomer.City,
@@ -71,7 +71,7 @@ public class ProfileController(McbaContext context, IProfileService profileServi
         );
         if (error != null && error == IProfileService.ProfileError.NoDataChange)
         {
-            edittedCustomer.ErrorMsg = "No data modification found!";
+            TempData["Error"] = "No data modification found!";
             return View(edittedCustomer);
         }
         return RedirectToAction(nameof(Index));

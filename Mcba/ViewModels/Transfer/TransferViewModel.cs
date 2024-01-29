@@ -5,21 +5,22 @@ namespace Mcba.ViewModels.Transfer;
 
 public class TransferViewModel
 {
-    [Display(Name = "Account Number")]
     [Required(ErrorMessage = "Please select an account")]
+    [Display(Name = "Account Number")]
     public int? AccountNumber { get; set; }
 
+    [Required(ErrorMessage = "Please insert a destination account number")]
     [Display(Name = "Destintion Account Number")]
-    [Required(ErrorMessage = "Please input destination account number")]
-    [RegularExpression(@"^\d{4}$", ErrorMessage = "Account number must be 4 digit number")]
+    [RegularExpression(@"^\d{4}$", ErrorMessage ="Destination account number must be an exact 4-digit number")] 
     public string? DestinationAccountNumber { get; set; }
 
-    [DataType(DataType.Currency, ErrorMessage = "Please input a valid amount")]
-    [Required(ErrorMessage = "Please input an amount")]
-    [Range(0.01, double.PositiveInfinity, ErrorMessage = "Transfer must be at least $0.01")]
-    public decimal Amount { get; set; }
+    [Required(ErrorMessage = "Please insert an amount")]
+    [Display(Name = "Amount (AU$)")]
+    [DataType(DataType.Currency, ErrorMessage = "Amount must be a valid number")]
+    [Range(0.01, double.PositiveInfinity, ErrorMessage = "Amount must be at minimum AU$0.01")]
+    public decimal? Amount { get; set; }
 
-    [MaxLength(30, ErrorMessage = "Comment must be in 30 characters")]
+    [MaxLength(30, ErrorMessage = "Comment must be at maximum 30 characters")]
     public string? Comment { get; set; }
 
     // Output

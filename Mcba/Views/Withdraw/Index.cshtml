@@ -9,7 +9,7 @@
     <form asp-action="Index">
       <label asp-for="AccountNumber" class="block mb-1"></label>
       <select asp-for="AccountNumber" class="select select-bordered w-full">
-        <option>Select an account</option>
+        <option value="">Select an account</option>
         @foreach (var i in Model.Accounts!)
         {
           <option value="@i.AccountNumber">@i.AccountNumber</option>

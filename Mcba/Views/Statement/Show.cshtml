@@ -18,14 +18,14 @@
         else if (Model.Page >= Model.TotalPage - 4)
         {
             pageNumbers = [1, -1];
-            pageNumbers.AddRange(Enumerable.Range(Model.TotalPage - 7, 7));
+            pageNumbers.AddRange(Enumerable.Range(Model.TotalPage - 6, 7));
         }
         else
         {
             pageNumbers = [1, -1];
             pageNumbers.AddRange(Enumerable.Range(Model.Page - 2, 3));
-            pageNumbers.AddRange(Enumerable.Range(Model.TotalPage - 4, 2));
-            pageNumbers.AddRange([-1, 10]); // Placeholder for '...'
+            pageNumbers.AddRange(Enumerable.Range(Model.Page + 1, 2));
+            pageNumbers.AddRange([-1, Model.TotalPage]); // Placeholder for '...'
         }
     }
 }
@@ -33,7 +33,6 @@
     <div class="border-2 border-solid border-black rounded-lg px-24 py-16">
         <h1 class="text-4xl tracking-wider mb-2">Transaction Details</h1>
         <h2 class="text-lg text-gray-600 mb-2">Page @(Model.Page)/@(Model.TotalPage)</h2>
-
         <div>
             <label asp-for="AccountNumber" class="block mb-1 text-sm text-gray-600"></label>
             <span class="text-lg">@Html.DisplayFor(m => m.AccountNumber)</span>
@@ -47,10 +46,11 @@
                     <tr>
                         <td><label asp-for="@Model.Transactions.First().TransactionID"></label></td>
                         <td><label asp-for="@Model.Transactions.First().TransactionType"></label></td>
+                        <td><label asp-for="@Model.Transactions.First().AccountNumber"></label></td>
                         <td><label asp-for="@Model.Transactions.First().DestinationAccountNumber"></label></td>
                         <td><label asp-for="@Model.Transactions.First().Amount"></label></td>
                         <td><label asp-for="@Model.Transactions.First().Comment"></label></td>
-                        <td><label asp-for="@Model.Transactions.First().TransactionTimeUtc"></label></td>
+                        <td><label asp-for="@Model.Transactions.First().TransactionTimeLocal"></label></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -60,10 +60,11 @@
                         <tr>
                             <td>@Html.DisplayFor(m => t.TransactionID)</td>
                             <td>@Html.DisplayFor(m => t.TransactionType)</td>
+                            <td>@Html.DisplayFor(m => t.AccountNumber)</td>
                             <td>@Html.DisplayFor(m => t.DestinationAccountNumber)</td>
                             <td>@Html.DisplayFor(m => t.Amount)</td>
                             <td>@Html.DisplayFor(m => t.Comment)</td>
-                            <td>@Html.DisplayFor(m => t.TransactionTimeUtc)</td>
+                            <td>@Html.DisplayFor(m => t.TransactionTimeLocal)</td>
                         </tr>
                     }
                 </tbody>

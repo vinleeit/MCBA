@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Mcba.Controllers;
 
+[LoggedIn]
 public class DepositController(IAccountService accountService, IDepositService depositService)
-    : Controller
+: Controller
 {
     private readonly IAccountService _accountService = accountService;
     private readonly IDepositService _depositService = depositService;
 
-    [LoggedIn]
     public async Task<IActionResult> Index()
     {
         var customerID = HttpContext.Session.GetInt32("Customer");
@@ -24,7 +24,6 @@ public class DepositController(IAccountService accountService, IDepositService d
     }
 
     [HttpPost]
-    [LoggedIn]
     public IActionResult Index([FromForm] DepositViewModel data)
     {
         if (!ModelState.IsValid)
@@ -40,12 +39,11 @@ public class DepositController(IAccountService accountService, IDepositService d
     }
 
     [HttpPost]
-    [LoggedIn]
     public async Task<IActionResult> DepositConfirmed([FromForm] DepositViewModel data)
     {
         IDepositService.DepositError? result = await _depositService.Deposit(
             data.AccountNumber.GetValueOrDefault(),
-            data.Amount,
+            data.Amount.GetValueOrDefault(),
             data.Comment
         );
         ViewBag.Error = false;
@@ -57,8 +55,8 @@ public class DepositController(IAccountService accountService, IDepositService d
         return View("Result");
     }
 
-    [LoggedIn]
-    public IActionResult DepositCanceled() {
+    public IActionResult DepositCanceled()
+    {
         return RedirectToAction(nameof(Index));
     }
 }

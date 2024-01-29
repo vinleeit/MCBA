@@ -5,16 +5,17 @@ namespace Mcba.ViewModels.Withdraw;
 
 public class WithdrawViewModel
 {
-    [Display(Name = "Account Number")]
     [Required(ErrorMessage = "Please select an account")]
+    [Display(Name ="Account Number")]
     public int? AccountNumber { get; set; }
 
-    [Required(ErrorMessage = "Please enter a valid amount")]
-    [DataType(DataType.Currency, ErrorMessage = "Please enter a valid amount")]
-    [Range(0.01, double.PositiveInfinity, ErrorMessage = "Amount must be at least $0.01")]
-    public decimal Amount { get; set; }
+    [Required(ErrorMessage = "Please insert an amount")]
+    [Display(Name = "Amount (AU$)")]
+    [DataType(DataType.Currency, ErrorMessage = "Amount must be a valid number")]
+    [Range(0.01, double.PositiveInfinity, ErrorMessage = "Amount must be at minimum AU$0.01")]
+    public decimal? Amount { get; set; }
 
-    [MaxLength(30, ErrorMessage = "Comment must be within 30 characters")]
+    [MaxLength(30, ErrorMessage = "Comment must be at maximum 30 characters")]
     public string? Comment { get; set; }
 
     // Output
