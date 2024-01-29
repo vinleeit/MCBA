@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using Mcba.Middlewares;
+using Mcba.Services.Interfaces;
 using Mcba.ViewModels;
+using Mcba.ViewModels.Dashboard;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mcba.Controllers;
@@ -8,19 +10,34 @@ namespace Mcba.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly IBalanceService _balanceService;
+    private readonly IAccountService _accountService;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, IBalanceService balanceService, IAccountService accountService)
     {
         _logger = logger;
+        _accountService = accountService;
+        _balanceService = balanceService;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        if (!HttpContext.Session.GetInt32("Customer").HasValue)
+        var customerID = HttpContext.Session.GetInt32("Customer");
+        if (!customerID.HasValue)
         {
             return RedirectToAction("Login", "Auth");
         }
-        return View();
+        var data = new DashboardViewModel()
+        {
+            Balances = []
+        };
+        var accounts = await _accountService.GetAccounts(customerID.Value);
+        foreach (var a in accounts)
+        {
+            var balance = await _balanceService.GetAccountBalance(a.AccountNumber);
+            data.Balances.Add((a.AccountNumber, balance));
+        }
+        return View(data);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
