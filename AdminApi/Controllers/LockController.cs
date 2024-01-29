@@ -14,6 +14,7 @@ public class LockController(IAdminRepo adminRepo) : ControllerBase
     [HttpPut("lock/{customerID}")]
     public IActionResult Lock(int customerID)
     {
+        // Lock if the customer is found
         return _adminRepo.GetCustomer(customerID) == null
             ? NotFound()
             : !_adminRepo.EditCustomerLock(customerID, true)
@@ -25,6 +26,7 @@ public class LockController(IAdminRepo adminRepo) : ControllerBase
     [HttpPut("unlock/{customerID}")]
     public IActionResult UnLock(int customerID)
     {
+        // Unlock if the customer is found
         return _adminRepo.GetCustomer(customerID) == null
             ? NotFound()
             : !_adminRepo.EditCustomerLock(customerID, false)

@@ -5,29 +5,37 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
+// Add support for jwt token to authorize api endpoint
+builder
+    .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ValidateIssuerSigningKey = false,
-        ValidIssuer = "mcba-admin",
-        ValidAudience = "mcba-admin",
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("THISISASECRETSTRINGTHISISASECRETSTRINGTHISISASECRETSTRING"))
-    };
-});
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateIssuerSigningKey = false,
+            ValidIssuer = "mcba-admin",
+            ValidAudience = "mcba-admin",
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes("THISISASECRETSTRINGTHISISASECRETSTRINGTHISISASECRETSTRING")
+            )
+        };
+    });
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Use database context (from McbaData module)
 builder.Services.AddDbContext<McbaContext>(
     option => option.UseSqlServer(builder.Configuration.GetConnectionString("arvin-rmit"))
 );
+
+// Add repository service
 builder.Services.AddScoped<IAdminRepo, AdminRepo>();
 
 var app = builder.Build();
