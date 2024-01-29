@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McbaAdmin", "McbaAdmin\Mcba
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McbaData.Tests", "McbaData.Tests\McbaData.Tests.csproj", "{88AEEAC6-3109-4006-B575-82A1D9F0448B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcba.Tests", "Mcba.Tests\Mcba.Tests.csproj", "{0011543C-EDC6-4E4C-97BF-66FDAAEE89F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{88AEEAC6-3109-4006-B575-82A1D9F0448B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88AEEAC6-3109-4006-B575-82A1D9F0448B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88AEEAC6-3109-4006-B575-82A1D9F0448B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0011543C-EDC6-4E4C-97BF-66FDAAEE89F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0011543C-EDC6-4E4C-97BF-66FDAAEE89F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0011543C-EDC6-4E4C-97BF-66FDAAEE89F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0011543C-EDC6-4E4C-97BF-66FDAAEE89F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
