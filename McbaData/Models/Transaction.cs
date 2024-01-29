@@ -9,10 +9,7 @@ public class Transaction
     public int TransactionID { get; set; }
 
     [Required]
-    [RegularExpression(
-        "^[DWTSB]$",
-        ErrorMessage = "Transaction type should be in [D, W, T, S, B]"
-    )]
+    [RegularExpression("^[DWTSB]$", ErrorMessage = "Transaction type should be in [D, W, T, S, B]")]
     public char TransactionType { get; set; }
 
     // Navigational property

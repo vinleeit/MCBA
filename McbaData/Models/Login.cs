@@ -9,10 +9,7 @@ public class Login
     [Key]
     [Required(ErrorMessage = "Login ID is required")]
     [Column(TypeName = "char(8)")]
-    [RegularExpression(
-        @"^\d{8}$",
-        ErrorMessage = "Login ID must be 8 digits"
-    )]
+    [RegularExpression(@"^\d{8}$", ErrorMessage = "Login ID must be 8 digits")]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public required string LoginID { get; set; }
 
@@ -28,6 +25,7 @@ public class Login
     [StringLength(94, ErrorMessage = "Wrong password length")]
     public required string PasswordHash { get; set; }
 
+    // To indicate if a user account is locked
     [Required]
     [DefaultValue(false)]
     public bool Locked { get; set; }

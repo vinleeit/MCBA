@@ -32,9 +32,6 @@ public class BillPay
     public DateTime ScheduleTimeUtc { get; set; }
 
     [Required(ErrorMessage = "Period is required")]
-    [RegularExpression(
-        "^[OM]$",
-        ErrorMessage = "Only 'O' or 'M'"
-    )]
+    [RegularExpression("^[OM]$", ErrorMessage = "Only 'O' or 'M'")]
     public char Period { get; set; }
 }

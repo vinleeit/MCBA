@@ -38,10 +38,7 @@ namespace McbaData.Models
         public string? State { get; set; }
 
         [Column(TypeName = "nvarchar(4)")]
-        [RegularExpression(
-            @"^\d{4}$",
-            ErrorMessage = "Postcode must be 4 digits"
-        )]
+        [RegularExpression(@"^\d{4}$", ErrorMessage = "Postcode must be 4 digits")]
         public string? Postcode { get; set; }
 
         [Column(TypeName = "nvarchar(12)")]

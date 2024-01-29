@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace McbaData;
 
+// Database context for the MCBA applications, shared between modules
 public class McbaContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<Customer> Customers { get; set; }
