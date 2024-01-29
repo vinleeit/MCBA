@@ -18,10 +18,10 @@
     <form asp-action="Login">
       <div asp-validation-for="Login" class="text-danger"></div>
       <label asp-for="LoginId" class="block mb-1"></label>
-      <input asp-for="LoginId" placeholder="Type here" class="input input-bordered input-secondary w-full max-w-sm">
+      <input asp-for="LoginId" placeholder="Type here" class="input input-bordered input-secondary w-full">
       <span asp-validation-for="LoginId" class="text-error block py-1"></span>
       <label asp-for="Password" class="block mb-1"></label>
-      <input asp-for="Password" placeholder="Type here" class="input input-bordered input-secondary w-full max-w-sm">
+      <input asp-for="Password" placeholder="Type here" class="input input-bordered input-secondary w-full">
       <span asp-validation-for="Password" class="text-error block py-1"></span>
       <p class="my-2">By logging in, you agree to terms and condition of use.</p>
       <input type="submit" value="Login" class="btn btn-neutral mt-3">
