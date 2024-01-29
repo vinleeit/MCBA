@@ -1,7 +1,9 @@
+using System.Text.Json;
 using Mcba.Middlewares;
 using Mcba.Services.Interfaces;
 using Mcba.ViewModels.Profile;
 using McbaData;
+using McbaData.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mcba.Controllers;
@@ -17,6 +19,8 @@ public class ProfileController(McbaContext context, IProfileService profileServi
         var customer = _dbContext.Customers.FirstOrDefault(
             b => b.CustomerID == HttpContext.Session.GetInt32("Customer")
         );
+        var serialized = JsonSerializer.SerializeToUtf8Bytes(customer);
+        HttpContext.Session.Set("customer", serialized);
         if (customer == null)
         {
             return NotFound();
@@ -27,9 +31,7 @@ public class ProfileController(McbaContext context, IProfileService profileServi
     [HttpGet]
     public IActionResult Edit()
     {
-        var customer = _dbContext.Customers.FirstOrDefault(
-            b => b.CustomerID == HttpContext.Session.GetInt32("Customer")
-        );
+        var customer = JsonSerializer.Deserialize<Customer>(HttpContext.Session.Get("customer"));
         if (customer != null)
         {
             return View(
@@ -97,4 +99,3 @@ public class ProfileController(McbaContext context, IProfileService profileServi
         return RedirectToAction(nameof(Index));
     }
 }
-

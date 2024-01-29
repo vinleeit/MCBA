@@ -13,7 +13,11 @@ public class HomeController : Controller
     private readonly IBalanceService _balanceService;
     private readonly IAccountService _accountService;
 
-    public HomeController(ILogger<HomeController> logger, IBalanceService balanceService, IAccountService accountService)
+    public HomeController(
+        ILogger<HomeController> logger,
+        IBalanceService balanceService,
+        IAccountService accountService
+    )
     {
         _logger = logger;
         _accountService = accountService;
@@ -27,10 +31,7 @@ public class HomeController : Controller
         {
             return RedirectToAction("Login", "Auth");
         }
-        var data = new DashboardViewModel()
-        {
-            Balances = []
-        };
+        var data = new DashboardViewModel() { Balances = [] };
         var accounts = await _accountService.GetAccounts(customerID.Value);
         foreach (var a in accounts)
         {

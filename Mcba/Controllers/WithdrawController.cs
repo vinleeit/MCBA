@@ -1,6 +1,8 @@
+using System.Text.Json;
 using Mcba.Middlewares;
 using Mcba.Services.Interfaces;
 using Mcba.ViewModels.Withdraw;
+using McbaData.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mcba.Controllers;
@@ -19,9 +21,9 @@ public class WithdrawController(
     public async Task<IActionResult> Index()
     {
         int? customerID = HttpContext.Session.GetInt32("Customer");
-        List<McbaData.Models.Account> accounts = await _accountService.GetAccounts(
-            customerID.GetValueOrDefault()
-        );
+        List<Account> accounts = await _accountService.GetAccounts(customerID.GetValueOrDefault());
+        var serialized = JsonSerializer.SerializeToUtf8Bytes(accounts);
+        HttpContext.Session.Set("accounts", serialized);
 
         return View(new WithdrawViewModel() { Accounts = accounts });
     }
@@ -31,11 +33,9 @@ public class WithdrawController(
     {
         if (!ModelState.IsValid)
         {
-            int? customerID = HttpContext.Session.GetInt32("Customer");
-            List<McbaData.Models.Account> accounts = await _accountService.GetAccounts(
-                customerID.GetValueOrDefault()
+            data.Accounts = JsonSerializer.Deserialize<List<Account>>(
+                HttpContext.Session.Get("accounts")
             );
-            data.Accounts = accounts;
             return View(data);
         }
         var balance = await _balanceService.GetAccountBalance(
@@ -52,9 +52,8 @@ public class WithdrawController(
                 "Amount",
                 $"Account {data.AccountNumber} has insufficient balance (${balance:f2}) to draw ${totalAmount} (with service charge); the minimum balance is ${minimumBalance:f2}"
             );
-            int? customerID = HttpContext.Session.GetInt32("Customer");
-            List<McbaData.Models.Account> accounts = await _accountService.GetAccounts(
-                customerID.GetValueOrDefault()
+            var accounts = JsonSerializer.Deserialize<List<Account>>(
+                HttpContext.Session.Get("accounts")
             );
             return View(new WithdrawViewModel() { Accounts = accounts });
         }
