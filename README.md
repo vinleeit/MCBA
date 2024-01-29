@@ -29,7 +29,7 @@ MCBA (Most Common Bank of Australia) internet banking web application.
 | Microsoft.EntityFrameworkCore.SqlServer       | 8.0.1       | Manager used in all projects for communication with SQL Server DB.                  |
 | Microsoft.EntityFrameworkCore.Sqlite          | 8.0.1       | Manager used mainly in testing for communication with SQLite DB.                    |
 | Microsoft.EntityFrameworkCore.Design          | 8.0.1       | ORM for data access layer.                                                          |
-| Htmx                                          | 1.6.3       |                                                                                     |
+| Htmx                                          | 1.6.3       | To make it easier to do AJAX request                                                |
 | Tailwind.Extensions.AspNetCore                | 1.0.0-beta2 | CSS framework replacing the styling by Bootstrap.                                   |
 | Microsoft.AspNetCore.Authentication.JwtBearer | 8.0.1       | JWT token for authentication.                                                       |
 | Swashbuckle.AspNetCore                        | 6.4.0       |                                                                                     |
@@ -41,7 +41,7 @@ MCBA (Most Common Bank of Australia) internet banking web application.
 | xunit                                         | 2.6.6       | Used for unit testing, providing a cleaner way especially for repetitive parameter. |
 | xunit.runner.visualstudio                     | 2.5.6       | Used for running the test in IDE.                                                   |
 | Autofac                                       | 8.0.0       | Using its dependency injection.                                                     |
-| Autofac.Extensions.DependencyInjection        | 9.0.0       | Using                                                                               |
+| Autofac.Extensions.DependencyInjection        | 9.0.0       |                                                                                     |
 | NSubstitute                                   | 5.1.0       | Used for mock testing.                                                              |
 
 ## How To Run
