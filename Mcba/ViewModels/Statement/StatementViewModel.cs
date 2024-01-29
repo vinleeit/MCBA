@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using McbaData.Models;
 
 namespace Mcba.ViewModels.Statement;
 
@@ -12,6 +11,5 @@ public class StatementViewModel
     public decimal TotalBalance { get; set; }
     public int Page { get; set; }
     public int TotalPage { get; set; }
-    public required List<Transaction> Transactions { get; set; }
+    public required List<TransactionViewModel> Transactions { get; set; }
 }
-
