@@ -26,7 +26,6 @@ public class ProfileController(McbaContext context, IProfileService profileServi
             return NotFound();
         }
         return View(customer);
-
     }
 
     [HttpGet]
@@ -36,20 +35,20 @@ public class ProfileController(McbaContext context, IProfileService profileServi
         if (customer != null)
         {
             return View(
-
                 new ProfileViewModel()
                 {
                     CustomerID = customer.CustomerID,
                     Name = customer.Name,
                     TFN = customer.TFN,
-                    Address = customer.TFN,
+                    Address = customer.Address,
                     City = customer.City,
                     State = customer.State,
                     Postcode = customer.Postcode,
                     Mobile = customer.Mobile
                 }
-            )
-            : RedirectToAction(nameof(Index));
+            );
+        }
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
