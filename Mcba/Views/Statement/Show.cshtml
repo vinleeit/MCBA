@@ -34,10 +34,10 @@
         <h1 class="text-4xl tracking-wider mb-2">Transaction Details</h1>
         <h2 class="text-lg text-gray-600 mb-2">Page @(Model.Page)/@(Model.TotalPage)</h2>
         <div>
-            <label asp-for="AccountNumber" class="block mb-1 text-sm text-gray-600"></label>
+            <label asp-for="AccountNumber" class="block text-sm text-gray-600"></label>
             <span class="text-lg">@Html.DisplayFor(m => m.AccountNumber)</span>
-            <label asp-for="TotalBalance" class="block mb-1 text-sm text-gray-600"></label>
-            <span class="text-lg">@Html.DisplayFor(m => m.TotalBalance)</span>
+            <label asp-for="TotalBalance" class="block text-sm text-gray-600"></label>
+            <span class="text-lg">$@Html.DisplayFor(m => m.TotalBalance)</span>
         </div>
         @if (Model.Transactions.Count() != 0)
         {
@@ -64,7 +64,7 @@
                             <td>@Html.DisplayFor(m => t.DestinationAccountNumber)</td>
                             <td>@Html.DisplayFor(m => t.Amount)</td>
                             <td>@Html.DisplayFor(m => t.Comment)</td>
-                            <td>@Html.DisplayFor(m => t.TransactionTimeLocal)</td>
+                            <td class="uppercase">@Html.DisplayFor(m => t.TransactionTimeLocal)</td>
                         </tr>
                     }
                 </tbody>

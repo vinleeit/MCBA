@@ -1,11 +1,19 @@
-﻿@{
+﻿@model DashboardViewModel
+@{
     ViewData["Title"] = "Dashboard";
 }
 
 <div class="flex items-center justify-center space-y-3 flex-col grow">
     <div class="text-center mb-5">
-        <h1 class="text-5xl tracking-widest mb-1">Dashboard</h1>
-        <p class="text-xl text-gray-500">Manage your finance with ease</p>
+        @foreach (var b in Model.Balances)
+        {
+            <div class="stats border-2 border-black">
+                <div class="stat">
+                    <div class="stat-title">Account @b.Item1</div>
+                    <div class="stat-value">$@(b.Item2.ToString("#.##"))</div>
+                </div>
+            </div>
+        }
     </div>
     <div class="flex space-x-3">
         <div class="px-6 py-6 border-neutral border-2 h-64 w-64 flex items-start justify-center flex-col">
