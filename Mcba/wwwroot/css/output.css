@@ -2421,6 +2421,10 @@ html {
   line-height: 1.75rem;
 }
 
+.font-black {
+  font-weight: 900;
+}
+
 .tracking-wider {
   letter-spacing: 0.05em;
 }
@@ -2447,4 +2451,28 @@ html {
 .text-gray-600 {
   --tw-text-opacity: 1;
   color: rgb(75 85 99 / var(--tw-text-opacity));
+}
+
+@media (min-width: 768px) {
+  .md\:block {
+    display: block;
+  }
+
+  .md\:flex {
+    display: flex;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:block {
+    display: block;
+  }
+
+  .lg\:flex {
+    display: flex;
+  }
+
+  .lg\:hidden {
+    display: none;
+  }
 }
