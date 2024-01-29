@@ -39,7 +39,7 @@
                     <td>@Html.DisplayFor(m => billPayViewModel.PayeeName)</td>
                     <td>@Html.DisplayFor(m => billPayViewModel.Amount)</td>
                     <td>@Html.DisplayFor(m => billPayViewModel.ScheduleTimeLocal) @((isOverdue) ? "(Overdue)" : "")</td>
-                    <td>@((billPayViewModel.Period == '0') ? "One-time" : "Monthly")</td>
+                    <td>@((billPayViewModel.Period == 'O') ? "One-time" : "Monthly")</td>
                     <td>
                         <a asp-action="Action" asp-route-id="@billPayViewModel.BillPayID" class="btn btn-outline btn-xs">
                             <span>@((isOverdue) ? "Retry" : "Cancel")</span>
