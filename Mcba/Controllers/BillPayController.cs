@@ -105,9 +105,9 @@ public class BillPayController(
                 localDT.Minute,
                 0
             );
-            if (billPay.ScheduleTimeUtc < localDT)
+            if (billPay.ScheduleTimeUtc.ToLocalTime() < localDT)
             {
-                BillPayError? err = await _billPayService.PayBillPay(id, true);
+                BillPayError? err = await _billPayService.RetryBillPay(id);
                 switch (err)
                 {
                     case BillPayError.InsuffientBalance:
