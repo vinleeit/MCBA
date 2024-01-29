@@ -14,25 +14,20 @@ public class ProfileController(McbaContext context, IProfileService profileServi
 
     public IActionResult Index()
     {
-        var customer = _dbContext.Customers.FirstOrDefault(
+        McbaData.Models.Customer? customer = _dbContext.Customers.FirstOrDefault(
             b => b.CustomerID == HttpContext.Session.GetInt32("Customer")
         );
-        if (customer == null)
-        {
-            return NotFound();
-        }
-        return View(customer);
+        return customer == null ? NotFound() : View(customer);
     }
 
     [HttpGet]
     public IActionResult Edit()
     {
-        var customer = _dbContext.Customers.FirstOrDefault(
+        McbaData.Models.Customer? customer = _dbContext.Customers.FirstOrDefault(
             b => b.CustomerID == HttpContext.Session.GetInt32("Customer")
         );
-        if (customer != null)
-        {
-            return View(
+        return customer != null
+            ? View(
                 new ProfileViewModel()
                 {
                     CustomerID = customer.CustomerID,
@@ -44,9 +39,8 @@ public class ProfileController(McbaContext context, IProfileService profileServi
                     Postcode = customer.Postcode,
                     Mobile = customer.Mobile
                 }
-            );
-        }
-        return RedirectToAction(nameof(Index));
+            )
+            : RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
@@ -56,7 +50,7 @@ public class ProfileController(McbaContext context, IProfileService profileServi
         {
             return View();
         }
-        var error = await _profileService.UpdateCustomerProfile(
+        IProfileService.ProfileError? error = await _profileService.UpdateCustomerProfile(
             new McbaData.Models.Customer
             {
                 CustomerID = edittedCustomer.CustomerID,
@@ -69,7 +63,7 @@ public class ProfileController(McbaContext context, IProfileService profileServi
                 Mobile = edittedCustomer.Mobile
             }
         );
-        if (error != null && error == IProfileService.ProfileError.NoDataChange)
+        if (error is not null and IProfileService.ProfileError.NoDataChange)
         {
             TempData["Error"] = "No data modification found!";
             return View(edittedCustomer);
@@ -90,11 +84,10 @@ public class ProfileController(McbaContext context, IProfileService profileServi
         {
             return View();
         }
-        await _profileService.UpdateCustomerPassword(
+        _ = await _profileService.UpdateCustomerPassword(
             HttpContext.Session.GetInt32("Customer") ?? -1,
             viewModel.Password
         );
         return RedirectToAction(nameof(Index));
     }
 }
-

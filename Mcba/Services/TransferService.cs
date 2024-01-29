@@ -20,12 +20,13 @@ public class TransferService(
         decimal amount
     )
     {
-        var isFree = await _freeTransactionService.GetIsTransactionFree(accountNumber);
+        bool isFree = await _freeTransactionService.GetIsTransactionFree(accountNumber);
         if (!isFree)
         {
             amount += _transferFee;
         }
-        decimal minimum =
+        // Get minimum balance
+        decimal minimumBalance =
             (
                 await (
                     from a in _dbContext.Accounts
@@ -35,7 +36,7 @@ public class TransferService(
             ) == 'S'
                 ? 0
                 : 300;
-        return Tuple.Create(amount, minimum);
+        return Tuple.Create(amount, minimumBalance);
     }
 
     public async Task<ITransferService.TransferError?> Transfer(

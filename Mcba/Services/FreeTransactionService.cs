@@ -15,6 +15,7 @@ public class FreeTransactionService(McbaContext context) : IFreeTransactionServi
             where
                 t.AccountNumber == accountNumber
                 && (
+                    // Check if the type if withdraw and transaction (out)
                     t.TransactionType == 'W'
                     || (t.TransactionType == 'T' && t.DestinationAccountNumber != null)
                 )

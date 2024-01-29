@@ -13,7 +13,11 @@ public class HomeController : Controller
     private readonly IBalanceService _balanceService;
     private readonly IAccountService _accountService;
 
-    public HomeController(ILogger<HomeController> logger, IBalanceService balanceService, IAccountService accountService)
+    public HomeController(
+        ILogger<HomeController> logger,
+        IBalanceService balanceService,
+        IAccountService accountService
+    )
     {
         _logger = logger;
         _accountService = accountService;
@@ -22,19 +26,20 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var customerID = HttpContext.Session.GetInt32("Customer");
+        int? customerID = HttpContext.Session.GetInt32("Customer");
+        // Redirect to login if the user is not logged in yet
         if (!customerID.HasValue)
         {
             return RedirectToAction("Login", "Auth");
         }
-        var data = new DashboardViewModel()
+        DashboardViewModel data = new() { Balances = [] };
+        List<McbaData.Models.Account> accounts = await _accountService.GetAccounts(
+            customerID.Value
+        );
+        // Get balance for each of the accounts
+        foreach (McbaData.Models.Account a in accounts)
         {
-            Balances = []
-        };
-        var accounts = await _accountService.GetAccounts(customerID.Value);
-        foreach (var a in accounts)
-        {
-            var balance = await _balanceService.GetAccountBalance(a.AccountNumber);
+            decimal balance = await _balanceService.GetAccountBalance(a.AccountNumber);
             data.Balances.Add((a.AccountNumber, balance));
         }
         return View(data);

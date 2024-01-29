@@ -23,7 +23,7 @@ public class TransferController(
     public async Task<IActionResult> Index()
     {
         int customerID = HttpContext.Session.GetInt32("Customer")!.Value;
-        var accounts = await _accountService.GetAccounts(customerID);
+        List<McbaData.Models.Account> accounts = await _accountService.GetAccounts(customerID);
         return View(new TransferViewModel() { Accounts = accounts });
     }
 
@@ -33,15 +33,15 @@ public class TransferController(
         if (!ModelState.IsValid)
         {
             int customerID = HttpContext.Session.GetInt32("Customer")!.Value;
-            var accounts = await _accountService.GetAccounts(customerID);
+            List<McbaData.Models.Account> accounts = await _accountService.GetAccounts(customerID);
             data.Accounts = accounts;
             return View(data);
         }
-        var destNumber = Int32.Parse(data.DestinationAccountNumber!);
+        int destNumber = Int32.Parse(data.DestinationAccountNumber!);
         if (destNumber == data.AccountNumber)
         {
             int customerID = HttpContext.Session.GetInt32("Customer")!.Value;
-            var accounts = await _accountService.GetAccounts(customerID);
+            List<McbaData.Models.Account> accounts = await _accountService.GetAccounts(customerID);
             data.Accounts = accounts;
             ModelState.AddModelError(
                 "DestinationAccountNumber",
@@ -51,15 +51,15 @@ public class TransferController(
         }
         // Check if destination is valid
         if (
-            await (
+            !await (
                 from a in _dbContext.Accounts
                 where a.AccountNumber == destNumber
                 select a
-            ).CountAsync() < 1
+            ).AnyAsync()
         )
         {
             int customerID = HttpContext.Session.GetInt32("Customer")!.Value;
-            var accounts = await _accountService.GetAccounts(customerID);
+            List<McbaData.Models.Account> accounts = await _accountService.GetAccounts(customerID);
             data.Accounts = accounts;
             ModelState.AddModelError(
                 "DestinationAccountNumber",
@@ -68,10 +68,10 @@ public class TransferController(
             return View(data);
         }
         // Check if balance is enough
-        var balance = await _balanceService.GetAccountBalance(
+        decimal balance = await _balanceService.GetAccountBalance(
             data.AccountNumber.GetValueOrDefault()
         );
-        var (total, minimum) = await _transferService.GetTotalAndMinimumBalance(
+        (decimal total, decimal minimum) = await _transferService.GetTotalAndMinimumBalance(
             data.AccountNumber.GetValueOrDefault(),
             data.Amount.GetValueOrDefault()
         );
@@ -94,7 +94,7 @@ public class TransferController(
     public async Task<IActionResult> TransferConfirmed([FromForm] TransferViewModel data)
     {
         int destNum = Int32.Parse(data.DestinationAccountNumber!);
-        var result = await _transferService.Transfer(
+        ITransferService.TransferError? result = await _transferService.Transfer(
             data.AccountNumber.GetValueOrDefault(),
             destNum,
             data.Amount.GetValueOrDefault(),
@@ -115,4 +115,3 @@ public class TransferController(
         return RedirectToAction(nameof(Index));
     }
 }
-

@@ -9,16 +9,18 @@ namespace Mcba.Controllers;
 
 [LoggedIn]
 public class DepositController(IAccountService accountService, IDepositService depositService)
-: Controller
+    : Controller
 {
     private readonly IAccountService _accountService = accountService;
     private readonly IDepositService _depositService = depositService;
 
     public async Task<IActionResult> Index()
     {
-        var customerID = HttpContext.Session.GetInt32("Customer");
-        var accounts = await _accountService.GetAccounts(customerID.GetValueOrDefault());
-        var serialized = JsonSerializer.SerializeToUtf8Bytes(accounts);
+        int? customerID = HttpContext.Session.GetInt32("Customer");
+        // Get accounts from customer ID
+        List<Account> accounts = await _accountService.GetAccounts(customerID.GetValueOrDefault());
+        byte[] serialized = JsonSerializer.SerializeToUtf8Bytes(accounts);
+        // Save serialized account to session
         HttpContext.Session.Set("accounts", serialized);
         return View(new DepositViewModel() { Accounts = accounts });
     }
@@ -28,8 +30,9 @@ public class DepositController(IAccountService accountService, IDepositService d
     {
         if (!ModelState.IsValid)
         {
-            var serializedList = HttpContext.Session.Get("accounts");
-            var accounts = JsonSerializer.Deserialize<List<Account>>(serializedList);
+            // Get accounts from session
+            byte[]? serializedList = HttpContext.Session.Get("accounts");
+            List<Account>? accounts = JsonSerializer.Deserialize<List<Account>>(serializedList);
             data.Accounts = accounts ?? ([]);
             return View(data);
         }

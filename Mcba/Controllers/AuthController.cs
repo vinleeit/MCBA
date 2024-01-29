@@ -21,24 +21,29 @@ public class AuthController(IAuthService authService) : Controller
         {
             return View(loginData);
         }
-        var result = await _authService.Login(loginData.LoginId, loginData.Password);
-        if (result.Error.HasValue)
+        (AuthError? Error, int? Customer) = await _authService.Login(
+            loginData.LoginId,
+            loginData.Password
+        );
+        if (Error.HasValue)
         {
-            var errMsg = "";
-            switch (result.Error)
+            string errMsg = "";
+            switch (Error)
             {
-                case (AuthError.Locked):
+                case AuthError.Locked:
                     errMsg = "Login is locked";
                     break;
-                case (AuthError.InvalidCredential):
+                case AuthError.InvalidCredential:
                     errMsg = "Incorrect Login ID or Password";
+                    break;
+                default:
                     break;
             }
             ModelState.AddModelError("LoginId", errMsg);
             return View(loginData);
         }
         // Save auth info to session
-        HttpContext.Session.SetInt32("Customer", result.Customer.GetValueOrDefault());
+        HttpContext.Session.SetInt32("Customer", Customer.GetValueOrDefault());
         return RedirectToAction("Index", "Home");
     }
 
