@@ -32,6 +32,7 @@ public class HomeController : Controller
         {
             return RedirectToAction("Login", "Auth");
         }
+
         DashboardViewModel data = new() { Balances = [] };
         List<McbaData.Models.Account> accounts = await _accountService.GetAccounts(
             customerID.Value

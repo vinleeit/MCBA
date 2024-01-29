@@ -25,6 +25,7 @@ public class StatementController(
 
     public async Task<IActionResult> Show([FromQuery] int Account, [FromQuery] int Page = 1)
     {
+
         (int totalPage, IEnumerable<McbaData.Models.Transaction> data) =
             await _statementService.GetPaginatedAccountTransactions(Account, (Page, 4));
         // Return 404 if page is bigger than totalPage

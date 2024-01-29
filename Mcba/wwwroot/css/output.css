@@ -1246,14 +1246,6 @@ html {
   padding-bottom: 1rem;
 }
 
-.stat-figure {
-  grid-column-start: 2;
-  grid-row: span 3 / span 3;
-  grid-row-start: 1;
-  place-self: center;
-  justify-self: end;
-}
-
 .stat-title {
   grid-column-start: 1;
   white-space: nowrap;
@@ -1266,14 +1258,6 @@ html {
   font-size: 2.25rem;
   line-height: 2.5rem;
   font-weight: 800;
-}
-
-.stat-desc {
-  grid-column-start: 1;
-  white-space: nowrap;
-  font-size: 0.75rem;
-  line-height: 1rem;
-  color: var(--fallback-bc,oklch(var(--bc)/0.6));
 }
 
 .table {
@@ -2316,10 +2300,6 @@ html {
   display: block;
 }
 
-.inline-block {
-  display: inline-block;
-}
-
 .flex {
   display: flex;
 }
@@ -2338,10 +2318,6 @@ html {
 
 .h-64 {
   height: 16rem;
-}
-
-.h-8 {
-  height: 2rem;
 }
 
 .min-h-screen {
@@ -2368,20 +2344,8 @@ html {
   width: 100%;
 }
 
-.w-8 {
-  width: 2rem;
-}
-
 .max-w-sm {
   max-width: 24rem;
-}
-
-.max-w-md {
-  max-width: 28rem;
-}
-
-.max-w-lg {
-  max-width: 32rem;
 }
 
 .flex-1 {
@@ -2566,10 +2530,6 @@ html {
   padding-left: 0.5rem;
 }
 
-.pr-4 {
-  padding-right: 1rem;
-}
-
 .pr-14 {
   padding-right: 3.5rem;
 }
@@ -2586,11 +2546,6 @@ html {
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
-}
-
-.text-5xl {
-  font-size: 3rem;
-  line-height: 1;
 }
 
 .text-6xl {
@@ -2647,27 +2602,6 @@ html {
 .text-gray-600 {
   --tw-text-opacity: 1;
   color: rgb(75 85 99 / var(--tw-text-opacity));
-}
-
-.text-primary {
-  --tw-text-opacity: 1;
-  color: var(--fallback-p,oklch(var(--p)/var(--tw-text-opacity)));
-}
-
-.text-secondary {
-  --tw-text-opacity: 1;
-  color: var(--fallback-s,oklch(var(--s)/var(--tw-text-opacity)));
-}
-
-.text-warning {
-  --tw-text-opacity: 1;
-  color: var(--fallback-wa,oklch(var(--wa)/var(--tw-text-opacity)));
-}
-
-.shadow {
-  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 @media (min-width: 1024px) {

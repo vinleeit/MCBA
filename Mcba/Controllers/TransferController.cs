@@ -1,7 +1,9 @@
+using System.Text.Json;
 using Mcba.Middlewares;
 using Mcba.Services.Interfaces;
 using Mcba.ViewModels.Transfer;
 using McbaData;
+using McbaData.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +25,9 @@ public class TransferController(
     public async Task<IActionResult> Index()
     {
         int customerID = HttpContext.Session.GetInt32("Customer")!.Value;
-        List<McbaData.Models.Account> accounts = await _accountService.GetAccounts(customerID);
+        var accounts = await _accountService.GetAccounts(customerID);
+        var serialized = JsonSerializer.SerializeToUtf8Bytes(accounts);
+        HttpContext.Session.Set("accounts", serialized);
         return View(new TransferViewModel() { Accounts = accounts });
     }
 
@@ -32,17 +36,17 @@ public class TransferController(
     {
         if (!ModelState.IsValid)
         {
-            int customerID = HttpContext.Session.GetInt32("Customer")!.Value;
-            List<McbaData.Models.Account> accounts = await _accountService.GetAccounts(customerID);
-            data.Accounts = accounts;
+            data.Accounts = JsonSerializer.Deserialize<List<Account>>(
+                HttpContext.Session.Get("accounts")
+            );
             return View(data);
         }
         int destNumber = Int32.Parse(data.DestinationAccountNumber!);
         if (destNumber == data.AccountNumber)
         {
-            int customerID = HttpContext.Session.GetInt32("Customer")!.Value;
-            List<McbaData.Models.Account> accounts = await _accountService.GetAccounts(customerID);
-            data.Accounts = accounts;
+            data.Accounts = JsonSerializer.Deserialize<List<Account>>(
+                HttpContext.Session.Get("accounts")
+            );
             ModelState.AddModelError(
                 "DestinationAccountNumber",
                 "Destination account number must not be the same as account number"
@@ -58,9 +62,9 @@ public class TransferController(
             ).AnyAsync()
         )
         {
-            int customerID = HttpContext.Session.GetInt32("Customer")!.Value;
-            List<McbaData.Models.Account> accounts = await _accountService.GetAccounts(customerID);
-            data.Accounts = accounts;
+            data.Accounts = JsonSerializer.Deserialize<List<Account>>(
+                HttpContext.Session.Get("accounts")
+            );
             ModelState.AddModelError(
                 "DestinationAccountNumber",
                 "Destination account number is not registered"
@@ -77,9 +81,9 @@ public class TransferController(
         );
         if (balance - minimum < total)
         {
-            int customerID = HttpContext.Session.GetInt32("Customer")!.Value;
-            var accounts = await _accountService.GetAccounts(customerID);
-            data.Accounts = accounts;
+            data.Accounts = JsonSerializer.Deserialize<List<Account>>(
+                HttpContext.Session.Get("accounts")
+            );
             ModelState.AddModelError(
                 "Amount",
                 $"Account {data.AccountNumber} has insufficient balance (${balance:f2}) to transfer ${total} (with service charge); the minimum balance is ${minimum:f2}"
